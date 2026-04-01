@@ -85,6 +85,7 @@ input:focus,select:focus{border-color:var(--green);}
   <button class="active" onclick="go('today',this)">🔔 提醒</button>
   <button onclick="go('attend',this)">📋 出勤</button>
   <button onclick="go('cal',this)">📅 行事曆</button>
+  <button onclick="go('schedule',this)">📖 課表</button>
   <button onclick="go('contacts',this)">📞 家長</button>
   <button onclick="go('finance',this)">💰 班費</button>
   <button onclick="go('notices',this)">📋 班務</button>
@@ -241,6 +242,119 @@ input:focus,select:focus{border-color:var(--green);}
 </div>
 
 <!-- ===== 家長聯繫 ===== -->
+<!-- ===== 課表 ===== -->
+<div class="tab" id="tab-schedule">
+
+  <!-- 說明 -->
+  <div class="bc info" style="margin-bottom:10px">
+    <div class="bc-t">📖 導師授課科目</div>
+    <div class="bc-b">國語・數學・本土語言・校訂・導師時間
+點各節次可記錄當週教學內容與進度</div>
+  </div>
+
+  <!-- 週課表 -->
+  <div class="card">
+    <div class="ct">本週導師授課課表</div>
+
+    <!-- 週一 -->
+    <div style="margin-bottom:14px">
+      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--gl)">週一</div>
+      <div class="row" style="align-items:flex-start">
+        <span class="mono" style="min-width:50px;color:var(--t3)">第1節</span>
+        <span class="bold" style="min-width:40px">數學</span>
+        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
+      </div>
+      <div class="row" style="align-items:flex-start">
+        <span class="mono" style="min-width:50px;color:var(--t3)">第2節</span>
+        <span class="bold" style="min-width:40px">國語</span>
+        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
+      </div>
+    </div>
+
+    <!-- 週二 -->
+    <div style="margin-bottom:14px">
+      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--gl)">週二（母語日）</div>
+      <div class="row" style="align-items:flex-start">
+        <span class="mono" style="min-width:50px;color:var(--t3)">第3節</span>
+        <span class="bold" style="min-width:40px">數學</span>
+        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
+      </div>
+      <div class="row" style="align-items:flex-start">
+        <span class="mono" style="min-width:50px;color:var(--t3)">第4節</span>
+        <span class="bold" style="min-width:40px">國語</span>
+        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
+      </div>
+      <div class="row" style="align-items:flex-start">
+        <span class="mono" style="min-width:50px;color:var(--t3)">第5節</span>
+        <span class="bold" style="min-width:40px">本土語言</span>
+        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
+      </div>
+    </div>
+
+    <!-- 週三 -->
+    <div style="margin-bottom:14px">
+      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--gl)">週三（母語日）</div>
+      <div class="row" style="align-items:flex-start">
+        <span class="mono" style="min-width:50px;color:var(--t3)">第2節</span>
+        <span class="bold" style="min-width:40px">數學</span>
+        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
+      </div>
+      <div class="row" style="align-items:flex-start">
+        <span class="mono" style="min-width:50px;color:var(--t3)">第3節</span>
+        <span class="bold" style="min-width:40px">國語</span>
+        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
+      </div>
+      <div class="row" style="align-items:flex-start">
+        <span class="mono" style="min-width:50px;color:var(--t3)">第4節</span>
+        <span class="bold" style="min-width:40px">導師時間</span>
+        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
+      </div>
+    </div>
+
+    <!-- 週四 -->
+    <div style="margin-bottom:14px">
+      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--gl)">週四</div>
+      <div class="row" style="align-items:flex-start">
+        <span class="mono" style="min-width:50px;color:var(--t3)">第1節</span>
+        <span class="bold" style="min-width:40px">數學</span>
+        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
+      </div>
+      <div class="row" style="align-items:flex-start">
+        <span class="mono" style="min-width:50px;color:var(--t3)">第2節</span>
+        <span class="bold" style="min-width:40px">國語</span>
+        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
+      </div>
+      <div class="row" style="align-items:flex-start">
+        <span class="mono" style="min-width:50px;color:var(--t3)">第6-7節</span>
+        <span class="bold" style="min-width:40px">校訂</span>
+        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
+      </div>
+    </div>
+
+    <!-- 週五 -->
+    <div style="margin-bottom:6px">
+      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--gl)">週五</div>
+      <div class="row" style="align-items:flex-start">
+        <span class="mono" style="min-width:50px;color:var(--t3)">第1-2節</span>
+        <span class="bold" style="min-width:40px">校訂</span>
+        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
+      </div>
+      <div class="row" style="align-items:flex-start">
+        <span class="mono" style="min-width:50px;color:var(--t3)">第3節</span>
+        <span class="bold" style="min-width:40px">國語</span>
+        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
+      </div>
+    </div>
+  </div>
+
+  <!-- 備注 -->
+  <div class="card">
+    <div class="ct">📝 本週備注 / 進度摘要</div>
+    <textarea placeholder="本週教學重點、學生反應、下週預計進度…" style="width:100%;height:120px;padding:10px;border:1px solid var(--border);border-radius:8px;font-family:'Noto Sans TC',sans-serif;font-size:13px;background:var(--s2);color:var(--text);resize:vertical;line-height:1.6"></textarea>
+  </div>
+
+</div>
+
 <div class="tab" id="tab-contacts">
   <div class="card">
     <input type="text" id="ct-q" placeholder="🔍 搜尋學生姓名…" oninput="renderContacts()" style="width:100%;margin-bottom:10px">
@@ -449,6 +563,7 @@ const events = [
 const outData = [
   {date:'every-tue',seat:'11',name:'許展銘',time:'第5節 13:30',reason:'閩南語外加課，不在班上'},
   {date:'every-fri',seat:'',name:'全班EQ課',time:'第0-1節',reason:'輔導主任吳世揚上課，老師可去大辦公室或圖書館'},
+  {date:'2026-04-02',seat:'21',name:'劉芊妤',time:'電腦課',reason:'自治會公假，不在班上'},
 ];
 
 // ── 提醒資料 ──
@@ -456,20 +571,26 @@ const reminders = [
   {date:'2026-04-02',seat:'13',name:'朱一',note:'提醒帶堉瑋功課袋至安親班（兩人同一安親班，堉瑋爸爸當天去拿）\n→ 流程：裝袋→寫「60304邢堉瑋」→拍照傳家長→交給朱一'},
   {date:'2026-04-01',seat:'',name:'導師待辦',note:'聯絡美勞碧儀老師確認手環成績\n→ 8號、9號、20號未完成・11號說週四早自習要做\n→ 碧儀老師分機請查分機表'},
   {date:'2026-04-02',seat:'',name:'導師待辦',note:'聯絡美勞碧儀老師確認手環成績（若昨天未完成）\n→ 8號、9號、20號未完成・11號說週四早自習要做'},
-  {date:'2026-04-01',seat:'09',name:'周威辰',note:'追蹤躲避球事件：確認9號魏晨是否完成道歉（小卡片）\n→ 確認五年三班對方同學就醫狀況\n→ 如對方家長有需求，請聯繫9號媽媽'},
+  {date:'2026-04-23',seat:'',name:'⭐ 作業調閱',note:'今天調閱：練習簿・作業需有批改、日期、評量'},
+  {date:'2026-04-30',seat:'',name:'⭐ 作業調閱',note:'今天調閱：自然・作業需有批改、日期、評量'},
+  {date:'2026-05-07',seat:'',name:'⭐ 作業調閱',note:'今天調閱：年節/年慶・作業需有批改、日期、評量'},
+  {date:'2026-05-14',seat:'',name:'⭐ 作業調閱',note:'今天調閱：作文・作業需有批改、日期、評量'},
+  {date:'2026-05-21',seat:'',name:'⭐ 作業調閱',note:'今天調閱：美勞・作業需有批改、日期、評量'},
 ];
 
 // ── 出勤資料 ──
 let atts = [
   {id:1,date:'2026-04-01',seat:'04',name:'邢堉瑋',type:'absent',note:'複習考期間，需補考確認'},
   {id:2,date:'2026-04-01',seat:'21',name:'劉芊妤',type:'absent',note:'自治會公假'},
-  {id:3,date:'2026-04-02',seat:'04',name:'邢堉瑋',type:'absent',note:'複習考期間'},
-  {id:4,date:'2026-04-02',seat:'21',name:'劉芊妤',type:'absent',note:'自治會公假'},
-  {id:5,date:'2026-04-02',seat:'13',name:'朱一',type:'errand',note:'帶堉瑋功課袋至安親班'},
-  {id:6,date:'2026-04-25',seat:'15',name:'楊媛安',type:'absent',note:'校慶請假，國中美術班考試'},
-  {id:7,date:'2026-04-25',seat:'23',name:'高喬亘',type:'absent',note:'校慶請假，國中美術班考試'},
+  {id:3,date:'2026-04-01',seat:'08',name:'歐其諺',type:'late',note:'08:15 到校'},
+  {id:4,date:'2026-04-01',seat:'20',name:'許芷瑄',type:'late',note:'08:20 到校'},
+  {id:5,date:'2026-04-02',seat:'04',name:'邢堉瑋',type:'absent',note:'複習考期間'},
+  {id:6,date:'2026-04-02',seat:'21',name:'劉芊妤',type:'half',note:'自治會公假，電腦課那節'},
+  {id:7,date:'2026-04-02',seat:'13',name:'朱一',type:'errand',note:'帶堉瑋功課袋至安親班'},
+  {id:8,date:'2026-04-25',seat:'15',name:'楊媛安',type:'absent',note:'校慶請假，國中美術班考試'},
+  {id:9,date:'2026-04-25',seat:'23',name:'高喬亘',type:'absent',note:'校慶請假，國中美術班考試'},
 ];
-let nid=8;
+let nid=10;
 const TL={absent:'請假（全天）',half:'請假（半天）',late:'遲到',early:'早退',errand:'帶功課/跑腿'};
 const TC={absent:'var(--red)',half:'var(--amber)',late:'var(--amber)',early:'var(--amber)',errand:'var(--blue)'};
 
@@ -480,7 +601,13 @@ const calEvents = [
   {date:'2026-04-09',title:'私校報名交接截止',note:'4/9前由604老師負責，4/9後家長自行處理（3/4/7/10/18/19號）'},
   {date:'2026-04-16',title:'⭐ 期中評量（四）',note:'國語・自然・英語'},
   {date:'2026-04-17',title:'⭐ 期中評量（五）',note:'數學・社會'},
+  {date:'2026-04-15',title:'⭐ 畢業生作業調閱研習 13:30–16:30',note:'詳見紙本通知'},
   {date:'2026-04-20',title:'特殊展能市長獎截止',note:'有特殊才藝學生可申請'},
+  {date:'2026-04-23',title:'⭐ 作業調閱：練習簿（六年級）',note:'作業需有批改、日期、評量'},
+  {date:'2026-04-30',title:'⭐ 作業調閱：自然（六年級）',note:'作業需有批改、日期、評量'},
+  {date:'2026-05-07',title:'⭐ 作業調閱：年節/年慶（六年級）',note:'作業需有批改、日期、評量'},
+  {date:'2026-05-14',title:'⭐ 作業調閱：作文（六年級）',note:'作業需有批改、日期、評量'},
+  {date:'2026-05-21',title:'⭐ 作業調閱：美勞（六年級）',note:'作業需有批改、日期、評量'},
   {date:'2026-04-24',title:'週五EQ課（輔導主任4/24來上）',note:'剩兩堂，4/24後再告知'},
   {date:'2026-04-25',title:'15/23號請假',note:'校慶，國中美術班考試'},
   {date:'2026-04-27',title:'校慶補假',note:''},
@@ -506,7 +633,7 @@ const students = [
   {seat:'11',name:'許展銘',tag:'amber',parent:'媽媽',rel:'',phone:'已聯繫',notes:'人際困難：難以調整被拒絕的行為，對他人私事過度好奇。週二第5節閩南語外加課不在班上。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'媽媽主動反映孩子人際困難及課堂專注問題，有覺察，態度配合。'}],bcards:[{type:'warn',label:'⚠️ 人際觀察',content:'難以調整被拒行為，過度好奇他人私事\n週二第5節（13:30）閩南語外加課，不在班上'}]},
   {seat:'12',name:'張亦程',tag:'note',parent:'媽媽',rel:'',phone:'已聯繫',notes:'喜歡跟同學聊電動，有時聊太開心會上課講話。目前狀況應已改善，持續觀察。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'孩子整體還好，喜歡聊電動等話題，曾有上課聊天，目前應已改善。'}],bcards:[]},
   {seat:'13',name:'朱一',tag:'amber',parent:'媽媽',rel:'',phone:'已聯繫',notes:'越高年級越愛玩，玩性大，容易被同儕影響。吃軟不吃硬，建議用正向引導。曾有在走廊玩耍導致同學受傷（粉碎性骨折）事件。有自己的想法，不服輸，但也不吃硬。媽媽非常明理，溝通配合度高。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'接班前主動致電。媽媽表示朱一這學期越來越愛玩、不定性，認為與六年級青春期、同儕影響及換師頻繁有關。曾有走廊玩耍導致同學腳趾粉碎性骨折事件，媽媽已在家教育並讓朱一反省。媽媽態度非常明理，能客觀看待孩子行為，表示希望孩子平安畢業。'}],bcards:[{type:'warn',label:'⚠️ 特質提醒',content:'吃軟不吃硬，建議正向引導而非強硬管教\n容易將事情放大解讀（覺得老師只針對他）\n媽媽已在家說明，親師立場一致'},{type:'info',label:'🔵 過往事件',content:'曾與同學在走廊玩耍，同學腳趾粉碎性骨折\n媽媽已在家教育，了解責任不在單一學生'}]},
-  {seat:'14',name:'陳佳安',tag:'ok',parent:'',rel:'',phone:'',notes:'',contacts:[],bcards:[]},
+  {seat:'14',name:'陳佳安',tag:'ok',parent:'媽媽',rel:'基督徒家庭，有四個孩子',phone:'已聯繫',notes:'個性乖巧，前任導師金華老師特別推薦為小幫手。4/1第一天已請他協助班級事務，本人也很開心。',contacts:[{date:'4/1',who:'媽媽',method:'LINE',summary:'4/1接班後主動聯繫。媽媽表示孩子今天還OK，第一天沒什麼問題。整體乖巧，無特殊需求，歡迎保持聯繫。'}],bcards:[{type:'ok',label:'✅ 小幫手',content:'前任導師金華老師推薦，個性乖巧可信任\n4/1已請他協助，反應良好'}]},
   {seat:'15',name:'楊媛安',tag:'red',parent:'媽媽',rel:'媽媽與23號舅媽為親姐妹，可互相聯繫・15/23號為表姐妹，形影不離',phone:'待聯繫',notes:'【重點觀察】與18號洪書琳持續人際衝突。訓導組長已介入。4/25 請假（國中美術班考試，已核假）。',contacts:[],bcards:[{type:'alert',label:'🔴 人際衝突追蹤',content:'與18號長期衝突（上學期起）\n訓導組長已知悉\n→若升溫立即會同訓導組長\n4/25 請假：國中美術班考試（與23號同，已核假）'}]},
   {seat:'16',name:'孫苡萱',tag:'amber',parent:'',rel:'家長擔任班費記帳（5月中統一做帳）',phone:'',notes:'氣喘（有噴劑，體育課留意）。能力較弱，作業有交就給肯定，不需過度要求。',contacts:[],bcards:[{type:'info',label:'🔵 氣喘',content:'有時需使用噴劑\n→體育課或劇烈活動時關心'}]},
   {seat:'17',name:'馬靖耘',tag:'ok',parent:'媽媽',rel:'',phone:'已聯繫',notes:'個性熱心主動，歷年深受老師喜愛。有時過度幫人而忽略自身作業，需適時提醒。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'孩子熱心過頭，有時忘記自己的功課。整體無大問題。'}],bcards:[]},
