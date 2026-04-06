@@ -353,6 +353,36 @@ input:focus,select:focus{border-color:var(--green);}
     <textarea placeholder="本週教學重點、學生反應、下週預計進度…" style="width:100%;height:120px;padding:10px;border:1px solid var(--border);border-radius:8px;font-family:'Noto Sans TC',sans-serif;font-size:13px;background:var(--s2);color:var(--text);resize:vertical;line-height:1.6"></textarea>
   </div>
 
+  <!-- 聯絡簿作業紀錄 -->
+  <div class="card">
+    <div class="ct">📒 聯絡簿作業紀錄</div>
+
+    <div style="margin-bottom:12px">
+      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;padding-bottom:3px;border-bottom:2px solid var(--gl)">4/2（四）</div>
+      <div class="bc-b" style="font-size:13px">1. 國 L4 圈詞×3<br>2. 圈詞訂正×3<br>3. 數重 P30–32</div>
+    </div>
+
+    <div style="margin-bottom:12px">
+      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;padding-bottom:3px;border-bottom:2px solid var(--gl)">4/7（二）</div>
+      <div class="bc-b" style="font-size:13px">1. 國卷 L5–6<br>2. 數習 P42–43</div>
+    </div>
+
+    <div style="margin-bottom:12px">
+      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;padding-bottom:3px;border-bottom:2px solid var(--gl)">4/8（三）</div>
+      <div class="bc-b" style="font-size:13px">1. 國 L5 圈詞×3<br>2. 數重 P33–35</div>
+    </div>
+
+    <div style="margin-bottom:12px">
+      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;padding-bottom:3px;border-bottom:2px solid var(--gl)">4/9（四）</div>
+      <div class="bc-b" style="font-size:13px">1. 國卷 L1–L6<br>2. 數習 P44–45</div>
+    </div>
+
+    <div style="margin-bottom:4px">
+      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;padding-bottom:3px;border-bottom:2px solid var(--gl)">4/10（五）</div>
+      <div class="bc-b" style="font-size:13px">1. （待補）<br>2. 數習 P46–47</div>
+    </div>
+  </div>
+
 </div>
 
 <div class="tab" id="tab-contacts">
@@ -434,7 +464,9 @@ input:focus,select:focus{border-color:var(--green);}
     <div class="bc alert"><div class="bc-t">🔴 08 歐其諺（特生）</div><div class="bc-b">每天主動詢問是否吃藥，未吃→找資源班升駿老師
 情緒控管藥，藥效退後易衝突（課後班時段）
 情緒激動時：給10分鐘冷靜空間，不要當場溝通
-奶奶生病，近期情緒較不穩</div></div>
+奶奶生病，近期情緒較不穩
+【固定行程】週一・週五中午國數課去資源教室上課（不在班上）
+【週一】早自習寫完聯絡簿後去輔導室</div></div>
     <div class="bc alert"><div class="bc-t">🔴 22 柯瓔芮（特生）</div><div class="bc-b">12:40 午餐後主動盯吃藥（利他能）・她很會拖
 ⚠️ 星期三不用
 情緒固執，激動時溝通困難，穩定後再引導
@@ -561,6 +593,9 @@ const events = [
 
 // ── 離開教室 ──
 const outData = [
+  {date:'every-mon',seat:'08',name:'歐其諺',time:'早自習後',reason:'寫完聯絡簿→去輔導室'},
+  {date:'every-mon',seat:'08',name:'歐其諺',time:'中午（國數課）',reason:'資源教室上課，國數課不在班上'},
+  {date:'every-fri',seat:'08',name:'歐其諺',time:'中午（國數課）',reason:'資源教室上課，國數課不在班上'},
   {date:'every-tue',seat:'11',name:'許展銘',time:'第5節 13:30',reason:'閩南語外加課，不在班上'},
   {date:'every-fri',seat:'',name:'全班EQ課',time:'第0-1節',reason:'輔導主任吳世揚上課，老師可去大辦公室或圖書館'},
   {date:'2026-04-02',seat:'21',name:'劉芊妤',time:'電腦課',reason:'自治會公假，不在班上'},
@@ -568,14 +603,24 @@ const outData = [
 
 // ── 提醒資料 ──
 const reminders = [
-  {date:'2026-04-02',seat:'13',name:'朱一',note:'提醒帶堉瑋功課袋至安親班（兩人同一安親班，堉瑋爸爸當天去拿）\n→ 流程：裝袋→寫「60304邢堉瑋」→拍照傳家長→交給朱一'},
-  {date:'2026-04-01',seat:'',name:'導師待辦',note:'聯絡美勞碧儀老師確認手環成績\n→ 8號、9號、20號未完成・11號說週四早自習要做\n→ 碧儀老師分機請查分機表'},
-  {date:'2026-04-02',seat:'',name:'導師待辦',note:'聯絡美勞碧儀老師確認手環成績（若昨天未完成）\n→ 8號、9號、20號未完成・11號說週四早自習要做'},
-  {date:'2026-04-23',seat:'',name:'⭐ 作業調閱',note:'今天調閱：練習簿・作業需有批改、日期、評量'},
-  {date:'2026-04-30',seat:'',name:'⭐ 作業調閱',note:'今天調閱：自然・作業需有批改、日期、評量'},
-  {date:'2026-05-07',seat:'',name:'⭐ 作業調閱',note:'今天調閱：年節/年慶・作業需有批改、日期、評量'},
-  {date:'2026-05-14',seat:'',name:'⭐ 作業調閱',note:'今天調閱：作文・作業需有批改、日期、評量'},
-  {date:'2026-05-21',seat:'',name:'⭐ 作業調閱',note:'今天調閱：美勞・作業需有批改、日期、評量'},
+  // ── 每週固定 ──
+  {date:'every-mon',seat:'08',name:'歐其諺',note:'週一固定：早自習寫完聯絡簿後去輔導室・中午國數課去資源教室'},
+  {date:'every-fri',seat:'08',name:'歐其諺',note:'週五固定：中午國數課去資源教室'},
+
+  // ── 本週必辦（4/6起） ──
+  {date:'2026-04-06',seat:'',name:'⚠️ 本週必辦（4/10截止）',note:'① 申請學年雲端權限　② 取得08號特生資料　③ 國中改分發名單確認（找604老師）'},
+  {date:'2026-04-07',seat:'',name:'⚠️ 本週必辦（4/10截止）',note:'① 申請學年雲端權限　② 取得08號特生資料　③ 國中改分發名單確認（找604老師）'},
+  {date:'2026-04-08',seat:'',name:'⚠️ 本週必辦（4/10截止）',note:'① 申請學年雲端權限　② 取得08號特生資料　③ 國中改分發名單確認（找604老師）'},
+  {date:'2026-04-09',seat:'',name:'⚠️ 明天截止！國中改分發',note:'名單明天交教務註冊組・私校：03竹林・04/07/10/18/19南山・今天確認604老師是否已處理'},
+  {date:'2026-04-10',seat:'',name:'⚠️ 今天截止！國中改分發',note:'名單今天交教務註冊組・私校：03竹林・04/07/10/18/19南山'},
+
+  // ── 作業調閱 ──
+  {date:'2026-04-23',seat:'',name:'⭐ 作業調閱：練習簿',note:'數學抽查同日・作業需有批改、日期、評量'},
+  {date:'2026-04-30',seat:'',name:'⭐ 作業調閱：自然',note:'作業需有批改、日期、評量'},
+  {date:'2026-05-07',seat:'',name:'⭐ 作業調閱：年節/年慶',note:'作業需有批改、日期、評量'},
+  {date:'2026-05-14',seat:'',name:'⭐ 作業調閱：作文',note:'作業需有批改、日期、評量'},
+  {date:'2026-05-21',seat:'',name:'⭐ 作業調閱：美勞',note:'作業需有批改、日期、評量'},
+  {date:'2026-05-27',seat:'',name:'⭐ 作業抽查：國語',note:'請提前確認學生作業狀況'},
 ];
 
 // ── 出勤資料 ──
@@ -599,7 +644,7 @@ const calEvents = [
   {date:'2026-04-01',title:'正式到職上任 🎉',note:'4/1 起帶班至畢業'},
   {date:'2026-04-03',title:'清明節放假',note:''},
   {date:'2026-04-09',title:'私校報名交接截止',note:'4/9前由604老師負責，4/9後家長自行處理（3/4/7/10/18/19號）'},
-  {date:'2026-04-16',title:'⭐ 期中評量（四）',note:'國語・自然・英語'},
+  {date:'2026-04-10',title:'⚠️ 國中改分發名單截止',note:'私校錄取名單交教務註冊組（03竹林・04/07/10/18/19南山）・4班老師協助確認'},
   {date:'2026-04-17',title:'⭐ 期中評量（五）',note:'數學・社會'},
   {date:'2026-04-15',title:'⭐ 畢業生作業調閱研習 13:30–16:30',note:'詳見紙本通知'},
   {date:'2026-04-20',title:'特殊展能市長獎截止',note:'有特殊才藝學生可申請'},
@@ -634,7 +679,7 @@ const students = [
   {seat:'12',name:'張亦程',tag:'note',parent:'媽媽',rel:'',phone:'已聯繫',notes:'喜歡跟同學聊電動，有時聊太開心會上課講話。目前狀況應已改善，持續觀察。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'孩子整體還好，喜歡聊電動等話題，曾有上課聊天，目前應已改善。'}],bcards:[]},
   {seat:'13',name:'朱一',tag:'amber',parent:'媽媽',rel:'',phone:'已聯繫',notes:'越高年級越愛玩，玩性大，容易被同儕影響。吃軟不吃硬，建議用正向引導。曾有在走廊玩耍導致同學受傷（粉碎性骨折）事件。有自己的想法，不服輸，但也不吃硬。媽媽非常明理，溝通配合度高。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'接班前主動致電。媽媽表示朱一這學期越來越愛玩、不定性，認為與六年級青春期、同儕影響及換師頻繁有關。曾有走廊玩耍導致同學腳趾粉碎性骨折事件，媽媽已在家教育並讓朱一反省。媽媽態度非常明理，能客觀看待孩子行為，表示希望孩子平安畢業。'}],bcards:[{type:'warn',label:'⚠️ 特質提醒',content:'吃軟不吃硬，建議正向引導而非強硬管教\n容易將事情放大解讀（覺得老師只針對他）\n媽媽已在家說明，親師立場一致'},{type:'info',label:'🔵 過往事件',content:'曾與同學在走廊玩耍，同學腳趾粉碎性骨折\n媽媽已在家教育，了解責任不在單一學生'}]},
   {seat:'14',name:'陳佳安',tag:'ok',parent:'媽媽',rel:'基督徒家庭，有四個孩子',phone:'已聯繫',notes:'個性乖巧，前任導師金華老師特別推薦為小幫手。4/1第一天已請他協助班級事務，本人也很開心。',contacts:[{date:'4/1',who:'媽媽',method:'LINE',summary:'4/1接班後主動聯繫。媽媽表示孩子今天還OK，第一天沒什麼問題。整體乖巧，無特殊需求，歡迎保持聯繫。'}],bcards:[{type:'ok',label:'✅ 小幫手',content:'前任導師金華老師推薦，個性乖巧可信任\n4/1已請他協助，反應良好'}]},
-  {seat:'15',name:'楊媛安',tag:'red',parent:'媽媽',rel:'媽媽與23號舅媽為親姐妹，可互相聯繫・15/23號為表姐妹，形影不離',phone:'待聯繫',notes:'【重點觀察】與18號洪書琳持續人際衝突。訓導組長已介入。4/25 請假（國中美術班考試，已核假）。',contacts:[],bcards:[{type:'alert',label:'🔴 人際衝突追蹤',content:'與18號長期衝突（上學期起）\n訓導組長已知悉\n→若升溫立即會同訓導組長\n4/25 請假：國中美術班考試（與23號同，已核假）'}]},
+  {seat:'15',name:'楊媛安',tag:'red',parent:'媽媽',rel:'媽媽與23號舅媽為親姐妹，可互相聯繫・15/23號為表姐妹，形影不離',phone:'已聯繫',notes:'【重點觀察】與18號洪書琳持續人際衝突。訓導組長已介入。4/25 請假（國中美術班考試，已核假）。私下表達能力強，有影響力，在圈圈裡其他女生蠻聽她的。課堂上反而不愛發言，會覺得「尷尬」，需輕柔鼓勵。數學較弱，有待觀察。',contacts:[{date:'4/2',who:'媽媽',method:'電話',summary:'4/2接班後聯繫。媽媽提到：①數學不擅長，希望老師有空補充說明；②與18號洪書琳（蘇林）有人際糾紛，對方比較敏感，擔心再起衝突，請老師留意座位和排隊距離；③媛安私下表達能力強但課堂不敢發言，媽媽認為是個性使然；④媽媽理解老師剛接班需要時間穩定，不強求立即追進度，請老師多關照。媽媽態度理解配合，溝通愉快。'}],bcards:[{type:'alert',label:'🔴 人際衝突追蹤',content:'與18號洪書琳長期衝突（上學期起）\n訓導組長已知悉\n→若升溫立即會同訓導組長\n4/25 請假：國中美術班考試（與23號同，已核假）\n建議：保持兩人座位和排隊距離'},{type:'warn',label:'⚠️ 課業',content:'數學較弱，期中考前盡量補充說明\n媽媽已理解現況，不強求立即追進度'},{type:'info',label:'🔵 特質觀察',content:'私下表達能力強，在女生圈有影響力\n課堂上不愛發言（覺得尷尬）\n→適性引導，不強迫，可鼓勵帶動群體'}]},
   {seat:'16',name:'孫苡萱',tag:'amber',parent:'',rel:'家長擔任班費記帳（5月中統一做帳）',phone:'',notes:'氣喘（有噴劑，體育課留意）。能力較弱，作業有交就給肯定，不需過度要求。',contacts:[],bcards:[{type:'info',label:'🔵 氣喘',content:'有時需使用噴劑\n→體育課或劇烈活動時關心'}]},
   {seat:'17',name:'馬靖耘',tag:'ok',parent:'媽媽',rel:'',phone:'已聯繫',notes:'個性熱心主動，歷年深受老師喜愛。有時過度幫人而忽略自身作業，需適時提醒。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'孩子熱心過頭，有時忘記自己的功課。整體無大問題。'}],bcards:[]},
   {seat:'18',name:'洪書琳',tag:'red',parent:'媽媽',rel:'',phone:'已聯繫',notes:'【重點觀察】與15號持續人際衝突，曾出現噩夢等壓力反應。個性內斂乖巧。訓導組長已介入。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'說明與楊媛安衝突史及噩夢壓力反應。訓導組長已介入，寒假後稍緩。媽媽每日詢問在校狀況。'}],bcards:[{type:'alert',label:'🔴 心理壓力',content:'長期被挑釁，出現噩夢等壓力反應\n→必要時轉介輔導資源\n→衝突對象：15號楊媛安'},{type:'info',label:'🔵 國中：南山（正取）',content:'4/9前由604老師負責，4/9後家長自行處理'}]},
@@ -931,13 +976,13 @@ function openModal(i){
 
 // ── 班費 ──
 let fins = [
-  {id:1, date:'2025-12-03', type:'in',  amount:12000, desc:'本學期班費收繳', receipt:''},
-  {id:2, date:'2025-12-03', type:'in',  amount:5912,  desc:'上學期結餘', receipt:''},
-  {id:3, date:'2026-03-17', type:'out', amount:1380,  desc:'翰林國語課堂練習6(下) 23本×$60', receipt:'擊華書局 79418'},
-  {id:4, date:'2026-03-17', type:'out', amount:1380,  desc:'數學重點復習 23本×$60', receipt:'兩果書局'},
-  {id:5, date:'2026-03-09', type:'out', amount:245,   desc:'彩色筆', receipt:'估價單 No.236497'},
-  {id:6, date:'2026-03-09', type:'out', amount:100,   desc:'新北市垃圾袋14公升', receipt:'全家永和耕幸店'},
-  {id:7, date:'2026-03-31', type:'out', amount:180,   desc:'待確認項目（單據在604老師那，4/1後取回）', receipt:'⚠️ 單據待取'},
+  {id:1, date:'2025-12-01', type:'in',  amount:5912,  desc:'上學期結餘（前期餘額）', receipt:''},
+  {id:2, date:'2026-03-01', type:'in',  amount:12000, desc:'本學期班費收繳', receipt:''},
+  {id:3, date:'2026-03-09', type:'out', amount:100,   desc:'垃圾袋', receipt:'全家永和耕幸店'},
+  {id:4, date:'2026-03-09', type:'out', amount:344,   desc:'影印費', receipt:''},
+  {id:5, date:'2026-03-17', type:'out', amount:1380,  desc:'數學重點復習 23本×$60', receipt:'兩果書局'},
+  {id:6, date:'2026-03-17', type:'out', amount:1380,  desc:'國語練習本 23本×$60', receipt:'擊華書局 79418'},
+  {id:7, date:'2026-03-27', type:'out', amount:180,   desc:'影印費', receipt:'單據已取回'},
 ];
 let fnid = 8;
 
