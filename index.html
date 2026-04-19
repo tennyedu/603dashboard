@@ -245,112 +245,34 @@ input:focus,select:focus{border-color:var(--green);}
 <!-- ===== 課表 ===== -->
 <div class="tab" id="tab-schedule">
 
-  <!-- 說明 -->
-  <div class="bc info" style="margin-bottom:10px">
-    <div class="bc-t">📖 導師授課科目</div>
-    <div class="bc-b">國語・數學・本土語言・校訂・導師時間
-點各節次可記錄當週教學內容與進度</div>
+  <!-- 圖例 -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;font-size:12px;align-items:center">
+    <span style="background:#d4edda;color:#2d6a4f;padding:3px 10px;border-radius:20px;font-weight:600">🟢 導師授課</span>
+    <span style="background:var(--s2);color:var(--t2);padding:3px 10px;border-radius:20px">科任/其他</span>
+    <span style="background:#fff3cd;color:#856404;padding:3px 10px;border-radius:20px">🟡 特殊</span>
   </div>
 
-  <!-- 週課表 -->
-  <div class="card">
-    <div class="ct">本週導師授課課表</div>
-
-    <!-- 週一 -->
-    <div style="margin-bottom:14px">
-      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--gl)">週一</div>
-      <div class="row" style="align-items:flex-start">
-        <span class="mono" style="min-width:50px;color:var(--t3)">第1節</span>
-        <span class="bold" style="min-width:40px">數學</span>
-        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
-      </div>
-      <div class="row" style="align-items:flex-start">
-        <span class="mono" style="min-width:50px;color:var(--t3)">第2節</span>
-        <span class="bold" style="min-width:40px">國語</span>
-        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
-      </div>
-    </div>
-
-    <!-- 週二 -->
-    <div style="margin-bottom:14px">
-      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--gl)">週二（母語日）</div>
-      <div class="row" style="align-items:flex-start">
-        <span class="mono" style="min-width:50px;color:var(--t3)">第3節</span>
-        <span class="bold" style="min-width:40px">數學</span>
-        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
-      </div>
-      <div class="row" style="align-items:flex-start">
-        <span class="mono" style="min-width:50px;color:var(--t3)">第4節</span>
-        <span class="bold" style="min-width:40px">國語</span>
-        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
-      </div>
-      <div class="row" style="align-items:flex-start">
-        <span class="mono" style="min-width:50px;color:var(--t3)">第5節</span>
-        <span class="bold" style="min-width:40px">本土語言</span>
-        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
-      </div>
-    </div>
-
-    <!-- 週三 -->
-    <div style="margin-bottom:14px">
-      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--gl)">週三（母語日）</div>
-      <div class="row" style="align-items:flex-start">
-        <span class="mono" style="min-width:50px;color:var(--t3)">第2節</span>
-        <span class="bold" style="min-width:40px">數學</span>
-        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
-      </div>
-      <div class="row" style="align-items:flex-start">
-        <span class="mono" style="min-width:50px;color:var(--t3)">第3節</span>
-        <span class="bold" style="min-width:40px">國語</span>
-        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
-      </div>
-      <div class="row" style="align-items:flex-start">
-        <span class="mono" style="min-width:50px;color:var(--t3)">第4節</span>
-        <span class="bold" style="min-width:40px">導師時間</span>
-        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
-      </div>
-    </div>
-
-    <!-- 週四 -->
-    <div style="margin-bottom:14px">
-      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--gl)">週四</div>
-      <div class="row" style="align-items:flex-start">
-        <span class="mono" style="min-width:50px;color:var(--t3)">第1節</span>
-        <span class="bold" style="min-width:40px">數學</span>
-        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
-      </div>
-      <div class="row" style="align-items:flex-start">
-        <span class="mono" style="min-width:50px;color:var(--t3)">第2節</span>
-        <span class="bold" style="min-width:40px">國語</span>
-        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
-      </div>
-      <div class="row" style="align-items:flex-start">
-        <span class="mono" style="min-width:50px;color:var(--t3)">第6-7節</span>
-        <span class="bold" style="min-width:40px">校訂</span>
-        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
-      </div>
-    </div>
-
-    <!-- 週五 -->
-    <div style="margin-bottom:6px">
-      <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--gl)">週五</div>
-      <div class="row" style="align-items:flex-start">
-        <span class="mono" style="min-width:50px;color:var(--t3)">第1-2節</span>
-        <span class="bold" style="min-width:40px">校訂</span>
-        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
-      </div>
-      <div class="row" style="align-items:flex-start">
-        <span class="mono" style="min-width:50px;color:var(--t3)">第3節</span>
-        <span class="bold" style="min-width:40px">國語</span>
-        <input type="text" placeholder="今日進度／內容" style="flex:1;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--s2)">
-      </div>
-    </div>
+  <!-- 完整週課表 -->
+  <div class="card" style="padding:10px;overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:12px;min-width:400px">
+      <thead>
+        <tr>
+          <th style="padding:7px 6px;background:var(--text);color:#fff;text-align:center;border:1px solid var(--border);font-size:11px;min-width:70px">節 / 時間</th>
+          <th style="padding:7px 4px;background:var(--text);color:#fff;text-align:center;border:1px solid var(--border)">一</th>
+          <th style="padding:7px 4px;background:var(--text);color:#fff;text-align:center;border:1px solid var(--border)">二<br><span style="font-size:9px;opacity:.7">母語日</span></th>
+          <th style="padding:7px 4px;background:var(--text);color:#fff;text-align:center;border:1px solid var(--border)">三<br><span style="font-size:9px;opacity:.7">母語日</span></th>
+          <th style="padding:7px 4px;background:var(--text);color:#fff;text-align:center;border:1px solid var(--border)">四</th>
+          <th style="padding:7px 4px;background:var(--text);color:#fff;text-align:center;border:1px solid var(--border)">五</th>
+        </tr>
+      </thead>
+      <tbody id="schedule-body"></tbody>
+    </table>
   </div>
 
   <!-- 備注 -->
   <div class="card">
     <div class="ct">📝 本週備注 / 進度摘要</div>
-    <textarea placeholder="本週教學重點、學生反應、下週預計進度…" style="width:100%;height:120px;padding:10px;border:1px solid var(--border);border-radius:8px;font-family:'Noto Sans TC',sans-serif;font-size:13px;background:var(--s2);color:var(--text);resize:vertical;line-height:1.6"></textarea>
+    <textarea placeholder="本週教學重點、學生反應、下週預計進度…" style="width:100%;height:100px;padding:10px;border:1px solid var(--border);border-radius:8px;font-family:'Noto Sans TC',sans-serif;font-size:13px;background:var(--s2);color:var(--text);resize:vertical;line-height:1.6"></textarea>
   </div>
 
   <!-- 聯絡簿作業紀錄 -->
@@ -580,11 +502,20 @@ const events = [
   {date:'2026-04-01',time:'13:30',title:'教師午會',note:'大辦公室',urgent:false},
   {date:'2026-04-01',time:'14:00',title:'課程博覽會(一)',note:'視聽教室',urgent:false},
   {date:'2026-04-08',time:'13:30',title:'期中學年會議＋永平之星健康運動會',note:'學年主任教室→校內各場地',urgent:false},
+  {date:'2026-04-13',time:'國語課',title:'發下國語複習卷',note:'立刻訂正，課堂檢討',urgent:false},
+  {date:'2026-04-13',time:'數學課',title:'數學考試第1–4單元',note:'準備考卷',urgent:true},
+  {date:'2026-04-13',time:'中午',title:'健康補考：10號・20號',note:'張晏綸・許芷瑄，中午進行',urgent:false},
   {date:'2026-04-15',time:'13:30',title:'教師午會＋期中擴大行政會議',note:'大辦公室→大會議室',urgent:false},
   {date:'2026-04-16',time:'整天',title:'⭐ 期中評量第一天（六年級：國語・自然・英語）',note:'國語 08:30 / 自然 09:40 / 英語 10:30',urgent:true},
   {date:'2026-04-17',time:'整天',title:'⭐ 期中評量第二天（六年級：數學・社會）',note:'數學 08:30 / 社會 09:40',urgent:true},
+  {date:'2026-04-17',time:'12:40',title:'旗手・班牌手訓練',note:'活動中心3樓・603：18號洪書琳・19號楊宛寬',urgent:false},
+  {date:'2026-04-20',time:'12:40',title:'旗手・班牌手訓練',note:'活動中心3樓・603：18號洪書琳・19號楊宛寬',urgent:false},
+  {date:'2026-04-20',time:'第2節',title:'課堂活動：用棉花糖',note:'準備棉花糖',urgent:false},
+  {date:'2026-04-21',time:'08:10',title:'旗手・班牌手預演',note:'18號洪書琳・19號楊宛寬',urgent:false},
+  {date:'2026-04-22',time:'08:10',title:'旗手・班牌手預演＋校慶預演',note:'18號洪書琳・19號楊宛寬',urgent:false},
+  {date:'2026-04-23',time:'08:10',title:'校慶預演',note:'注意學生服裝及集合時間',urgent:false},
   {date:'2026-04-22',time:'13:30',title:'領域教學研究會',note:'領召教室',urgent:false},
-  {date:'2026-04-29',time:'13:30',title:'教師午會＋課程博覽會(二)',note:'大辦公室→視聽教室',urgent:false},
+  {date:'2026-04-29',time:'12:30',title:'穿堂排影片',note:'中午，帶學生至穿堂',urgent:false},
   {date:'2026-05-13',time:'13:30',title:'教師午會＋領域教學研究會',note:'',urgent:false},
   {date:'2026-05-20',time:'13:30',title:'全校研習【輔導知能】',note:'視聽教室，3小時',urgent:false},
   {date:'2026-06-02',time:'整天',title:'校外教學：六福村',note:'細節待通知',urgent:false},
@@ -613,9 +544,11 @@ const reminders = [
   {date:'2026-04-08',seat:'',name:'⚠️ 本週必辦（4/10截止）',note:'① 申請學年雲端權限　② 取得08號特生資料　③ 國中改分發名單確認（找604老師）'},
   {date:'2026-04-09',seat:'',name:'⚠️ 明天截止！國中改分發',note:'名單明天交教務註冊組・私校：03竹林・04/07/10/18/19南山・今天確認604老師是否已處理'},
   {date:'2026-04-10',seat:'',name:'⚠️ 今天截止！國中改分發',note:'名單今天交教務註冊組・私校：03竹林・04/07/10/18/19南山'},
+  {date:'2026-04-10',seat:'',name:'週五待辦',note:'考卷檢討（哪一科的考卷？）'},
 
   // ── 作業調閱 ──
   {date:'2026-04-23',seat:'',name:'⭐ 作業調閱：練習簿',note:'數學抽查同日・作業需有批改、日期、評量'},
+  {date:'2026-04-24',seat:'',name:'🎬 畢業影片拍攝（603）',note:'第六節 14:20–15:00・若有急事通知意萍安排機動時段'},
   {date:'2026-04-30',seat:'',name:'⭐ 作業調閱：自然',note:'作業需有批改、日期、評量'},
   {date:'2026-05-07',seat:'',name:'⭐ 作業調閱：年節/年慶',note:'作業需有批改、日期、評量'},
   {date:'2026-05-14',seat:'',name:'⭐ 作業調閱：作文',note:'作業需有批改、日期、評量'},
@@ -643,7 +576,9 @@ const TC={absent:'var(--red)',half:'var(--amber)',late:'var(--amber)',early:'var
 const calEvents = [
   {date:'2026-04-01',title:'正式到職上任 🎉',note:'4/1 起帶班至畢業'},
   {date:'2026-04-03',title:'清明節放假',note:''},
-  {date:'2026-04-09',title:'私校報名交接截止',note:'4/9前由604老師負責，4/9後家長自行處理（3/4/7/10/18/19號）'},
+  {date:'2026-04-07',title:'🎲 導護抽籤',note:'學務處，8:45，導師站導護'},
+  {date:'2026-05-07',title:'🚦 學生站交通隊（開始）',note:'5/7–5/13'},
+  {date:'2026-05-13',title:'🚦 學生站交通隊（結束）',note:'5/7–5/13'},
   {date:'2026-04-10',title:'⚠️ 國中改分發名單截止',note:'私校錄取名單交教務註冊組（03竹林・04/07/10/18/19南山）・4班老師協助確認'},
   {date:'2026-04-17',title:'⭐ 期中評量（五）',note:'數學・社會'},
   {date:'2026-04-15',title:'⭐ 畢業生作業調閱研習 13:30–16:30',note:'詳見紙本通知'},
@@ -653,7 +588,8 @@ const calEvents = [
   {date:'2026-05-07',title:'⭐ 作業調閱：年節/年慶（六年級）',note:'作業需有批改、日期、評量'},
   {date:'2026-05-14',title:'⭐ 作業調閱：作文（六年級）',note:'作業需有批改、日期、評量'},
   {date:'2026-05-21',title:'⭐ 作業調閱：美勞（六年級）',note:'作業需有批改、日期、評量'},
-  {date:'2026-04-24',title:'週五EQ課（輔導主任4/24來上）',note:'剩兩堂，4/24後再告知'},
+  {date:'2026-04-24',time:'14:20–15:00',title:'🎬 畢業影片拍攝（603）',note:'第六節・地點待確認・若有急事可通知意萍協助安排機動時段',urgent:false},
+  {date:'2026-04-22',title:'校慶預演',note:'週三，注意學生服裝及集合時間'},
   {date:'2026-04-25',title:'15/23號請假',note:'校慶，國中美術班考試'},
   {date:'2026-04-27',title:'校慶補假',note:''},
   {date:'2026-05-29',title:'班會記錄表截止',note:'4-6年級需繳交'},
@@ -921,21 +857,93 @@ renderAtt();
 function renderCal(){
   const el=document.getElementById('cal-list');
   if(!el) return;
-  const sorted=calEvents.sort((a,b)=>a.date.localeCompare(b.date));
-  el.innerHTML = sorted.map(e=>{
-    const past = e.date < TODAY;
-    return `<div class="row" style="align-items:flex-start;opacity:${past?.5:1}">
-      <div style="min-width:52px">
-        <div class="mono">${e.date.slice(5).replace('-','/')}</div>
-      </div>
-      <div>
-        <div class="bold" style="font-size:13px">${e.title}</div>
-        ${e.note?`<div class="xs">${e.note}</div>`:''}
-      </div>
-    </div>`;
+  const sorted=[...calEvents].sort((a,b)=>a.date.localeCompare(b.date));
+
+  // 依月份分組
+  const months={};
+  sorted.forEach(e=>{
+    const m = e.date.slice(0,7); // 2026-04
+    if(!months[m]) months[m]=[];
+    months[m].push(e);
+  });
+
+  const monthLabel={'2026-04':'4月','2026-05':'5月','2026-06':'6月'};
+  const dayLabel=['日','一','二','三','四','五','六'];
+
+  el.innerHTML = Object.keys(months).map(m=>{
+    const events = months[m];
+    return `
+      <div style="margin-bottom:18px">
+        <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:8px;padding:6px 10px;background:var(--gl);border-radius:8px">${monthLabel[m]||m.slice(5)+'月'}</div>
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead>
+            <tr style="background:var(--s2)">
+              <th style="padding:6px 8px;text-align:left;font-weight:600;color:var(--t3);width:52px;font-size:11px">日期</th>
+              <th style="padding:6px 8px;text-align:left;font-weight:600;color:var(--t3);font-size:11px">事項</th>
+              <th style="padding:6px 8px;text-align:left;font-weight:600;color:var(--t3);font-size:11px">備注</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${events.map(e=>{
+              const d = new Date(e.date);
+              const past = e.date < TODAY;
+              const dow = dayLabel[d.getDay()];
+              const isWeekend = d.getDay()===0||d.getDay()===6;
+              return `<tr style="border-bottom:1px solid var(--s2);opacity:${past?.4:1}">
+                <td style="padding:7px 8px;white-space:nowrap">
+                  <span style="font-family:'DM Mono',monospace;font-size:12px">${e.date.slice(5).replace('-','/')}</span>
+                  <span style="font-size:11px;color:${isWeekend?'var(--red)':'var(--t3)'};margin-left:3px">（${dow}）</span>
+                </td>
+                <td style="padding:7px 8px;font-weight:500">${e.title}</td>
+                <td style="padding:7px 8px;font-size:12px;color:var(--t2)">${e.note||''}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>`;
   }).join('');
 }
 renderCal();
+
+// ── 課表渲染 ──
+const G = '#d4edda'; // 導師綠底
+const Y = '#fff3cd'; // 特殊黃底
+const W = 'var(--surface)'; // 一般白底
+const S = 'var(--s2)'; // 科任灰底
+
+// 格式：[科目, 底色]
+// 導師科目：國語、數學、綜合、本土語言、健康
+const schedule = [
+  // [節次標籤, 時間, 週一, 週二, 週三, 週四, 週五]
+  ['第0節','08:00–08:40', ['505鄧芽專輔',Y], ['晨間共讀\n永平電視台\n導師時間',Y], ['英語',S], ['晨間共讀\n導師時間',Y], ['8號門\n學習策略',Y]],
+  ['第1節','08:50–09:30', ['數學',G], ['社會',S], ['體育',S], ['數學',G], ['校訂',S]],
+  ['第2節','09:40–10:20', ['國語',G], ['社會',S], ['數學',G], ['國語',G], ['校訂',S]],
+  ['第3節','10:30–11:10', ['美勞',S], ['數學',G], ['國語',G], ['電腦',S], ['國語',G]],
+  ['第4節','11:20–12:00', ['美勞',S], ['國語',G], ['導師時間',Y], ['自然',S], ['社會',S]],
+  ['午間','12:00–13:30', ['午餐・午休',W], ['午餐・午休\n6藝電腦語音科技',W], ['午餐・午休\n8號門學習策略',W], ['午餐・午休',W], ['午餐・午休\n8號門國中生活',W]],
+  ['第5節','13:30–14:10', ['自然',S], ['本土語言',G], ['—',W], ['健康',G], ['體育',S]],
+  ['第6節','14:20–15:00', ['自然',S], ['英語',S], ['—',W], ['校訂',S], ['音樂',S]],
+  ['第7節','15:20–16:00', ['綜合',G], ['綜合',G], ['—',W], ['校訂',S], ['英語',S]],
+  ['課後','16:00–', ['社團',Y], ['7302慧涵國語',Y], ['—',W], ['6101怡如數學',Y], ['—',W]],
+];
+
+function renderSchedule(){
+  const el = document.getElementById('schedule-body');
+  if(!el) return;
+  el.innerHTML = schedule.map(row => {
+    const [label, time, ...days] = row;
+    return `<tr>
+      <td style="padding:6px;border:1px solid var(--border);text-align:center;background:var(--s2)">
+        <div style="font-weight:600;font-size:11px">${label}</div>
+        <div style="font-size:10px;color:var(--t3)">${time}</div>
+      </td>
+      ${days.map(([subj, bg]) => `
+        <td style="padding:5px 4px;border:1px solid var(--border);text-align:center;background:${bg};font-size:12px;line-height:1.4;white-space:pre-line">${subj}</td>
+      `).join('')}
+    </tr>`;
+  }).join('');
+}
+renderSchedule();
 
 // ── 家長聯繫 ──
 function renderContacts(){
