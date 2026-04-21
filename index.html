@@ -211,15 +211,6 @@ input:focus,select:focus{border-color:var(--green);}
   </div>
 
   <div class="card">
-    <div class="ct">📅 每週固定行程</div>
-    <div class="row"><span class="mono" style="min-width:70px">週一</span><div><div class="bold sm">數學・國語・美勞・自然・綜合</div><div class="xs">課後：社團</div></div></div>
-    <div class="row"><span class="mono" style="min-width:70px">週二（母語）</span><div><div class="bold sm">第0節 晨間共讀/永平電視台/導師時間</div><div class="xs">社會x2・數學・國語 ／ 下午：6藝電腦語音科技・本土語言・英語・綜合 ／ 課後：社團・7302慧涵國語</div></div></div>
-    <div class="row"><span class="mono" style="min-width:70px">週三（母語）</span><div><div class="bold sm">第0節 英語 ／ 第4節 導師時間</div><div class="xs">體育・數學・國語 ／ 下午無課（雙週三下午：學年午會）</div></div></div>
-    <div class="row"><span class="mono" style="min-width:70px">週四</span><div><div class="bold sm">第0節 晨間共讀/導師時間</div><div class="xs">數學・國語・電腦・自然 ／ 下午：8號門學習策略・健康・校訂 ／ 課後：6101怡如數學</div></div></div>
-    <div class="row"><span class="mono" style="min-width:70px">週五</span><div><div class="bold sm">第0節 8號門學習策略（EQ課，輔導主任來上）</div><div class="xs">校訂x2・國語・社會 ／ 下午：8號門國中生活・體育・英語</div></div></div>
-  </div>
-
-  <div class="card">
     <div class="ct">📞 常用分機</div>
     <div class="row"><span style="min-width:90px;font-size:13px">資源班 張升駿</span><span class="bold">8106</span><span class="sm" style="margin-left:8px">8/22號服藥聯繫</span></div>
     <div class="row"><span style="min-width:90px;font-size:13px">輔導主任 吳世揚</span><span class="bold">501</span></div>
@@ -258,12 +249,6 @@ input:focus,select:focus{border-color:var(--green);}
       </thead>
       <tbody id="schedule-body"></tbody>
     </table>
-  </div>
-
-  <!-- 備注 -->
-  <div class="card">
-    <div class="ct">📝 本週備注 / 進度摘要</div>
-    <textarea placeholder="本週教學重點、學生反應、下週預計進度…" style="width:100%;height:100px;padding:10px;border:1px solid var(--border);border-radius:8px;font-family:'Noto Sans TC',sans-serif;font-size:13px;background:var(--s2);color:var(--text);resize:vertical;line-height:1.6"></textarea>
   </div>
 
   <!-- 教學進度表 -->
@@ -747,6 +732,7 @@ function go(id, btn){
   document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('on');
   btn.classList.add('active');
+  if(id==='schedule') setTimeout(greyPastRows, 50);
 }
 
 // ── 今日行程資料 ──
@@ -1220,26 +1206,38 @@ renderSchedule();
 
 // ── 教學進度表：過去日期自動灰底 ──
 function greyPastRows(){
-  const table = document.querySelector('#tab-schedule table:last-of-type');
+  // 找有 data-date 的 tr，或直接掃所有tbody的tr
+  const tables = document.querySelectorAll('#tab-schedule table');
+  const table = tables[tables.length - 1]; // 取最後一個table（進度表）
   if(!table) return;
   const rows = table.querySelectorAll('tbody tr');
   rows.forEach(row => {
-    const dateCell = row.cells[1];
+    // 找日期格：通常是第2個cell（index 1），但有rowspan的週次格要跳過
+    let dateCell = null;
+    for(let i = 0; i < row.cells.length; i++){
+      const txt = row.cells[i].textContent.trim();
+      if(txt.match(/^\d+\/\d+$/)){
+        dateCell = row.cells[i];
+        break;
+      }
+    }
     if(!dateCell) return;
-    const txt = dateCell.textContent.trim(); // e.g. "4/20"
-    if(!txt.match(/^\d+\/\d+$/)) return;
+    const txt = dateCell.textContent.trim();
     const [m,d] = txt.split('/').map(Number);
     const rowDate = new Date(2026, m-1, d);
-    if(rowDate < new Date(TODAY)) {
+    const todayDate = new Date(TODAY);
+    if(rowDate < todayDate){
       Array.from(row.cells).forEach(cell => {
-        if(!cell.style.background || cell.style.background === 'rgb(255, 243, 205)') return; // 保留黃底
-        cell.style.background = '#ebebeb';
+        const bg = cell.style.background || window.getComputedStyle(cell).backgroundColor;
+        // 保留黃底（校慶）和綠底（考試）
+        if(cell.style.background && (cell.style.background.includes('fff3cd') || cell.style.background.includes('d4edda'))) return;
+        cell.style.background = '#e8e8e8';
         cell.style.color = '#aaa';
       });
     }
   });
 }
-setTimeout(greyPastRows, 100);
+setTimeout(greyPastRows, 200);
 
 // ── 家長聯繫 ──
 function renderContacts(){
