@@ -273,7 +273,7 @@ input:focus,select:focus{border-color:var(--green);}
       </thead>
       <tbody>
         <!-- W1 -->
-        <tr style="background:#f9f9f9">
+        <tr data-date="2026-04-20" style="background:#f9f9f9">
           <td rowspan="6" style="padding:4px;border:1px solid var(--border);text-align:center;font-weight:700;background:#e8f4f0;color:var(--green)">W1</td>
           <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">4/20</td>
           <td style="padding:4px;border:1px solid var(--border);text-align:center">一</td>
@@ -1206,38 +1206,36 @@ renderSchedule();
 
 // ── 教學進度表：過去日期自動灰底 ──
 function greyPastRows(){
-  // 找有 data-date 的 tr，或直接掃所有tbody的tr
   const tables = document.querySelectorAll('#tab-schedule table');
-  const table = tables[tables.length - 1]; // 取最後一個table（進度表）
-  if(!table) return;
+  if(!tables.length) return;
+  const table = tables[tables.length - 1];
   const rows = table.querySelectorAll('tbody tr');
+  const todayMs = new Date(TODAY).getTime();
+  
   rows.forEach(row => {
-    // 找日期格：通常是第2個cell（index 1），但有rowspan的週次格要跳過
-    let dateCell = null;
-    for(let i = 0; i < row.cells.length; i++){
-      const txt = row.cells[i].textContent.trim();
-      if(txt.match(/^\d+\/\d+$/)){
-        dateCell = row.cells[i];
+    // 掃這行所有cell，找格式為 M/D 的日期
+    let rowDate = null;
+    for(const cell of row.cells){
+      const txt = cell.textContent.trim();
+      if(/^\d{1,2}\/\d{1,2}$/.test(txt)){
+        const [m,d] = txt.split('/').map(Number);
+        rowDate = new Date(2026, m-1, d).getTime();
         break;
       }
     }
-    if(!dateCell) return;
-    const txt = dateCell.textContent.trim();
-    const [m,d] = txt.split('/').map(Number);
-    const rowDate = new Date(2026, m-1, d);
-    const todayDate = new Date(TODAY);
-    if(rowDate < todayDate){
-      Array.from(row.cells).forEach(cell => {
-        const bg = cell.style.background || window.getComputedStyle(cell).backgroundColor;
-        // 保留黃底（校慶）和綠底（考試）
-        if(cell.style.background && (cell.style.background.includes('fff3cd') || cell.style.background.includes('d4edda'))) return;
-        cell.style.background = '#e8e8e8';
-        cell.style.color = '#aaa';
-      });
+    if(!rowDate) return;
+    if(rowDate < todayMs){
+      for(const cell of row.cells){
+        const bg = cell.style.backgroundColor;
+        // 保留黃底(校慶)和綠底(考試)不灰化
+        if(bg === 'rgb(255, 243, 205)' || bg === 'rgb(212, 237, 218)') continue;
+        cell.style.backgroundColor = '#e0e0e0';
+        cell.style.color = '#999';
+      }
     }
   });
 }
-setTimeout(greyPastRows, 200);
+setTimeout(greyPastRows, 300);
 
 // ── 家長聯繫 ──
 function renderContacts(){
