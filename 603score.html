@@ -398,7 +398,7 @@
 </div>
 
 <div class="search-card">
-  <label class="search-label" for="sid-input">輸入學號查詢成績</label>
+  <label class="search-label" for="sid-input">請輸入孩子的學號</label>
   <div class="search-row">
     <input
       id="sid-input"
@@ -410,7 +410,7 @@
     />
     <button class="search-btn" onclick="lookup()">查詢</button>
   </div>
-  <p class="hint">亦可輸入姓名查詢</p>
+  <p class="hint">⚠️ 僅限家長使用，請查詢自己孩子的成績</p>
 </div>
 
 <div id="error-area" class="hidden"></div>
@@ -489,14 +489,11 @@ function lookup() {
 
   if (!q) return;
 
-  // Match by sid or name only (no seat number for privacy)
-  const s = students.find(st =>
-    st.sid === q ||
-    st.name === q
-  );
+  // Match by sid only
+  const s = students.find(st => st.sid === q);
 
   if (!s) {
-    errArea.innerHTML = `<p>找不到「${q}」的資料，請確認學號或姓名是否正確。</p>`;
+    errArea.innerHTML = `<p>找不到學號「${q}」的資料，請確認學號是否正確。</p>`;
     errArea.classList.remove('hidden');
     return;
   }
