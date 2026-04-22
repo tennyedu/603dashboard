@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>603班 期中評量成績查詢</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --ink: #1a1208;
+    --paper: #fdf8f0;
+    --warm: #f5ede0;
+    --gold: #c9921a;
+    --gold-light: #e8b84b;
+    --red: #b83232;
+    --green: #2d6a4f;
+    --rule: #d4c4a8;
+    --shadow: rgba(26,18,8,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Serif TC', serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px 80px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Subtle grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--rule) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .header-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: white;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 4px 14px;
+    margin-bottom: 16px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .header h1 {
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    color: var(--ink);
+  }
+
+  .header h1 span {
+    color: var(--gold);
+  }
+
+  .header-sub {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #7a6a50;
+    letter-spacing: 1px;
+  }
+
+  /* Decorative line */
+  .divider {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 20px auto 0;
+  }
+
+  /* Search box */
+  .search-card {
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 32px 36px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 4px 24px var(--shadow), 0 1px 0 var(--gold-light);
+    margin-bottom: 36px;
+    position: relative;
+  }
+
+  .search-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+    border-radius: 4px 4px 0 0;
+  }
+
+  .search-label {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #7a6a50;
+    margin-bottom: 12px;
+  }
+
+  .search-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  .search-input {
+    flex: 1;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    padding: 12px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: var(--ink);
+    background: var(--paper);
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  .search-input:focus {
+    border-color: var(--gold);
+    background: white;
+  }
+
+  .search-input::placeholder {
+    color: #c4b49a;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  .search-btn {
+    background: var(--gold);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 12px 22px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    white-space: nowrap;
+  }
+
+  .search-btn:hover { background: #b07e12; }
+  .search-btn:active { transform: scale(0.97); }
+
+  .hint {
+    margin-top: 14px;
+    font-size: 12px;
+    color: #a89878;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* Result card */
+  .result-card {
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    width: 100%;
+    max-width: 560px;
+    box-shadow: 0 6px 32px var(--shadow);
+    overflow: hidden;
+    animation: slideUp 0.35s ease;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-header {
+    background: var(--ink);
+    color: white;
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .student-info h2 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .student-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: #c4b49a;
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  .rank-badge {
+    text-align: center;
+  }
+
+  .rank-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+
+  .rank-label {
+    font-size: 11px;
+    color: #a89878;
+    letter-spacing: 2px;
+    margin-top: 2px;
+  }
+
+  .scores-section {
+    padding: 24px 28px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #7a6a50;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .score-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0e8d8;
+  }
+
+  .score-row:last-child { border-bottom: none; }
+
+  .score-subject {
+    font-size: 14px;
+    font-weight: 600;
+    width: 80px;
+    flex-shrink: 0;
+  }
+
+  .score-bar-wrap {
+    flex: 1;
+    height: 8px;
+    background: #f0e8d8;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 16px;
+  }
+
+  .score-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+  }
+
+  .score-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    font-weight: 500;
+    width: 52px;
+    text-align: right;
+  }
+
+  .total-row {
+    margin-top: 20px;
+    background: var(--warm);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .total-label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #5a4a30;
+  }
+
+  .total-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--gold);
+  }
+
+  .avg-row {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 4px;
+  }
+
+  .avg-label { font-size: 12px; color: #7a6a50; }
+  .avg-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: #7a6a50;
+  }
+
+  /* Class average compare */
+  .compare-section {
+    padding: 16px 28px 24px;
+    border-top: 1px solid var(--rule);
+    background: var(--paper);
+  }
+
+  .compare-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+
+  .compare-label { width: 72px; color: #7a6a50; flex-shrink: 0; }
+
+  .compare-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Error */
+  .error-msg {
+    background: #fff5f5;
+    border: 1px solid #f5c6c6;
+    border-radius: 4px;
+    padding: 16px 20px;
+    color: var(--red);
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    max-width: 480px;
+    animation: slideUp 0.3s ease;
+  }
+
+  /* Hidden */
+  .hidden { display: none; }
+
+  /* Score color */
+  .score-high { color: var(--green); }
+  .score-mid { color: var(--gold); }
+  .score-low { color: var(--red); }
+
+  .footer {
+    margin-top: 60px;
+    font-size: 11px;
+    color: #c4b49a;
+    letter-spacing: 2px;
+    font-family: 'DM Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">YONGPING ELEMENTARY</div>
+  <h1>六〇三班<span>期中評量</span></h1>
+  <p class="header-sub">114學年度 第二學期</p>
+  <div class="divider"></div>
+</div>
+
+<div class="search-card">
+  <label class="search-label" for="sid-input">輸入學號查詢成績</label>
+  <div class="search-row">
+    <input
+      id="sid-input"
+      class="search-input"
+      type="text"
+      placeholder="例：109382"
+      maxlength="10"
+      autocomplete="off"
+    />
+    <button class="search-btn" onclick="lookup()">查詢</button>
+  </div>
+  <p class="hint">亦可輸入姓名查詢</p>
+</div>
+
+<div id="error-area" class="hidden"></div>
+<div id="result-area" class="hidden"></div>
+
+<div class="footer">603 HOMEROOM · 期中評量成績系統</div>
+
+<script>
+const students = [
+  { seat:3,  sid:'109382', name:'彭致皓', chi:94,    eng1:100, eng2:95,    eng3:100, eng4:97,  total:486,   avg:121.5,   rank:1  },
+  { seat:5,  sid:'109176', name:'潘韋辰', chi:95,    eng1:96,  eng2:97,    eng3:100, eng4:97,  total:485,   avg:121.25,  rank:2  },
+  { seat:19, sid:'109301', name:'楊宛霓', chi:93.5,  eng1:94,  eng2:100,   eng3:98,  eng4:99,  total:484.5, avg:121.125, rank:3  },
+  { seat:4,  sid:'109225', name:'邢堉瑋', chi:98,    eng1:94,  eng2:97,    eng3:96,  eng4:99,  total:484,   avg:121,     rank:4  },
+  { seat:14, sid:'109297', name:'陳佳安', chi:97.5,  eng1:98,  eng2:91,    eng3:100, eng4:95,  total:481.5, avg:120.375, rank:5  },
+  { seat:18, sid:'109423', name:'洪書琳', chi:98,    eng1:94,  eng2:90,    eng3:96,  eng4:98,  total:476,   avg:119,     rank:6  },
+  { seat:1,  sid:'109379', name:'余相羽', chi:87,    eng1:96,  eng2:96,    eng3:96,  eng4:100, total:475,   avg:118.75,  rank:7  },
+  { seat:22, sid:'109149', name:'柯瓔芮', chi:88,    eng1:96,  eng2:97,    eng3:94,  eng4:98,  total:473,   avg:118.25,  rank:8  },
+  { seat:10, sid:'109111', name:'張晏綸', chi:91,    eng1:90,  eng2:97,    eng3:98,  eng4:80,  total:456,   avg:114,     rank:9  },
+  { seat:17, sid:'109272', name:'馬靖耘', chi:93,    eng1:82,  eng2:90,    eng3:96,  eng4:93,  total:454,   avg:113.5,   rank:10 },
+  { seat:7,  sid:'109003', name:'鄧臣恩', chi:95,    eng1:94,  eng2:91,    eng3:96,  eng4:77,  total:453,   avg:113.25,  rank:11 },
+  { seat:21, sid:'109251', name:'劉芊妤', chi:86.5,  eng1:94,  eng2:77,    eng3:98,  eng4:95,  total:450.5, avg:112.625, rank:12 },
+  { seat:12, sid:'109260', name:'張亦程', chi:81.5,  eng1:98,  eng2:92,    eng3:92,  eng4:86,  total:449.5, avg:112.375, rank:13 },
+  { seat:23, sid:'109174', name:'高喬亘', chi:89,    eng1:90,  eng2:81.5,  eng3:98,  eng4:89,  total:447.5, avg:111.875, rank:14 },
+  { seat:2,  sid:'109151', name:'廖宥誠', chi:91.5,  eng1:88,  eng2:90,    eng3:92,  eng4:85,  total:446.5, avg:111.625, rank:15 },
+  { seat:6,  sid:'109079', name:'張品維', chi:85.5,  eng1:90,  eng2:89,    eng3:94,  eng4:71,  total:429.5, avg:107.375, rank:16 },
+  { seat:15, sid:'109097', name:'楊媛安', chi:82,    eng1:88,  eng2:80,    eng3:98,  eng4:78,  total:426,   avg:106.5,   rank:17 },
+  { seat:13, sid:'109288', name:'朱一',   chi:79,    eng1:86,  eng2:69,    eng3:92,  eng4:89,  total:415,   avg:103.75,  rank:18 },
+  { seat:24, sid:'109277', name:'陳巧庭', chi:84.5,  eng1:82,  eng2:64,    eng3:92,  eng4:61,  total:383.5, avg:95.875,  rank:19 },
+  { seat:8,  sid:'109006', name:'歐其諺', chi:76.25, eng1:70,  eng2:74.25, eng3:88,  eng4:64,  total:372.5, avg:93.125,  rank:20 },
+  { seat:11, sid:'109013', name:'許展銘', chi:67.5,  eng1:66,  eng2:70,    eng3:80,  eng4:85,  total:368.5, avg:92.125,  rank:21 },
+  { seat:16, sid:'109346', name:'孫苡萱', chi:65.5,  eng1:48,  eng2:6,     eng3:92,  eng4:57,  total:268.5, avg:67.125,  rank:22 },
+  { seat:20, sid:'109248', name:'許芷瑄', chi:59,    eng1:36,  eng2:31,    eng3:88,  eng4:53,  total:267,   avg:66.75,   rank:23 },
+  { seat:9,  sid:'109232', name:'周威辰', chi:null,  eng1:32,  eng2:19,    eng3:48,  eng4:38,  total:null,  avg:null,    rank:null },
+];
+
+const classAvg = {
+  chi: 83.34,
+  eng1: 83.42,
+  eng2: 78.49,
+  eng3: 92.58,
+  eng4: 82.67,
+  total: 420.5,
+  avg: 105.125,
+};
+
+function scoreColor(v, max=100) {
+  const pct = v / max;
+  if (pct >= 0.85) return '#2d6a4f';
+  if (pct >= 0.60) return '#c9921a';
+  return '#b83232';
+}
+
+function barColor(v, max=100) {
+  const pct = v / max;
+  if (pct >= 0.85) return '#2d6a4f';
+  if (pct >= 0.60) return '#c9921a';
+  return '#b83232';
+}
+
+function rankSuffix(n) {
+  if (n === 1) return '🥇';
+  if (n === 2) return '🥈';
+  if (n === 3) return '🥉';
+  return '';
+}
+
+function lookup() {
+  const q = document.getElementById('sid-input').value.trim();
+  const errArea = document.getElementById('error-area');
+  const resArea = document.getElementById('result-area');
+
+  errArea.classList.add('hidden');
+  resArea.classList.add('hidden');
+  errArea.innerHTML = '';
+  resArea.innerHTML = '';
+
+  if (!q) return;
+
+  // Match by sid or name only (no seat number for privacy)
+  const s = students.find(st =>
+    st.sid === q ||
+    st.name === q
+  );
+
+  if (!s) {
+    errArea.innerHTML = `<p>找不到「${q}」的資料，請確認學號或姓名是否正確。</p>`;
+    errArea.classList.remove('hidden');
+    return;
+  }
+
+  const subjects = [
+    { label: '國語', val: s.chi,  avg: classAvg.chi,  max: 100 },
+    { label: '英語(一)', val: s.eng1, avg: classAvg.eng1, max: 100 },
+    { label: '英語(二)', val: s.eng2, avg: classAvg.eng2, max: 100 },
+    { label: '英語(三)', val: s.eng3, avg: classAvg.eng3, max: 100 },
+    { label: '英語(四)', val: s.eng4, avg: classAvg.eng4, max: 100 },
+  ];
+
+  const scoreRows = subjects.map(sub => {
+    if (sub.val === null) {
+      return `
+        <div class="score-row">
+          <div class="score-subject">${sub.label}</div>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:0%;background:#d4c4a8"></div></div>
+          <div class="score-val" style="color:#a89878;font-size:12px">待確認</div>
+        </div>
+      `;
+    }
+    const pct = (sub.val / sub.max * 100).toFixed(1);
+    const color = barColor(sub.val, sub.max);
+    const valColor = scoreColor(sub.val, sub.max);
+    return `
+      <div class="score-row">
+        <div class="score-subject">${sub.label}</div>
+        <div class="score-bar-wrap">
+          <div class="score-bar" style="width:${pct}%;background:${color}"></div>
+        </div>
+        <div class="score-val" style="color:${valColor}">${sub.val}</div>
+      </div>
+    `;
+  }).join('');
+
+  const compareRows = subjects.map(sub => {
+    if (sub.val === null) {
+      return `
+        <div class="compare-row">
+          <span class="compare-label">${sub.label}</span>
+          <div class="compare-dot" style="background:#d4c4a8"></div>
+          <span style="font-family:'DM Mono',monospace;font-size:13px;color:#a89878">待確認</span>
+        </div>
+      `;
+    }
+    const diff = (sub.val - sub.avg).toFixed(2);
+    const isAbove = parseFloat(diff) >= 0;
+    return `
+      <div class="compare-row">
+        <span class="compare-label">${sub.label}</span>
+        <div class="compare-dot" style="background:${isAbove ? '#2d6a4f' : '#b83232'}"></div>
+        <span style="font-family:'DM Mono',monospace;font-size:13px;color:${isAbove ? '#2d6a4f' : '#b83232'}">
+          ${isAbove ? '+' : ''}${diff} 較班平均
+        </span>
+      </div>
+    `;
+  }).join('');
+
+  const totalDisplay = s.total !== null ? s.total : '待確認';
+  const avgDisplay = s.avg !== null ? s.avg.toFixed(3) : '待確認';
+  const totalDiffHtml = s.total !== null
+    ? (() => {
+        const diff = (s.total - classAvg.total).toFixed(1);
+        const isAbove = parseFloat(diff) >= 0;
+        return `<div class="compare-dot" style="background:${isAbove ? '#2d6a4f' : '#b83232'}"></div>
+          <span style="font-family:'DM Mono',monospace;font-size:13px;color:${isAbove ? '#2d6a4f' : '#b83232'}">
+            ${isAbove ? '+' : ''}${diff} 較班平均（${classAvg.total}）
+          </span>`;
+      })()
+    : `<div class="compare-dot" style="background:#d4c4a8"></div>
+       <span style="font-family:'DM Mono',monospace;font-size:13px;color:#a89878">待確認</span>`;
+
+  resArea.innerHTML = `
+    <div class="result-card">
+      <div class="result-header">
+        <div class="student-info">
+          <h2>${s.name} ${s.rank ? rankSuffix(s.rank) : ''}</h2>
+          <div class="student-meta">學號 ${s.sid}</div>
+        </div>
+        <div class="rank-badge">
+          <div class="rank-num">${s.rank !== null ? s.rank : '—'}</div>
+          <div class="rank-label">班級排名</div>
+        </div>
+      </div>
+
+      <div class="scores-section">
+        <div class="section-title">各科成績</div>
+        ${scoreRows}
+        <div class="total-row">
+          <span class="total-label">總分</span>
+          <span class="total-val" style="${s.total === null ? 'color:#a89878;font-size:15px' : ''}">${totalDisplay}</span>
+        </div>
+        <div class="avg-row">
+          <span class="avg-label">總平均</span>
+          <span class="avg-val">${avgDisplay}</span>
+        </div>
+      </div>
+
+      <div class="compare-section">
+        <div class="section-title">與班平均比較</div>
+        ${compareRows}
+        <div class="compare-row" style="margin-top:10px;padding-top:10px;border-top:1px solid #e8dcc8">
+          <span class="compare-label">總分</span>
+          ${totalDiffHtml}
+        </div>
+      </div>
+    </div>
+  `;
+
+  resArea.classList.remove('hidden');
+}
+
+// Enter key
+document.getElementById('sid-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') lookup();
+});
+</script>
+</body>
+</html>
