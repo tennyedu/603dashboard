@@ -3,613 +3,1346 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>603班 期中評量成績查詢</title>
+<title>永平 603 導師儀表板</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap');
-
-  :root {
-    --ink: #1a1208;
-    --paper: #fdf8f0;
-    --warm: #f5ede0;
-    --gold: #c9921a;
-    --gold-light: #e8b84b;
-    --red: #b83232;
-    --green: #2d6a4f;
-    --rule: #d4c4a8;
-    --shadow: rgba(26,18,8,0.12);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'Noto Serif TC', serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px 80px;
-    position: relative;
-    overflow-x: hidden;
-  }
-
-  /* Subtle grid background */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(var(--rule) 1px, transparent 1px),
-      linear-gradient(90deg, var(--rule) 1px, transparent 1px);
-    background-size: 40px 40px;
-    opacity: 0.3;
-    pointer-events: none;
-  }
-
-  .header {
-    text-align: center;
-    margin-bottom: 48px;
-    position: relative;
-  }
-
-  .header-badge {
-    display: inline-block;
-    background: var(--gold);
-    color: white;
-    font-size: 11px;
-    letter-spacing: 3px;
-    padding: 4px 14px;
-    margin-bottom: 16px;
-    font-family: 'DM Mono', monospace;
-  }
-
-  .header h1 {
-    font-size: clamp(28px, 5vw, 44px);
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.5px;
-    color: var(--ink);
-  }
-
-  .header h1 span {
-    color: var(--gold);
-  }
-
-  .header-sub {
-    margin-top: 10px;
-    font-size: 13px;
-    color: #7a6a50;
-    letter-spacing: 1px;
-  }
-
-  /* Decorative line */
-  .divider {
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    margin: 20px auto 0;
-  }
-
-  /* Search box */
-  .search-card {
-    background: white;
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    padding: 32px 36px;
-    width: 100%;
-    max-width: 480px;
-    box-shadow: 0 4px 24px var(--shadow), 0 1px 0 var(--gold-light);
-    margin-bottom: 36px;
-    position: relative;
-  }
-
-  .search-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
-    border-radius: 4px 4px 0 0;
-  }
-
-  .search-label {
-    display: block;
-    font-size: 12px;
-    letter-spacing: 2px;
-    color: #7a6a50;
-    margin-bottom: 12px;
-  }
-
-  .search-row {
-    display: flex;
-    gap: 10px;
-  }
-
-  .search-input {
-    flex: 1;
-    border: 1.5px solid var(--rule);
-    border-radius: 3px;
-    padding: 12px 16px;
-    font-family: 'DM Mono', monospace;
-    font-size: 18px;
-    letter-spacing: 2px;
-    color: var(--ink);
-    background: var(--paper);
-    transition: border-color 0.2s;
-    outline: none;
-  }
-
-  .search-input:focus {
-    border-color: var(--gold);
-    background: white;
-  }
-
-  .search-input::placeholder {
-    color: #c4b49a;
-    font-size: 14px;
-    letter-spacing: 1px;
-  }
-
-  .search-btn {
-    background: var(--gold);
-    color: white;
-    border: none;
-    border-radius: 3px;
-    padding: 12px 22px;
-    font-family: 'Noto Serif TC', serif;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-    white-space: nowrap;
-  }
-
-  .search-btn:hover { background: #b07e12; }
-  .search-btn:active { transform: scale(0.97); }
-
-  .hint {
-    margin-top: 14px;
-    font-size: 12px;
-    color: #a89878;
-    font-family: 'DM Mono', monospace;
-  }
-
-  /* Result card */
-  .result-card {
-    background: white;
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    width: 100%;
-    max-width: 560px;
-    box-shadow: 0 6px 32px var(--shadow);
-    overflow: hidden;
-    animation: slideUp 0.35s ease;
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .result-header {
-    background: var(--ink);
-    color: white;
-    padding: 20px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .student-info h2 {
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: 1px;
-  }
-
-  .student-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: #c4b49a;
-    margin-top: 4px;
-    letter-spacing: 1px;
-  }
-
-  .rank-badge {
-    text-align: center;
-  }
-
-  .rank-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 42px;
-    font-weight: 500;
-    color: var(--gold-light);
-    line-height: 1;
-  }
-
-  .rank-label {
-    font-size: 11px;
-    color: #a89878;
-    letter-spacing: 2px;
-    margin-top: 2px;
-  }
-
-  .scores-section {
-    padding: 24px 28px;
-  }
-
-  .section-title {
-    font-size: 11px;
-    letter-spacing: 3px;
-    color: #7a6a50;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--rule);
-  }
-
-  .score-row {
-    display: flex;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #f0e8d8;
-  }
-
-  .score-row:last-child { border-bottom: none; }
-
-  .score-subject {
-    font-size: 14px;
-    font-weight: 600;
-    width: 80px;
-    flex-shrink: 0;
-  }
-
-  .score-bar-wrap {
-    flex: 1;
-    height: 8px;
-    background: #f0e8d8;
-    border-radius: 4px;
-    overflow: hidden;
-    margin: 0 16px;
-  }
-
-  .score-bar {
-    height: 100%;
-    border-radius: 4px;
-    transition: width 0.6s ease;
-  }
-
-  .score-val {
-    font-family: 'DM Mono', monospace;
-    font-size: 15px;
-    font-weight: 500;
-    width: 52px;
-    text-align: right;
-  }
-
-  .total-row {
-    margin-top: 20px;
-    background: var(--warm);
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    padding: 14px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .total-label {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: #5a4a30;
-  }
-
-  .total-val {
-    font-family: 'DM Mono', monospace;
-    font-size: 20px;
-    font-weight: 500;
-    color: var(--gold);
-  }
-
-  .avg-row {
-    margin-top: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 4px;
-  }
-
-  .avg-label { font-size: 12px; color: #7a6a50; }
-  .avg-val {
-    font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    color: #7a6a50;
-  }
-
-  /* Class average compare */
-  .compare-section {
-    padding: 16px 28px 24px;
-    border-top: 1px solid var(--rule);
-    background: var(--paper);
-  }
-
-  .compare-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
-    font-size: 13px;
-  }
-
-  .compare-label { width: 72px; color: #7a6a50; flex-shrink: 0; }
-
-  .compare-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  /* Error */
-  .error-msg {
-    background: #fff5f5;
-    border: 1px solid #f5c6c6;
-    border-radius: 4px;
-    padding: 16px 20px;
-    color: var(--red);
-    font-size: 14px;
-    text-align: center;
-    width: 100%;
-    max-width: 480px;
-    animation: slideUp 0.3s ease;
-  }
-
-  /* Hidden */
-  .hidden { display: none; }
-
-  /* Score color */
-  .score-high { color: var(--green); }
-  .score-mid { color: var(--gold); }
-  .score-low { color: var(--red); }
-
-  .footer {
-    margin-top: 60px;
-    font-size: 11px;
-    color: #c4b49a;
-    letter-spacing: 2px;
-    font-family: 'DM Mono', monospace;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
+:root {
+  --bg:#f5f3ee; --surface:#fff; --s2:#f0ede6;
+  --border:#ddd8ce; --text:#1a1815; --t2:#6b6560; --t3:#9e9890;
+  --green:#2d6a4f; --gl:#e8f4f0;
+  --amber:#b5621e; --al:#fdf0e6;
+  --blue:#1e4d8c; --bl:#e8eef8;
+  --red:#8c2020; --rl:#f8e8e8;
+  --purple:#5a2d82; --pl:#f0eaf8;
+  --r:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;}
+header{background:var(--text);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+header h1{font-size:15px;font-weight:700;}
+header span{font-family:'DM Mono',monospace;font-size:11px;opacity:.6;}
+nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none;position:sticky;top:49px;z-index:99;}
+nav::-webkit-scrollbar{display:none;}
+nav button{flex:none;padding:11px 15px;border:none;background:none;font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--t2);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;}
+nav button.active{color:var(--green);border-bottom-color:var(--green);font-weight:500;}
+main{padding:14px;max-width:760px;margin:0 auto;}
+.tab{display:none;} .tab.on{display:block;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.ct{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:10px;}
+/* rows */
+.row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--s2);}
+.row:last-child{border-bottom:none;}
+.mono{font-family:'DM Mono',monospace;font-size:11px;color:var(--t3);}
+.bold{font-weight:500;}
+.sm{font-size:12px;color:var(--t2);}
+.xs{font-size:11px;color:var(--t3);}
+/* tags */
+.tag{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;white-space:nowrap;}
+.tg-red{background:var(--rl);color:var(--red);}
+.tg-amb{background:var(--al);color:var(--amber);}
+.tg-grn{background:var(--gl);color:var(--green);}
+.tg-blu{background:var(--bl);color:var(--blue);}
+.tg-pur{background:var(--pl);color:var(--purple);}
+/* bcard */
+.bc{border-left:3px solid var(--border);padding:8px 12px;margin-bottom:8px;border-radius:0 6px 6px 0;background:var(--s2);}
+.bc.warn{border-color:var(--amber);background:var(--al);}
+.bc.alert{border-color:var(--red);background:var(--rl);}
+.bc.info{border-color:var(--blue);background:var(--bl);}
+.bc.ok{border-color:var(--green);background:var(--gl);}
+.bc-t{font-size:11px;font-weight:700;margin-bottom:3px;}
+.bc-b{font-size:13px;line-height:1.7;white-space:pre-line;}
+/* inputs */
+input,select{font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;outline:none;}
+input:focus,select:focus{border-color:var(--green);}
+/* btn */
+.btn{padding:10px 16px;background:var(--green);color:#fff;border:none;border-radius:8px;font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:500;cursor:pointer;}
+/* checkbox */
+.ck{display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer;}
+.ck input{width:16px;height:16px;accent-color:var(--green);}
+/* modal */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:flex-end;justify-content:center;}
+.overlay.on{display:flex;}
+.modal{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:760px;max-height:88vh;overflow-y:auto;padding:18px;animation:su .25s ease;}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.mc-btn{border:none;background:var(--s2);width:30px;height:30px;border-radius:50%;font-size:17px;cursor:pointer;color:var(--t2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sec{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin:14px 0 8px;}
+.ig{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.ig-item label{font-size:11px;color:var(--t3);display:block;}
+.ig-item span{font-size:14px;font-weight:500;}
+.ig-full{grid-column:1/-1;}
+@media(min-width:600px){.overlay{align-items:center;}.modal{border-radius:20px;max-height:80vh;}}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-badge">YONGPING ELEMENTARY</div>
-  <h1>六〇三班<span>期中評量</span></h1>
-  <p class="header-sub">114學年度 第二學期</p>
-  <div class="divider"></div>
-</div>
+<header>
+  <h1>永平 603 班 ｜ 導師儀表板</h1>
+  <span id="hdate"></span>
+</header>
 
-<div class="search-card">
-  <label class="search-label" for="sid-input">請輸入孩子的學號</label>
-  <div class="search-row">
-    <input
-      id="sid-input"
-      class="search-input"
-      type="text"
-      placeholder="例：109000"
-      maxlength="10"
-      autocomplete="off"
-    />
-    <button class="search-btn" onclick="lookup()">查詢</button>
+<nav>
+  <button class="active" onclick="go('today',this)">🔔 提醒</button>
+  <button onclick="go('attend',this)">📋 出勤</button>
+  <button onclick="go('cal',this)">📅 行事曆</button>
+  <button onclick="go('schedule',this)">📖 課表</button>
+  <button onclick="go('contacts',this)">📞 家長</button>
+  <button onclick="go('finance',this)">💰 班費</button>
+  <button onclick="go('notices',this)">📋 班務</button>
+</nav>
+
+<main>
+
+<!-- ===== 近期快覽 ===== -->
+<div class="tab on" id="tab-today">
+
+  <!-- 天數切換 -->
+  <div style="display:flex;gap:6px;margin-bottom:10px">
+    <button onclick="setDays(1,this)" id="btn-d1" style="flex:1;padding:8px;border:1px solid var(--green);border-radius:8px;background:var(--green);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:500;cursor:pointer">今天</button>
+    <button onclick="setDays(2,this)" id="btn-d2" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--t2);font-family:'Noto Sans TC',sans-serif;font-size:13px;cursor:pointer">明天</button>
+    <button onclick="setDays(7,this)" id="btn-d7" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--t2);font-family:'Noto Sans TC',sans-serif;font-size:13px;cursor:pointer">本週</button>
   </div>
-  <p class="hint">⚠️ 僅限家長使用，請查詢自己孩子的成績</p>
+
+  <!-- 行程 -->
+  <div class="card" style="border-left:3px solid var(--purple)">
+    <div class="ct" id="lbl-events">🗓 導師行程</div>
+    <div id="today-events"><div class="sm" style="padding:6px 0">✓ 無行程</div></div>
+  </div>
+
+  <!-- 請假（同步出勤資料，快速瀏覽） -->
+  <div class="card">
+    <div class="ct" id="lbl-abs">🏠 學生請假／異動</div>
+    <div id="today-abs">載入中…</div>
+    <div id="today-err"></div>
+  </div>
+
+  <!-- 吃藥（固定每天） -->
+  <div class="card" style="border-left:3px solid var(--red)">
+    <div class="ct">💊 吃藥確認（每日固定）</div>
+    <div class="row" style="align-items:center">
+      <span class="mono" style="width:22px">08</span>
+      <span class="bold" style="flex:1">歐其諺</span>
+      <span class="sm">情緒控管藥・詢問→未吃找升駿老師</span>
+      <label class="ck"><input type="checkbox" id="m08"> 已確認</label>
+    </div>
+    <div class="row" id="m22row" style="align-items:center">
+      <span class="mono" style="width:22px">22</span>
+      <span class="bold" style="flex:1">柯瓔芮</span>
+      <span class="sm">利他能・12:40 午餐後・她會拖需主動盯</span>
+      <label class="ck"><input type="checkbox" id="m22"> 已確認</label>
+    </div>
+    <div class="xs" style="margin-top:6px">⚠️ 22號星期三不用吃藥</div>
+  </div>
+
+  <!-- 離開教室 -->
+  <div class="card">
+    <div class="ct" id="lbl-out">🚶 離開教室</div>
+    <div id="today-out">載入中…</div>
+  </div>
+
+  <!-- 提醒 -->
+  <div class="card">
+    <div class="ct" id="lbl-remind">🔔 提醒學生</div>
+    <div id="today-remind">載入中…</div>
+  </div>
+
+  <!-- 帶功課/跑腿 -->
+  <div class="card">
+    <div class="ct" id="lbl-errand">🎒 帶功課 / 跑腿</div>
+    <div id="today-errand">載入中…</div>
+  </div>
 </div>
 
-<div id="error-area" class="hidden"></div>
-<div id="result-area" class="hidden"></div>
+<!-- ===== 出勤管理 ===== -->
+<div class="tab" id="tab-attend">
 
-<div class="footer">603 HOMEROOM · 期中評量成績系統</div>
-
-<script>
-const students = [
-  { seat:3,  sid:'109382', name:'彭致皓', chi:94,    eng:100, mat:95,    soc:100, sci:97,  total:486,   rank:1  },
-  { seat:5,  sid:'109176', name:'潘韋辰', chi:95,    eng:96,  mat:97,    soc:100, sci:97,  total:485,   rank:2  },
-  { seat:19, sid:'109301', name:'楊宛霓', chi:93.5,  eng:94,  mat:100,   soc:98,  sci:99,  total:484.5, rank:3  },
-  { seat:4,  sid:'109225', name:'邢堉瑋', chi:98,    eng:94,  mat:98,    soc:96,  sci:99,  total:485,   rank:2  },
-  { seat:14, sid:'109297', name:'陳佳安', chi:97.5,  eng:98,  mat:91,    soc:100, sci:95,  total:481.5, rank:5  },
-  { seat:18, sid:'109423', name:'洪書琳', chi:98,    eng:94,  mat:90,    soc:96,  sci:98,  total:476,   rank:6  },
-  { seat:1,  sid:'109379', name:'余相羽', chi:87,    eng:96,  mat:96,    soc:96,  sci:100, total:475,   rank:7  },
-  { seat:22, sid:'109149', name:'柯瓔芮', chi:88,    eng:96,  mat:97,    soc:94,  sci:98,  total:473,   rank:8  },
-  { seat:10, sid:'109111', name:'張晏綸', chi:91,    eng:90,  mat:97,    soc:98,  sci:80,  total:456,   rank:9  },
-  { seat:17, sid:'109272', name:'馬靖耘', chi:93,    eng:82,  mat:90,    soc:96,  sci:93,  total:454,   rank:10 },
-  { seat:7,  sid:'109003', name:'鄧臣恩', chi:95,    eng:94,  mat:91,    soc:96,  sci:77,  total:453,   rank:11 },
-  { seat:21, sid:'109251', name:'劉芊妤', chi:86.5,  eng:94,  mat:77,    soc:98,  sci:95,  total:450.5, rank:12 },
-  { seat:12, sid:'109260', name:'張亦程', chi:81.5,  eng:98,  mat:92,    soc:92,  sci:86,  total:449.5, rank:13 },
-  { seat:23, sid:'109174', name:'高喬亘', chi:89,    eng:90,  mat:81.5,  soc:98,  sci:89,  total:447.5, rank:14 },
-  { seat:2,  sid:'109151', name:'廖宥誠', chi:91.5,  eng:88,  mat:90,    soc:92,  sci:85,  total:446.5, rank:15 },
-  { seat:6,  sid:'109079', name:'張品維', chi:85.5,  eng:90,  mat:89,    soc:94,  sci:71,  total:429.5, rank:16 },
-  { seat:15, sid:'109097', name:'楊媛安', chi:82,    eng:88,  mat:80,    soc:98,  sci:78,  total:426,   rank:17 },
-  { seat:13, sid:'109288', name:'朱一',   chi:79,    eng:86,  mat:69,    soc:92,  sci:89,  total:415,   rank:18 },
-  { seat:24, sid:'109277', name:'陳巧庭', chi:84.5,  eng:82,  mat:64,    soc:92,  sci:61,  total:383.5, rank:19 },
-  { seat:8,  sid:'109006', name:'歐其諺', chi:76.25, eng:70,  mat:74.25, soc:88,  sci:64,  total:372.5, rank:20 },
-  { seat:11, sid:'109013', name:'許展銘', chi:67.5,  eng:66,  mat:70,    soc:80,  sci:85,  total:368.5, rank:21 },
-  { seat:16, sid:'109346', name:'孫苡萱', chi:65.5,  eng:48,  mat:6,     soc:92,  sci:57,  total:268.5, rank:22 },
-  { seat:20, sid:'109248', name:'許芷瑄', chi:59,    eng:36,  mat:31,    soc:88,  sci:53,  total:267,   rank:23 },
-  { seat:9,  sid:'109232', name:'周威辰', chi:null,  eng:32,  mat:19,    soc:48,  sci:38,  total:null,  rank:null },
-];
-
-const classAvg = {
-  chi: 83.34,
-  eng: 83.42,
-  mat: 78.49,
-  soc: 92.58,
-  sci: 82.67,
-  total: 420.5,
-};
-
-function scoreColor(v, max=100) {
-  const pct = v / max;
-  if (pct >= 0.85) return '#2d6a4f';
-  if (pct >= 0.60) return '#c9921a';
-  return '#b83232';
-}
-
-function barColor(v, max=100) {
-  const pct = v / max;
-  if (pct >= 0.85) return '#2d6a4f';
-  if (pct >= 0.60) return '#c9921a';
-  return '#b83232';
-}
-
-function rankSuffix(n) {
-  if (n === 1) return '🥇';
-  if (n === 2) return '🥈';
-  if (n === 3) return '🥉';
-  return '';
-}
-
-function lookup() {
-  const q = document.getElementById('sid-input').value.trim();
-  const errArea = document.getElementById('error-area');
-  const resArea = document.getElementById('result-area');
-
-  errArea.classList.add('hidden');
-  resArea.classList.add('hidden');
-  errArea.innerHTML = '';
-  resArea.innerHTML = '';
-
-  if (!q) return;
-
-  // Match by sid only
-  const s = students.find(st => st.sid === q);
-
-  if (!s) {
-    errArea.innerHTML = `<p>找不到學號「${q}」的資料，請確認學號是否正確。</p>`;
-    errArea.classList.remove('hidden');
-    return;
-  }
-
-  const subjects = [
-    { label: '國語', val: s.chi, avg: classAvg.chi, max: 100 },
-    { label: '英語', val: s.eng, avg: classAvg.eng, max: 100 },
-    { label: '數學', val: s.mat, avg: classAvg.mat, max: 100 },
-    { label: '社會', val: s.soc, avg: classAvg.soc, max: 100 },
-    { label: '自然', val: s.sci, avg: classAvg.sci, max: 100 },
-  ];
-
-  const scoreRows = subjects.map(sub => {
-    if (sub.val === null) {
-      return `
-        <div class="score-row">
-          <div class="score-subject">${sub.label}</div>
-          <div class="score-bar-wrap"><div class="score-bar" style="width:0%;background:#d4c4a8"></div></div>
-          <div class="score-val" style="color:#a89878;font-size:12px">待確認</div>
-        </div>
-      `;
-    }
-    const pct = (sub.val / sub.max * 100).toFixed(1);
-    const color = barColor(sub.val, sub.max);
-    const valColor = scoreColor(sub.val, sub.max);
-    return `
-      <div class="score-row">
-        <div class="score-subject">${sub.label}</div>
-        <div class="score-bar-wrap">
-          <div class="score-bar" style="width:${pct}%;background:${color}"></div>
-        </div>
-        <div class="score-val" style="color:${valColor}">${sub.val}</div>
+  <!-- 本週請假總覽 -->
+  <div class="card" style="border-left:3px solid var(--red)">
+    <div class="ct">🏠 本週請假／異動</div>
+    <div id="att-today"></div>
+  </div>
+  <div class="card">
+    <div class="ct">➕ 新增出勤紀錄</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input type="date" id="at-date" style="flex:1;min-width:130px">
+        <select id="at-type" style="flex:1;min-width:110px">
+          <option value="absent">請假（全天）</option>
+          <option value="half">請假（半天）</option>
+          <option value="late">遲到</option>
+          <option value="early">早退</option>
+          <option value="errand">帶功課/跑腿</option>
+        </select>
       </div>
-    `;
-  }).join('');
-
-  const compareRows = subjects.map(sub => {
-    if (sub.val === null) {
-      return `
-        <div class="compare-row">
-          <span class="compare-label">${sub.label}</span>
-          <div class="compare-dot" style="background:#d4c4a8"></div>
-          <span style="font-family:'DM Mono',monospace;font-size:13px;color:#a89878">待確認</span>
-        </div>
-      `;
-    }
-    const diff = (sub.val - sub.avg).toFixed(2);
-    const isAbove = parseFloat(diff) >= 0;
-    return `
-      <div class="compare-row">
-        <span class="compare-label">${sub.label}</span>
-        <div class="compare-dot" style="background:${isAbove ? '#2d6a4f' : '#b83232'}"></div>
-        <span style="font-family:'DM Mono',monospace;font-size:13px;color:${isAbove ? '#2d6a4f' : '#b83232'}">
-          ${isAbove ? '+' : ''}${diff} 較班平均
-        </span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input type="text" id="at-seat" placeholder="座號" style="width:70px">
+        <input type="text" id="at-name" placeholder="姓名" style="width:90px">
+        <input type="text" id="at-note" placeholder="備注" style="flex:1;min-width:140px">
       </div>
-    `;
-  }).join('');
+      <button class="btn" onclick="addAtt()">新增</button>
+    </div>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div class="ct" style="margin-bottom:0">📁 出勤紀錄</div>
+      <input type="text" id="at-q" placeholder="搜尋" oninput="renderAtt()" style="width:90px;padding:5px 8px;font-size:12px">
+    </div>
+    <div id="att-list"></div>
+  </div>
+</div>
 
-  const totalDisplay = s.total !== null ? s.total : '待確認';
-  const avgDisplay = s.total !== null ? (s.total / 5).toFixed(2) : '待確認';
-  const totalDiffHtml = s.total !== null
-    ? (() => {
-        const diff = (s.total - classAvg.total).toFixed(1);
-        const isAbove = parseFloat(diff) >= 0;
-        return `<div class="compare-dot" style="background:${isAbove ? '#2d6a4f' : '#b83232'}"></div>
-          <span style="font-family:'DM Mono',monospace;font-size:13px;color:${isAbove ? '#2d6a4f' : '#b83232'}">
-            ${isAbove ? '+' : ''}${diff} 較班平均（${classAvg.total}）
-          </span>`;
-      })()
-    : `<div class="compare-dot" style="background:#d4c4a8"></div>
-       <span style="font-family:'DM Mono',monospace;font-size:13px;color:#a89878">待確認</span>`;
+<!-- ===== 行事曆 ===== -->
+<div class="tab" id="tab-cal">
+  <div class="card">
+    <div class="ct">📝 期末評量（5/28四・5/29五）</div>
+    <div class="bc alert">
+      <div class="bc-t">六年級考試範圍</div>
+      <div class="bc-b">・國語｜翰林 第7–9課
+・數學｜康軒 第5–6單元
 
-  resArea.innerHTML = `
-    <div class="result-card">
-      <div class="result-header">
-        <div class="student-info">
-          <h2>${s.name} ${s.rank ? rankSuffix(s.rank) : ''}</h2>
-          <div class="student-meta">學號 ${s.sid}</div>
-        </div>
-        <div class="rank-badge">
-          <div class="rank-num">${s.rank !== null ? s.rank : '—'}</div>
-          <div class="rank-label">班級排名</div>
-        </div>
+5/28（四）・5/29（五）
+科目時間待公佈，公佈後再更新</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">📅 本學期重要行事曆</div>
+    <div id="cal-list"></div>
+  </div>
+
+  <div class="card">
+    <div class="ct">📞 常用分機</div>
+    <div class="row"><span style="min-width:90px;font-size:13px">資源班 張升駿</span><span class="bold">8106</span><span class="sm" style="margin-left:8px">8/22號服藥聯繫</span></div>
+    <div class="row"><span style="min-width:90px;font-size:13px">輔導主任 吳世揚</span><span class="bold">501</span></div>
+    <div class="row"><span style="min-width:90px;font-size:13px">生教組長 許雅淳</span><span class="bold">302</span></div>
+    <div class="row"><span style="min-width:90px;font-size:13px">教務主任 黃仕先</span><span class="bold">201</span></div>
+    <div class="row"><span style="min-width:90px;font-size:13px">護理師</span><span class="bold">306</span></div>
+    <div class="row"><span style="min-width:90px;font-size:13px">怡如數學班</span><span class="bold">6101</span><span class="sm" style="margin-left:8px">週四課後</span></div>
+    <div class="row"><span style="min-width:90px;font-size:13px">慧涵國語班</span><span class="bold">7302</span><span class="sm" style="margin-left:8px">週二課後</span></div>
+    <div class="row"><span style="min-width:90px;font-size:13px">幼兒園廚房（2號媽媽）</span><span class="bold">704</span></div>
+  </div>
+</div>
+
+<!-- ===== 家長聯繫 ===== -->
+<!-- ===== 課表 ===== -->
+<div class="tab" id="tab-schedule">
+
+  <!-- 圖例 -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;font-size:12px;align-items:center">
+    <span style="background:#d4edda;color:#2d6a4f;padding:3px 10px;border-radius:20px;font-weight:600">🟢 導師授課</span>
+    <span style="background:var(--s2);color:var(--t2);padding:3px 10px;border-radius:20px">科任/其他</span>
+    <span style="background:#fff3cd;color:#856404;padding:3px 10px;border-radius:20px">🟡 特殊</span>
+  </div>
+
+  <!-- 完整週課表 -->
+  <div class="card" style="padding:10px;overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:12px;min-width:400px">
+      <thead>
+        <tr>
+          <th style="padding:7px 6px;background:var(--text);color:#fff;text-align:center;border:1px solid var(--border);font-size:11px;min-width:70px">節 / 時間</th>
+          <th style="padding:7px 4px;background:var(--text);color:#fff;text-align:center;border:1px solid var(--border)">一</th>
+          <th style="padding:7px 4px;background:var(--text);color:#fff;text-align:center;border:1px solid var(--border)">二<br><span style="font-size:9px;opacity:.7">母語日</span></th>
+          <th style="padding:7px 4px;background:var(--text);color:#fff;text-align:center;border:1px solid var(--border)">三<br><span style="font-size:9px;opacity:.7">母語日</span></th>
+          <th style="padding:7px 4px;background:var(--text);color:#fff;text-align:center;border:1px solid var(--border)">四</th>
+          <th style="padding:7px 4px;background:var(--text);color:#fff;text-align:center;border:1px solid var(--border)">五</th>
+        </tr>
+      </thead>
+      <tbody id="schedule-body"></tbody>
+    </table>
+  </div>
+
+  <!-- 教學進度表 -->
+  <div class="card" style="overflow-x:auto">
+    <div class="ct">📊 國語・數學 教學進度表</div>
+    <div style="font-size:11px;color:var(--t3);margin-bottom:8px">🟢綠=考試日　🟡黃=校慶/特殊　⬜灰=已過</div>
+    <table style="width:100%;border-collapse:collapse;font-size:11px;min-width:520px">
+      <thead>
+        <tr style="background:var(--text);color:#fff">
+          <th style="padding:6px 4px;border:1px solid var(--border);text-align:center;width:30px">週</th>
+          <th style="padding:6px 4px;border:1px solid var(--border);text-align:center;width:42px">日期</th>
+          <th style="padding:6px 4px;border:1px solid var(--border);text-align:center;width:28px">星期</th>
+          <th style="padding:6px 4px;border:1px solid var(--border);text-align:center;width:40px">備註</th>
+          <th style="padding:6px 4px;border:1px solid var(--border);text-align:center;background:#1a4a2e">國語上課進度</th>
+          <th style="padding:6px 4px;border:1px solid var(--border);text-align:center;background:#1a4a2e">作業安排</th>
+          <th style="padding:6px 4px;border:1px solid var(--border);text-align:center;background:#1a4a2e">考試進度</th>
+          <th style="padding:6px 4px;border:1px solid var(--border);text-align:center;background:#1a3a4a">數學上課進度</th>
+          <th style="padding:6px 4px;border:1px solid var(--border);text-align:center;background:#1a3a4a">作業安排</th>
+          <th style="padding:6px 4px;border:1px solid var(--border);text-align:center;background:#1a3a4a">小考進度</th>
+          <th style="padding:6px 4px;border:1px solid var(--border);text-align:center;background:#3a3a1a">科任備注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- W1 -->
+        <tr data-date="2026-04-20" style="background:#f9f9f9">
+          <td rowspan="6" style="padding:4px;border:1px solid var(--border);text-align:center;font-weight:700;background:#e8f4f0;color:var(--green)">W1</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">4/20</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">一</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center;font-size:10px"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">棉花糖機體驗</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">期中考檢討（訂正）</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+        </tr>
+        <tr>
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">4/21</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">二</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">L7課文導讀+字詞識寫</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">國甲P26-28</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">5-1~5-2</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數習P52-54</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+        </tr>
+        <tr style="background:#f9f9f9">
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">4/22</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">三</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">L7形式深究、句型造句</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">國甲P28-35</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">5-2</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數重P40-41</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+        </tr>
+        <tr>
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">4/23</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">四</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">L7 延伸／仿寫</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">L7圈詞×4</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">5-3</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數習P55</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border);font-size:11px;color:#856404">4/24(五)考英U3單字</td>
+        </tr>
+        <tr style="background:#f9f9f9">
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">4/24</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">五</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">-</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">國習L7</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);background:#d4edda;font-weight:600">考國L7</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">-</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數重P42</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);background:#d4edda;font-weight:600">考數5-1-5-2</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);font-size:11px;color:#856404">今天考英U3單字</td>
+        </tr>
+        <tr>
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">4/25</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">六</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center;background:#fff3cd;font-size:10px">校慶</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);background:#fff3cd">-</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);background:#fff3cd">-</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);background:#fff3cd">-</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);background:#fff3cd">-</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);background:#fff3cd">-</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);background:#fff3cd">-</td>
+        </tr>
+        <!-- W2 -->
+        <tr style="background:#f9f9f9">
+          <td rowspan="3" style="padding:4px;border:1px solid var(--border);text-align:center;font-weight:700;background:#e8f4f0;color:var(--green)">W2</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">4/28</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">二</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">L7檢討/複習</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">5-3</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數習P56</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+        </tr>
+        <tr>
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">4/29</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">三</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">L8課文導讀、字詞識寫</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">國乙P31-33</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">5-4</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數重P43-44</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+        </tr>
+        <tr style="background:#f9f9f9">
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">4/30</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">四</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">L8內容深究（志願與夢想討論）</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">國乙P34-37</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border);background:#d4edda;font-weight:600">考數U5</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數習P57-59</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+        </tr>
+        <!-- W3 -->
+        <tr>
+          <td rowspan="5" style="padding:4px;border:1px solid var(--border);text-align:center;font-weight:700;background:#e8f4f0;color:var(--green)">W3</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">5/4</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">一</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">L8形式深究</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">L8圈詞×4</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">複習U5，數習P60-61</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數重P45-46</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+        </tr>
+        <tr style="background:#f9f9f9">
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">5/5</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">二</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">L8順敘倒敘+造句</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">6-1</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數習62-65</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+        </tr>
+        <tr>
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">5/6</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">三</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">L8複習+仿寫「我的○○大夢」</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">國習L8</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">6-1</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數重P47</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+        </tr>
+        <tr style="background:#f9f9f9">
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">5/7</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">四</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">L8檢討/複習</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">國甲36-38</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);background:#d4edda;font-weight:600">考國L8</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">6-2-6-3</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數習66</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+        </tr>
+        <tr>
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">5/8</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">五</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">L9課文導讀+字詞識寫</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">國甲39-41</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">-</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數重P48-49</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);background:#d4edda;font-weight:600">考數6-1-6-2</td>
+        </tr>
+        <!-- W4 -->
+        <tr style="background:#f9f9f9">
+          <td rowspan="5" style="padding:4px;border:1px solid var(--border);text-align:center;font-weight:700;background:#e8f4f0;color:var(--green)">W4</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">5/11</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">一</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">L9內容+形式深究（意象分析+句型）</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">國L9圈詞×4</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">6-3</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數習P6-69</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+        </tr>
+        <tr>
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">5/12</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">二</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">L9複習+成長詩仿寫</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">國甲P42-44</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">6-4</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數重P50-52</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+        </tr>
+        <tr style="background:#f9f9f9">
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">5/13</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">三</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">考國L9</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">國習P73-76</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);background:#d4edda;font-weight:600">考國L9</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">6-4</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數習P70-71</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);background:#d4edda;font-weight:600">考數6-3-6-4</td>
+        </tr>
+        <tr>
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">5/14</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">四</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">L9檢討/複習</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--green);background:#d4edda;font-weight:600">考數U6</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數重P53-55</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+        </tr>
+        <tr style="background:#f9f9f9">
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">5/15</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">五</td>
+          <td style="padding:4px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">檢討複習U6</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數習P72-74</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+        </tr>
+        <!-- W5 -->
+        <tr style="background:#f9f9f9">
+          <td rowspan="5" style="padding:4px;border:1px solid var(--border);text-align:center;font-weight:700;background:#e8f4f0;color:var(--green)">W5</td>
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">5/18</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">一</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center;font-size:10px;background:#fff3cd">考前複習週</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數重P62-64</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+        </tr>
+        <tr>
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">5/19</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">二</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center;font-size:10px;background:#fff3cd">考前複習週</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)">數重P75-77</td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+          <td style="padding:4px 6px;border:1px solid var(--border)"></td>
+        </tr>
+        <tr style="background:#f9f9f9">
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">5/20</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">三</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center;font-size:10px;background:#fff3cd">考前複習週</td>
+          <td colspan="7" style="padding:4px 6px;border:1px solid var(--border);text-align:center;color:var(--t3)">（待補）</td>
+        </tr>
+        <tr>
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">5/21</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">四</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center;font-size:10px;background:#fff3cd">考前複習週</td>
+          <td colspan="7" style="padding:4px 6px;border:1px solid var(--border);text-align:center;color:var(--t3)">（待補）</td>
+        </tr>
+        <tr style="background:#f9f9f9">
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">5/22</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center">五</td>
+          <td style="padding:4px;border:1px solid var(--border);text-align:center;font-size:10px;background:#fff3cd">考前複習週</td>
+          <td colspan="7" style="padding:4px 6px;border:1px solid var(--border);text-align:center;color:var(--t3)">（待補）</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="tab" id="tab-contacts">
+  <div class="card">
+    <input type="text" id="ct-q" placeholder="🔍 搜尋學生姓名…" oninput="renderContacts()" style="width:100%;margin-bottom:10px">
+    <div class="ct">已聯繫 13 位（3/30–3/31）</div>
+    <div id="ct-list"></div>
+  </div>
+</div>
+
+<!-- ===== 班費 ===== -->
+<div class="tab" id="tab-finance">
+
+  <!-- 總覽 -->
+  <div class="card">
+    <div class="ct">💰 班費總覽</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:4px">
+      <div style="background:var(--gl);border-radius:10px;padding:12px;text-align:center">
+        <div style="font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--green)" id="fin-income">0</div>
+        <div class="xs" style="margin-top:2px">總收入</div>
       </div>
-
-      <div class="scores-section">
-        <div class="section-title">各科成績</div>
-        ${scoreRows}
-        <div class="total-row">
-          <span class="total-label">總分</span>
-          <span class="total-val" style="${s.total === null ? 'color:#a89878;font-size:15px' : ''}">${totalDisplay}</span>
-        </div>
-        <div class="avg-row">
-          <span class="avg-label">總平均</span>
-          <span class="avg-val">${avgDisplay}</span>
-        </div>
+      <div style="background:var(--rl);border-radius:10px;padding:12px;text-align:center">
+        <div style="font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--red)" id="fin-expense">0</div>
+        <div class="xs" style="margin-top:2px">總支出</div>
       </div>
-
-      <div class="compare-section">
-        <div class="section-title">與班平均比較</div>
-        ${compareRows}
-        <div class="compare-row" style="margin-top:10px;padding-top:10px;border-top:1px solid #e8dcc8">
-          <span class="compare-label">總分</span>
-          ${totalDiffHtml}
-        </div>
+      <div style="background:var(--s2);border-radius:10px;padding:12px;text-align:center">
+        <div style="font-family:'DM Mono',monospace;font-size:20px;font-weight:500" id="fin-balance">0</div>
+        <div class="xs" style="margin-top:2px">結餘</div>
       </div>
     </div>
-  `;
+  </div>
 
-  resArea.classList.remove('hidden');
+  <!-- 待辦提醒 -->
+  <div class="bc warn" style="margin:0 0 10px">
+    <div class="bc-t">⚠️ 待確認事項</div>
+    <div class="bc-b">・$180 單據在604老師那，4/1後取回
+・5月中統一把所有收據交給 16媽媽（孫苡萱媽媽）做帳
+・604老師（3/31）已先寫聯絡簿請 3號家長付款，帳務會標註已付
+・結餘很多時可退款給家長（多一件事，視情況決定）</div>
+  </div>
+  <div class="bc info" style="margin:0 0 10px">
+    <div class="bc-t">🔵 換零錢：合作社阿姨</div>
+    <div class="bc-b">需要換零錢時，前一天先打電話給合作社，告知要換多少
+通常 14:30 前（阿姨去銀行存錢之前），阿姨很熱心樂意幫忙</div>
+  </div>
+
+  <!-- 新增紀錄 -->
+  <div class="card">
+    <div class="ct">➕ 新增收支</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input type="date" id="fin-date" style="flex:1;min-width:130px">
+        <select id="fin-type" style="flex:1;min-width:100px">
+          <option value="in">收入</option>
+          <option value="out">支出</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input type="number" id="fin-amount" placeholder="金額（元）" style="width:120px">
+        <input type="text" id="fin-desc" placeholder="項目說明" style="flex:1;min-width:140px">
+      </div>
+      <input type="text" id="fin-receipt" placeholder="收據備注（如：擊華書局，單據在604）" style="width:100%">
+      <button class="btn" onclick="addFin()">新增</button>
+    </div>
+  </div>
+
+  <!-- 明細 -->
+  <div class="card">
+    <div class="ct">📄 收支明細</div>
+    <div id="fin-list"></div>
+  </div>
+
+</div>
+
+<!-- ===== 班務 ===== -->
+<div class="tab" id="tab-notices">
+  <div class="card">
+    <div class="ct">💊 特殊學生</div>
+    <div class="bc alert"><div class="bc-t">🔴 08 歐其諺（特生）</div><div class="bc-b">每天主動詢問是否吃藥，未吃→找資源班升駿老師
+情緒控管藥，藥效退後易衝突（課後班時段）
+情緒激動時：給10分鐘冷靜空間，不要當場溝通
+奶奶生病，近期情緒較不穩
+【固定行程】週一・週五中午國數課去資源教室上課（不在班上）
+【週一】早自習寫完聯絡簿後去輔導室</div></div>
+    <div class="bc alert"><div class="bc-t">🔴 22 柯瓔芮（特生）</div><div class="bc-b">12:40 午餐後主動盯吃藥（利他能）・她很會拖
+⚠️ 星期三不用
+情緒固執，激動時溝通困難，穩定後再引導
+對規則一致性需求高，班規需明確</div></div>
+    <div class="bc warn"><div class="bc-t">🟡 09 周威辰</div><div class="bc-b">國數成績落後，早自習＆午休去加強班，留意是否確實前往</div></div>
+    <div class="bc warn"><div class="bc-t">🟡 16 孫苡萱</div><div class="bc-b">氣喘（有噴劑，體育課留意）・能力較弱，作業有交就給肯定，不需過度要求</div></div>
+    <div class="bc info"><div class="bc-t">🔵 06 張品維</div><div class="bc-b">蠶豆症，本人已知悉會自行注意，老師留意相關場合即可</div></div>
+  </div>
+
+  <div class="card">
+    <div class="ct">👀 重點觀察</div>
+    <div class="bc alert"><div class="bc-t">🔴 15 楊媛安 ✕ 18 洪書琳</div><div class="bc-b">上學期起持續人際衝突，18號曾出現噩夢等壓力反應
+訓導組長已知悉並介入，目前稍緩，持續觀察
+若升溫立即會同訓導組長處理
+4/25 兩人都請假（國中美術班考試）</div></div>
+    <div class="bc warn"><div class="bc-t">🟡 20 許芷瑄</div><div class="bc-b">習慣性遲到，自行步行上學，有安全疑慮
+目標 7:50 到校・聯繫對象：爸爸（非媽媽）</div></div>
+    <div class="bc warn"><div class="bc-t">🟡 11 許展銘</div><div class="bc-b">人際困難：同學不喜歡某行為仍難以調整，對他人私事過度好奇
+週二第5節閩南語外加課，人不在班上</div></div>
+    <div class="bc warn"><div class="bc-t">🟡 24 陳巧庭</div><div class="bc-b">單親（媽媽中年級時病逝），爸爸工作忙碌，聯繫回覆可能較慢，請耐心等待
+雙胞胎，妹妹在607班</div></div>
+  </div>
+
+  <div class="card">
+    <div class="ct">🏫 班級經營備忘</div>
+    <div class="bc alert"><div class="bc-t">🔴 先嚴師，再決定要不要慈母</div><div class="bc-b">孩子聰明會試探，欺善怕惡型，只怕惡人
+「以前老師都不這樣」→ 直接回：現在站在你面前的是我，我說了算
+先把底線守住，再視情況放寬，反過來就很難收</div></div>
+    <div class="bc info"><div class="bc-t">🔵 進度不用擔心（秀青老師轉達）</div><div class="bc-b">班上國數進度已差不多上完，先以和學生建立情誼為優先
+給自己三週時間慢慢融入，不要給自己壓力</div></div>
+    <div class="bc warn"><div class="bc-t">🟡 數學學力狀況（610導師）</div><div class="bc-b">數學第一單元考得不好（因換師頻繁，代課老師教法不一）
+→ 接班後可安排期中前複習，把基礎拉回來
+→ 成語造句作業：目前只有「在讀的」有寫，第一課可能未寫
+→ 簿本放在學生座位區桌子旁，可翻閱確認進度</div></div>
+    <div class="bc warn"><div class="bc-t">🟡 作業缺交處理</div><div class="bc-b">午休留下 → 留一節喜歡的課 → 放學聯繫家長留下
+萬用招：「去石班」，他們怕石班老師，馬上就寫完</div></div>
+    <div class="bc warn"><div class="bc-t">🟡 科任聯絡單（淺綠色本子）</div><div class="bc-b">每節科任課後立刻確認是否帶回，沒帶立刻叫回去拿
+科任老師有時考試很近（今天上完後天就考）</div></div>
+    <div class="bc info"><div class="bc-t">🔵 點名 / 早自習 / 午休</div><div class="bc-b">8點沒到就追家長（8/20號習慣遲到可稍寬容，目標7:50）
+早自習：安靜讀書，沒事看班書（巡迴書箱）
+午休：關燈閉眼靜臥，不准閱讀</div></div>
+    <div class="bc info"><div class="bc-t">🔵 服裝 / 週五EQ課</div><div class="bc-b">週三便服・週五班服（椅上有一件藍色班服可穿）
+週五前兩節：輔導主任吳世揚上EQ課，4/24來上，老師可改作業或去大辦公室/圖書館（五育樓二樓）</div></div>
+    <div class="bc info"><div class="bc-t">🔵 小幫手</div><div class="bc-b">1號余相羽・10號張晏綸・14號陳佳安・19號楊宛寬</div></div>
+    <div class="bc info"><div class="bc-t">🔵 重要資源</div><div class="bc-b">石班老師（三樓靠廁所倒數第二間）：嚇阻學生、影印協助、每天課後巡視
+班費保管：3號家長 ／ 記帳：16號家長（本學期 $12,000 + 結餘約 $2,000）
+家長聯繫：Line@，家長看不到彼此留言，家長溝通配合度高無恐龍</div></div>
+  </div>
+
+  <div class="card">
+    <div class="ct">✅ 已完成確認</div>
+    <div class="bc ok"><div class="bc-t">✅ 私校報名調查完畢（4/1）</div><div class="bc-b">3號竹林確定・4號南山正取・7號南山書審正取・10號南山正取・18號南山正取・19號南山書審正取
+4/9前由604老師負責，4/9後家長自行處理</div></div>
+    <div class="bc ok"><div class="bc-t">✅ 4/25 請假已核假</div><div class="bc-b">15號楊媛安・23號高喬亘，校慶當天參加國中美術班考試</div></div>
+    <div class="bc ok"><div class="bc-t">✅ 21號劉芊妤 4/1–4/2 自治會公假</div><div class="bc-b">已知悉，請確認校務系統是否已登錄</div></div>
+  </div>
+
+  <div class="card">
+    <div class="ct">🎓 畢業相關</div>
+    <div class="bc info"><div class="bc-t">畢典（6/12五）</div><div class="bc-b">服裝：學校短袖上衣＋長褲
+獎項計分：五六年級成績・市長獎1名・議長獎1名・局長獎2名
+特殊展能市長獎申請截止：4/20
+學年聚餐：6/12 11:00–14:00 預留時間</div></div>
+    <div class="bc warn"><div class="bc-t">⭐ 畢業班務待辦清單</div><div class="bc-b">・全勤獎結算截止：5/29（五）→ 確認全勤學生名單
+・成績結算＆得獎名單：6/2（二）前送交
+・畢典預演：6/9（二）・6/10（三）・6/11（四）上午</div></div>
+    <div class="bc info"><div class="bc-t">校外教學（6/2二）</div><div class="bc-b">六福村，細節待石班老師通知</div></div>
+    <div class="bc warn"><div class="bc-t">畢業考（5/28–29）</div><div class="bc-b">六年級畢業考</div></div>
+  </div>
+</div>
+
+</main>
+
+<!-- 家長聯繫 Modal -->
+<div class="overlay" id="ct-modal" onclick="if(event.target===this)this.classList.remove('on')">
+  <div class="modal">
+    <div class="modal-hd">
+      <div>
+        <div class="xs" id="m-seat"></div>
+        <div style="font-size:20px;font-weight:700" id="m-name"></div>
+        <div class="sm" id="m-tag" style="margin-top:2px"></div>
+      </div>
+      <button class="mc-btn" onclick="document.getElementById('ct-modal').classList.remove('on')">✕</button>
+    </div>
+    <div class="ig" id="m-info"></div>
+    <div class="sec">家長聯繫紀錄</div>
+    <div id="m-contacts"></div>
+    <div class="sec">輔導注意事項</div>
+    <div id="m-notes"></div>
+  </div>
+</div>
+
+<script>
+// ── 日期工具 ──
+const NOW = new Date();
+document.getElementById('hdate').textContent =
+  NOW.toLocaleDateString('zh-TW',{month:'long',day:'numeric',weekday:'short'});
+
+function iso(d){ const dt=d instanceof Date?d:new Date(d); return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`; }
+const TODAY = iso(NOW);
+const DOW = NOW.getDay(); // 0=日
+
+// ── Tab切換 ──
+function go(id, btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('on');
+  btn.classList.add('active');
+  if(id==='schedule') setTimeout(greyPastRows, 50);
 }
 
-// Enter key
-document.getElementById('sid-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') lookup();
-});
+// ── 今日行程資料 ──
+const events = [
+  {date:'2026-04-01',time:'12:30–13:00',title:'輔導轉銜會議',note:'608教室・全體需出席・輔導組說明後填電子檔',urgent:true},
+  {date:'2026-04-01',time:'13:30',title:'教師午會',note:'大辦公室',urgent:false},
+  {date:'2026-04-01',time:'14:00',title:'課程博覽會(一)',note:'視聽教室',urgent:false},
+  {date:'2026-04-08',time:'13:30',title:'期中學年會議＋永平之星健康運動會',note:'學年主任教室→校內各場地',urgent:false},
+  {date:'2026-04-13',time:'國語課',title:'發下國語複習卷',note:'立刻訂正，課堂檢討',urgent:false},
+  {date:'2026-04-13',time:'數學課',title:'數學考試第1–4單元',note:'準備考卷',urgent:true},
+  {date:'2026-04-13',time:'中午',title:'健康補考：10號・20號',note:'張晏綸・許芷瑄，中午進行',urgent:false},
+  {date:'2026-04-15',time:'13:30',title:'教師午會＋期中擴大行政會議',note:'大辦公室→大會議室',urgent:false},
+  {date:'2026-04-16',time:'整天',title:'⭐ 期中評量第一天（六年級：國語・自然・英語）',note:'國語 08:30 / 自然 09:40 / 英語 10:30',urgent:true},
+  {date:'2026-04-17',time:'整天',title:'⭐ 期中評量第二天（六年級：數學・社會）',note:'數學 08:30 / 社會 09:40',urgent:true},
+  {date:'2026-04-17',time:'12:40',title:'旗手・班牌手訓練',note:'活動中心3樓・603：18號洪書琳・19號楊宛寬',urgent:false},
+  {date:'2026-04-20',time:'12:40',title:'旗手・班牌手訓練',note:'活動中心3樓・603：18號洪書琳・19號楊宛寬',urgent:false},
+  {date:'2026-04-20',time:'第2節',title:'課堂活動：用棉花糖',note:'準備棉花糖',urgent:false},
+  {date:'2026-04-21',time:'08:10',title:'旗手・班牌手預演',note:'18號洪書琳・19號楊宛寬',urgent:false},
+  {date:'2026-04-22',time:'08:10',title:'旗手・班牌手預演＋校慶預演',note:'18號洪書琳・19號楊宛寬',urgent:false},
+  {date:'2026-04-23',time:'08:10',title:'校慶預演',note:'注意學生服裝及集合時間',urgent:false},
+  {date:'2026-04-22',time:'13:30',title:'領域教學研究會',note:'領召教室',urgent:false},
+  {date:'2026-04-29',time:'12:30',title:'穿堂排影片',note:'中午，帶學生至穿堂',urgent:false},
+  {date:'2026-05-13',time:'13:30',title:'教師午會＋領域教學研究會',note:'',urgent:false},
+  {date:'2026-05-20',time:'13:30',title:'全校研習【輔導知能】',note:'視聽教室，3小時',urgent:false},
+  {date:'2026-06-02',time:'整天',title:'校外教學：六福村',note:'細節待通知',urgent:false},
+  {date:'2026-06-12',time:'整天',title:'🎓 畢業典禮',note:'服裝：學校短袖上衣＋長褲・11:00–14:00學年聚餐',urgent:false},
+];
+
+// ── 離開教室 ──
+const outData = [
+  {date:'every-mon',seat:'08',name:'歐其諺',time:'早自習後',reason:'寫完聯絡簿→去輔導室'},
+  {date:'every-mon',seat:'08',name:'歐其諺',time:'中午（國數課）',reason:'資源教室上課，國數課不在班上'},
+  {date:'every-fri',seat:'08',name:'歐其諺',time:'中午（國數課）',reason:'資源教室上課，國數課不在班上'},
+  {date:'every-tue',seat:'11',name:'許展銘',time:'第5節 13:30',reason:'閩南語外加課，不在班上'},
+  {date:'every-fri',seat:'',name:'全班EQ課',time:'第0-1節',reason:'輔導主任吳世揚上課，老師可去大辦公室或圖書館'},
+  {date:'2026-04-02',seat:'21',name:'劉芊妤',time:'電腦課',reason:'自治會公假，不在班上'},
+];
+
+// ── 提醒資料 ──
+const reminders = [
+  // ── 每週固定 ──
+  {date:'every-mon',seat:'08',name:'歐其諺',note:'週一固定：早自習寫完聯絡簿後去輔導室・中午國數課去資源教室'},
+  {date:'every-fri',seat:'08',name:'歐其諺',note:'週五固定：中午國數課去資源教室'},
+
+  // ── 本週必辦（4/6起） ──
+  {date:'2026-04-06',seat:'',name:'⚠️ 本週必辦（4/10截止）',note:'① 申請學年雲端權限　② 取得08號特生資料　③ 國中改分發名單確認（找604老師）'},
+  {date:'2026-04-07',seat:'',name:'⚠️ 本週必辦（4/10截止）',note:'① 申請學年雲端權限　② 取得08號特生資料　③ 國中改分發名單確認（找604老師）'},
+  {date:'2026-04-08',seat:'',name:'⚠️ 本週必辦（4/10截止）',note:'① 申請學年雲端權限　② 取得08號特生資料　③ 國中改分發名單確認（找604老師）'},
+  {date:'2026-04-09',seat:'',name:'⚠️ 明天截止！國中改分發',note:'名單明天交教務註冊組・私校：03竹林・04/07/10/18/19南山・今天確認604老師是否已處理'},
+  {date:'2026-04-10',seat:'',name:'⚠️ 今天截止！國中改分發',note:'名單今天交教務註冊組・私校：03竹林・04/07/10/18/19南山'},
+  {date:'2026-04-10',seat:'',name:'週五待辦',note:'考卷檢討（哪一科的考卷？）'},
+
+  // ── 作業調閱 ──
+  {date:'2026-04-23',seat:'09',name:'周威辰',note:'⚠️ 07:30 太鼓社團彩排・比平常早到校'},
+  {date:'2026-04-25',seat:'09',name:'周威辰',note:'⚠️ 07:30 太鼓社團集合（校慶開場表演）'},
+  {date:'2026-04-25',seat:'10',name:'張晏綸',note:'約10:50 提早離校去補習・請提前辦理早退'},
+  {date:'2026-04-23',seat:'',name:'⭐ 作業調閱：練習簿',note:'數學抽查同日・作業需有批改、日期、評量'},
+  {date:'2026-05-08',seat:'',name:'🎬 畢業影片拍攝（603）',note:'第五節 13:30–14:10・若有急事通知意萍安排機動時段'},
+  {date:'2026-04-30',seat:'',name:'⭐ 作業調閱：自然',note:'作業需有批改、日期、評量'},
+  {date:'2026-05-07',seat:'',name:'⭐ 作業調閱：年節/年慶',note:'作業需有批改、日期、評量'},
+  {date:'2026-05-14',seat:'',name:'⭐ 作業調閱：作文',note:'作業需有批改、日期、評量'},
+  {date:'2026-05-21',seat:'',name:'⭐ 作業調閱：美勞',note:'作業需有批改、日期、評量'},
+  {date:'2026-05-27',seat:'',name:'⭐ 作業抽查：國語',note:'請提前確認學生作業狀況'},
+  {date:'2026-05-28',seat:'',name:'⚠️ 全勤獎明天結算',note:'5/29截止，提前確認全勤學生名單'},
+  {date:'2026-05-29',seat:'',name:'⭐ 全勤獎結算截止',note:'今日結算，確認全勤名單並準備送交'},
+  {date:'2026-06-01',seat:'',name:'⚠️ 明天截止！成績結算',note:'6/2前完成成績結算、送交得獎名單'},
+  {date:'2026-06-02',seat:'',name:'⭐ 成績結算截止',note:'今日前完成成績結算、送交得獎名單'},
+  {date:'2026-06-09',seat:'',name:'🎓 畢典預演（一）',note:'上午'},
+  {date:'2026-06-10',seat:'',name:'🎓 畢典預演（二）',note:'上午'},
+  {date:'2026-06-11',seat:'',name:'🎓 畢典預演（三）',note:'上午'},
+];
+
+// ── 出勤資料 ──
+let atts = [
+  {id:1,date:'2026-04-01',seat:'04',name:'邢堉瑋',type:'absent',note:'複習考期間，需補考確認'},
+  {id:2,date:'2026-04-01',seat:'21',name:'劉芊妤',type:'absent',note:'自治會公假'},
+  {id:3,date:'2026-04-01',seat:'08',name:'歐其諺',type:'late',note:'08:15 到校'},
+  {id:4,date:'2026-04-01',seat:'20',name:'許芷瑄',type:'late',note:'08:20 到校'},
+  {id:5,date:'2026-04-02',seat:'04',name:'邢堉瑋',type:'absent',note:'複習考期間'},
+  {id:6,date:'2026-04-02',seat:'21',name:'劉芊妤',type:'half',note:'自治會公假，電腦課那節'},
+  {id:7,date:'2026-04-02',seat:'13',name:'朱一',type:'errand',note:'帶堉瑋功課袋至安親班'},
+  // 4/25 校慶
+  {id:8, date:'2026-04-25',seat:'15',name:'楊媛安',type:'absent',note:'校慶請假，國中美術班考試'},
+  {id:9, date:'2026-04-25',seat:'16',name:'孫苡萱', type:'absent',note:'校慶請假'},
+  {id:10,date:'2026-04-25',seat:'23',name:'高喬亘', type:'absent',note:'校慶請假，國中美術班考試'},
+  {id:11,date:'2026-04-25',seat:'02',name:'廖宥誠', type:'early',note:'10:50 早退'},
+  {id:12,date:'2026-04-25',seat:'03',name:'彭致皓', type:'early',note:'10:40 早退'},
+  {id:13,date:'2026-04-25',seat:'04',name:'邢堉瑋', type:'early',note:'10:00 早退'},
+  {id:14,date:'2026-04-25',seat:'06',name:'張品維', type:'early',note:'11:30 早退'},
+  {id:15,date:'2026-04-25',seat:'09',name:'周威辰', type:'errand',note:'太鼓社團校慶開場表演・07:30社團集合'},
+  {id:16,date:'2026-04-25',seat:'10',name:'張晏綸', type:'early',note:'10:40 早退，補習'},
+  {id:17,date:'2026-04-25',seat:'17',name:'馬靖耘', type:'early',note:'11:30 早退'},
+  {id:18,date:'2026-04-25',seat:'21',name:'劉芊妤', type:'early',note:'11:00 早退'},
+  // 5/19–5/22 張品維住院
+  {id:19,date:'2026-05-19',seat:'06',name:'張品維',type:'absent',note:'住院・進一步檢查與治療（5/19–5/22）'},
+  {id:20,date:'2026-05-20',seat:'06',name:'張品維',type:'absent',note:'住院（5/19–5/22）'},
+  {id:21,date:'2026-05-21',seat:'06',name:'張品維',type:'absent',note:'住院（5/19–5/22）'},
+  {id:22,date:'2026-05-22',seat:'06',name:'張品維',type:'absent',note:'住院（5/19–5/22）'},
+];
+const TL={absent:'請假（全天）',half:'請假（半天）',late:'遲到',early:'早退',errand:'帶功課/跑腿'};
+const TC={absent:'var(--red)',half:'var(--amber)',late:'var(--amber)',early:'var(--amber)',errand:'var(--blue)'};
+
+// ── 行事曆資料 ──
+const calEvents = [
+  {date:'2026-04-01',title:'正式到職上任 🎉',note:'4/1 起帶班至畢業'},
+  {date:'2026-04-03',title:'清明節放假',note:''},
+  {date:'2026-04-07',title:'🎲 導護抽籤',note:'學務處，8:45，導師站導護'},
+  {date:'2026-05-07',title:'🚦 學生站交通隊（開始）',note:'5/7–5/13'},
+  {date:'2026-05-13',title:'🚦 學生站交通隊（結束）',note:'5/7–5/13'},
+  {date:'2026-04-10',title:'⚠️ 國中改分發名單截止',note:'私校錄取名單交教務註冊組（03竹林・04/07/10/18/19南山）・4班老師協助確認'},
+  {date:'2026-04-17',title:'⭐ 期中評量（五）',note:'數學・社會'},
+  {date:'2026-04-15',title:'⭐ 畢業生作業調閱研習 13:30–16:30',note:'詳見紙本通知'},
+  {date:'2026-04-20',title:'特殊展能市長獎截止',note:'有特殊才藝學生可申請'},
+  {date:'2026-04-23',title:'⭐ 作業調閱：練習簿（六年級）',note:'作業需有批改、日期、評量'},
+  {date:'2026-04-30',title:'⭐ 作業調閱：自然（六年級）',note:'作業需有批改、日期、評量'},
+  {date:'2026-05-07',title:'⭐ 作業調閱：年節/年慶（六年級）',note:'作業需有批改、日期、評量'},
+  {date:'2026-05-14',title:'⭐ 作業調閱：作文（六年級）',note:'作業需有批改、日期、評量'},
+  {date:'2026-05-21',title:'⭐ 作業調閱：美勞（六年級）',note:'作業需有批改、日期、評量'},
+  {date:'2026-05-08',time:'13:30–14:10',title:'🎬 畢業影片拍攝（603）',note:'第五節・若有急事通知意萍安排機動時段',urgent:false},
+  {date:'2026-04-22',title:'校慶預演',note:'週三，注意學生服裝及集合時間'},
+  {date:'2026-04-25',title:'15/23號請假',note:'校慶，國中美術班考試'},
+  {date:'2026-04-27',title:'校慶補假',note:''},
+  {date:'2026-05-29',title:'班會記錄表截止',note:'4-6年級需繳交'},
+  {date:'2026-05-29',title:'⭐ 全勤獎結算截止',note:'結算至今日，請確認全勤學生名單'},
+  {date:'2026-06-02',title:'⭐ 成績結算＆得獎名單截止',note:'6/2前完成成績結算，送交得獎名單'},
+  {date:'2026-06-09',title:'🎓 畢典預演（一）',note:'上午'},
+  {date:'2026-06-10',title:'🎓 畢典預演（二）',note:'上午'},
+  {date:'2026-06-11',title:'🎓 畢典預演（三）',note:'上午'},
+  {date:'2026-05-28',title:'⭐ 期末評量第一天（六年級）',note:'國語・數學 L7-9 / U5-6，科目時間待公佈'},
+  {date:'2026-05-29',title:'⭐ 期末評量第二天（六年級）',note:'科目時間待公佈'},
+  {date:'2026-06-02',title:'校外教學：六福村',note:'細節待通知'},
+  {date:'2026-06-12',title:'🎓 畢業典禮',note:'服裝：短袖上衣＋長褲'},
+];
+
+// ── 學生資料 ──
+const students = [
+  {seat:'01',name:'余相羽',tag:'ok',parent:'',rel:'',phone:'',notes:'',contacts:[],bcards:[]},
+  {seat:'02',name:'廖宥誠',tag:'amber',parent:'媽媽',rel:'任職學校對面幼兒園廚房，可當面溝通',phone:'已聯繫',notes:'下課群聚亂跑，曾遭訓導組長介入。上課無特殊異狀。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'接班前主動致電。下課會與特定男生群聚亂跑。媽媽在幼兒園廚房任職，有狀況可直接過去告知。'}],bcards:[]},
+  {seat:'03',name:'彭致皓',tag:'amber',parent:'媽媽',rel:'',phone:'已聯繫',notes:'上課愛講話，自我控制弱。個性愛面子，不宜當眾開玩笑或指正。被稱讚時進步動機強，適合正向引導。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'上課講話問題，家中已多次叮嚀。國中：竹林（確定）。'}],bcards:[{type:'info',label:'🔵 國中：竹林（確定）',content:'4/9前由604老師負責，4/9後家長自行處理'}]},
+  {seat:'04',name:'邢堉瑋',tag:'note',parent:'媽媽',rel:'',phone:'已聯繫',notes:'身形高，輕微近視持續點藥，維持前排座位。人緣佳具影響力，需正向引導。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'接班前致電。座位需求（前排，近視）。國中：南山正取。'}],bcards:[{type:'info',label:'🔵 國中：南山（正取）',content:'4/9前由604老師負責，4/9後家長自行處理'}]},
+  {seat:'05',name:'潘章辰',tag:'ok',parent:'媽媽',rel:'妹妹在本校五年十班',phone:'已聯繫',notes:'個性溫和略散漫。就讀安心班，課業有安心班老師追蹤。有時上課趁機寫功課（非故意違規）。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'孩子個性溫和，無特殊狀況。國中志願臺北市公立，等待分發。'}],bcards:[]},
+  {seat:'06',name:'張品維',tag:'amber',parent:'媽媽',rel:'',phone:'已聯繫',notes:'【身體】蠶豆症，本人已知悉會自行注意。【行為】媽媽表示比較調皮，有時難溝通，家長配合度高，有狀況可直接聯繫。【住院】5/19(二)–5/22(五) 住院進行進一步檢查與治療。',contacts:[{date:'3/31',who:'媽媽',method:'電話',summary:'接班前主動致電。媽媽主動提醒孩子比較調皮、有時難溝通，請老師若有狀況直接聯繫家長。態度配合友善。'},{date:'4月',who:'媽媽',method:'LINE',summary:'醫生建議進一步檢查與治療，已敲定住院時間 5/19(二)–5/22(五)。'}],bcards:[{type:'info',label:'🔵 蠶豆症',content:'本人已了解自身狀況，老師留意相關場合即可'},{type:'warn',label:'⚠️ 行為觀察',content:'媽媽自述孩子較調皮，有時難溝通\n→ 有狀況直接聯繫媽媽，家長配合度高'},{type:'warn',label:'🏥 住院預告',content:'5/19（二）–5/22（五）住院\n進一步檢查與治療\n→ 請假4天，需辦理病假'}]},
+  {seat:'07',name:'鄧臣恩',tag:'amber',parent:'媽媽',rel:'',phone:'已聯繫',notes:'上課注意力偶有不穩定，容易受同儕影響分心。偶爾調皮，曾被記載於聯絡簿。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'擔心上課注意力問題，功課無特別擔憂。態度友善配合。'}],bcards:[{type:'info',label:'🔵 國中：南山（書審正取）',content:'4/9前由604老師負責，4/9後家長自行處理'}]},
+  {seat:'08',name:'歐其諺',tag:'red',parent:'媽媽',rel:'',phone:'已聯繫',notes:'【特生】腎臟手冊。服情緒控管藥，每天主動詢問，未吃→找升駿老師。情緒爆發給10分鐘冷靜。奶奶生病近期情緒較不穩。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'詳述特質：服藥狀況、情緒處理（冷靜10分鐘）、家庭因素（奶奶生病）。資源班輔導老師已主動聯繫。'}],bcards:[{type:'alert',label:'🔴 每日吃藥',content:'每天主動詢問→未吃找升駿老師（8106）\n藥效退後（課後班）情緒不穩易衝突'},{type:'warn',label:'⚠️ 情緒處理',content:'激動時給10分鐘冷靜，不當場溝通\n奶奶生病為近期波動主因'}]},
+  {seat:'09',name:'周威辰',tag:'amber',parent:'媽媽',rel:'',phone:'已聯繫',notes:'國數成績落後，早自習＆午休去加強班，留意是否確實前往。\n【3/31事件】下課玩躲避球，不慎擊中五年三班同學頭部，對方回教室後出現頭暈、噁心想吐症狀，已通知家長就醫。魏晨道歉時未直視對方，對方說沒關係後也未主動陪同至保健室確認。',contacts:[{date:'3/31',who:'媽媽',method:'電話',summary:'導師主動致電說明躲避球事件。媽媽表示願意承擔對方醫療費用，已請魏晨寫小卡片，4/1到校後轉交對方並誠心道歉。四班老師已告知對方家長可直接聯繫9號媽媽。'}],bcards:[{type:'warn',label:'⚠️ 課業加強',content:'早自習＆午休去加強國數\n→留意是否確實前往，給予鼓勵'},{type:'alert',label:'🔴 3/31 躲避球事件（待追蹤）',content:'下課玩躲避球，不慎擊中五年三班同學頭部\n對方：頭暈、噁心想吐，已就醫檢查\n魏晨道歉態度待改善（未直視、未陪同至保健室）\n\n處理狀況：\n・四班老師已聯繫雙方家長\n・9號媽媽願意承擔醫療費用\n・魏晨已準備小卡片，4/1到校後親自道歉\n\n→ 4/1 到班後確認對方同學狀況\n→ 確認魏晨是否完成道歉\n→ 若對方家長有需求，請直接聯繫9號媽媽'}]},
+  {seat:'10',name:'張晏綸',tag:'note',parent:'媽媽',rel:'',phone:'已聯繫',notes:'數學程度尚可，遇熟悉題目容易鬆懈，需提醒專注。禮拜六有補數學。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'提醒數學課遇已會題目容易放鬆。詢問是否延續國語數學練習卷，已確認維持。'}],bcards:[{type:'info',label:'🔵 國中：南山（正取）',content:'原為備取，已確認正取\n4/9前由604老師負責，4/9後家長自行處理'}]},
+  {seat:'11',name:'許展銘',tag:'amber',parent:'媽媽',rel:'',phone:'已聯繫',notes:'人際困難：難以調整被拒絕的行為，對他人私事過度好奇。週二第5節閩南語外加課不在班上。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'媽媽主動反映孩子人際困難及課堂專注問題，有覺察，態度配合。'}],bcards:[{type:'warn',label:'⚠️ 人際觀察',content:'難以調整被拒行為，過度好奇他人私事\n週二第5節（13:30）閩南語外加課，不在班上'}]},
+  {seat:'12',name:'張亦程',tag:'note',parent:'媽媽',rel:'',phone:'已聯繫',notes:'喜歡跟同學聊電動，有時聊太開心會上課講話。目前狀況應已改善，持續觀察。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'孩子整體還好，喜歡聊電動等話題，曾有上課聊天，目前應已改善。'}],bcards:[]},
+  {seat:'13',name:'朱一',tag:'amber',parent:'媽媽',rel:'',phone:'已聯繫',notes:'越高年級越愛玩，玩性大，容易被同儕影響。吃軟不吃硬，建議用正向引導。曾有在走廊玩耍導致同學受傷（粉碎性骨折）事件。有自己的想法，不服輸，但也不吃硬。媽媽非常明理，溝通配合度高。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'接班前主動致電。媽媽表示朱一這學期越來越愛玩、不定性，認為與六年級青春期、同儕影響及換師頻繁有關。曾有走廊玩耍導致同學腳趾粉碎性骨折事件，媽媽已在家教育並讓朱一反省。媽媽態度非常明理，能客觀看待孩子行為，表示希望孩子平安畢業。'}],bcards:[{type:'warn',label:'⚠️ 特質提醒',content:'吃軟不吃硬，建議正向引導而非強硬管教\n容易將事情放大解讀（覺得老師只針對他）\n媽媽已在家說明，親師立場一致'},{type:'info',label:'🔵 過往事件',content:'曾與同學在走廊玩耍，同學腳趾粉碎性骨折\n媽媽已在家教育，了解責任不在單一學生'}]},
+  {seat:'14',name:'陳佳安',tag:'ok',parent:'媽媽',rel:'基督徒家庭，有四個孩子',phone:'已聯繫',notes:'個性乖巧，前任導師金華老師特別推薦為小幫手。4/1第一天已請他協助班級事務，本人也很開心。',contacts:[{date:'4/1',who:'媽媽',method:'LINE',summary:'4/1接班後主動聯繫。媽媽表示孩子今天還OK，第一天沒什麼問題。整體乖巧，無特殊需求，歡迎保持聯繫。'}],bcards:[{type:'ok',label:'✅ 小幫手',content:'前任導師金華老師推薦，個性乖巧可信任\n4/1已請他協助，反應良好'}]},
+  {seat:'15',name:'楊媛安',tag:'red',parent:'媽媽',rel:'媽媽與23號舅媽為親姐妹，可互相聯繫・15/23號為表姐妹，形影不離',phone:'已聯繫',notes:'【重點觀察】與18號洪書琳持續人際衝突。訓導組長已介入。4/25 請假（國中美術班考試，已核假）。私下表達能力強，有影響力，在圈圈裡其他女生蠻聽她的。課堂上反而不愛發言，會覺得「尷尬」，需輕柔鼓勵。數學較弱，有待觀察。',contacts:[{date:'4/2',who:'媽媽',method:'電話',summary:'4/2接班後聯繫。媽媽提到：①數學不擅長，希望老師有空補充說明；②與18號洪書琳（蘇林）有人際糾紛，對方比較敏感，擔心再起衝突，請老師留意座位和排隊距離；③媛安私下表達能力強但課堂不敢發言，媽媽認為是個性使然；④媽媽理解老師剛接班需要時間穩定，不強求立即追進度，請老師多關照。媽媽態度理解配合，溝通愉快。'}],bcards:[{type:'alert',label:'🔴 人際衝突追蹤',content:'與18號洪書琳長期衝突（上學期起）\n訓導組長已知悉\n→若升溫立即會同訓導組長\n4/25 請假：國中美術班考試（與23號同，已核假）\n建議：保持兩人座位和排隊距離'},{type:'warn',label:'⚠️ 課業',content:'數學較弱，期中考前盡量補充說明\n媽媽已理解現況，不強求立即追進度'},{type:'info',label:'🔵 特質觀察',content:'私下表達能力強，在女生圈有影響力\n課堂上不愛發言（覺得尷尬）\n→適性引導，不強迫，可鼓勵帶動群體'}]},
+  {seat:'16',name:'孫苡萱',tag:'amber',parent:'',rel:'家長擔任班費記帳（5月中統一做帳）',phone:'',notes:'氣喘（有噴劑，體育課留意）。能力較弱，作業有交就給肯定，不需過度要求。',contacts:[],bcards:[{type:'info',label:'🔵 氣喘',content:'有時需使用噴劑\n→體育課或劇烈活動時關心'}]},
+  {seat:'17',name:'馬靖耘',tag:'ok',parent:'媽媽',rel:'',phone:'已聯繫',notes:'個性熱心主動，歷年深受老師喜愛。有時過度幫人而忽略自身作業，需適時提醒。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'孩子熱心過頭，有時忘記自己的功課。整體無大問題。'}],bcards:[]},
+  {seat:'18',name:'洪書琳',tag:'red',parent:'媽媽',rel:'',phone:'已聯繫',notes:'【重點觀察】與15號持續人際衝突，曾出現噩夢等壓力反應。個性內斂乖巧。訓導組長已介入。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'說明與楊媛安衝突史及噩夢壓力反應。訓導組長已介入，寒假後稍緩。媽媽每日詢問在校狀況。'}],bcards:[{type:'alert',label:'🔴 心理壓力',content:'長期被挑釁，出現噩夢等壓力反應\n→必要時轉介輔導資源\n→衝突對象：15號楊媛安'},{type:'info',label:'🔵 國中：南山（正取）',content:'4/9前由604老師負責，4/9後家長自行處理'}]},
+  {seat:'19',name:'楊宛寬',tag:'ok',parent:'媽媽',rel:'',phone:'已聯繫',notes:'個性自律，班上較守規矩。對班級混亂感到困擾，媽媽曾讓其請假在家自習。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'提供大量班級背景資訊，強烈建議嚴格管理班級。孩子聽話自律，若有問題會配合。'}],bcards:[{type:'info',label:'🔵 國中：南山（書審正取）',content:'4/9前由604老師負責，4/9後家長自行處理'}]},
+  {seat:'20',name:'許芷瑄',tag:'amber',parent:'爸爸',rel:'主要聯繫對象為爸爸（非媽媽）',phone:'已聯繫',notes:'習慣性遲到，自行步行上學，有安全疑慮。目標 7:50 到校。',contacts:[{date:'3/30',who:'爸爸',method:'電話',summary:'爸爸說明早上整理拖延，表示將協助提醒。'}],bcards:[{type:'warn',label:'⚠️ 遲到追蹤',content:'自行步行上學，有安全疑慮\n目標：7:50 到校\n聯繫對象：爸爸'}]},
+  {seat:'21',name:'劉芊妤',tag:'note',parent:'媽媽',rel:'',phone:'已聯繫',notes:'對公平尊重較敏感，在意是否受到尊重。自治會成員，4/1–4/2 公假。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'孩子對公平敏感，班上人際摩擦偶有抱怨。希望剩餘學期穩定。4/1–4/2自治會公假。'}],bcards:[{type:'info',label:'🔵 公假',content:'4/1–4/2 自治會公假\n→請至校務系統確認是否已登錄'}]},
+  {seat:'22',name:'柯瓔芮',tag:'red',parent:'媽媽',rel:'',phone:'已聯繫',notes:'【特生】利他能，12:40 午餐後主動盯吃藥，她會拖。⚠️星期三不用。情緒固執，激動時溝通困難。對規則一致性需求高。',contacts:[{date:'3/30',who:'媽媽',method:'電話',summary:'詳述用藥需求（利他能12:30）及特質。希望明確班規，延續與資源班合作。'}],bcards:[{type:'alert',label:'🔴 吃藥（週三除外）',content:'12:40 午餐後主動盯（她會拖）\n⚠️ 星期三不用'},{type:'warn',label:'⚠️ 特質',content:'情緒激動時溝通困難，穩定後再引導\n對規則一致性需求高'}]},
+  {seat:'23',name:'高喬亘',tag:'note',parent:'舅媽',rel:'媽媽與15號楊媛安媽媽為親姐妹，聯繫不上15號可找本人・15/23號為表姐妹，形影不離',phone:'已聯繫',notes:'個性直爽，衝突來得快去得快。數學較弱。與15號楊媛安為表姐妹。4/25 請假（已核假）。',contacts:[{date:'3/30',who:'舅媽',method:'電話',summary:'提供豐富班級背景資訊。與15號家長（親姐妹）可互相聯繫。'}],bcards:[{type:'info',label:'🔵 請假預告',content:'4/25 校慶請假：國中美術班考試\n與15號楊媛安同，已核假'}]},
+  {seat:'24',name:'陳巧庭',tag:'amber',parent:'爸爸',rel:'雙胞胎，妹妹在隔壁班607・單親（母親中年級時病逝）',phone:'已聯繫',notes:'【家庭】單親，媽媽中年級時病逝，爸爸工作忙碌，聯繫可能較慢回覆，請耐心等待。妹妹在607班。',contacts:[{date:'3/30',who:'爸爸',method:'電話',summary:'爸爸表示無特殊需求，歡迎保持聯繫。'}],bcards:[{type:'warn',label:'⚠️ 家庭背景',content:'單親，媽媽中年級時病逝\n爸爸工作忙碌，回覆可能較慢，請耐心\n妹妹在607班（雙胞胎）'}]},
+];
+const TG={red:'重點關注',amber:'留意',ok:'穩定',note:'備注'};
+const TGCLS={red:'tg-red',amber:'tg-amb',ok:'tg-grn',note:'tg-blu'};
+
+// ── 近期快覽 ──
+let viewDays = 1;
+
+function setDays(n, btn){
+  viewDays = n;
+  document.querySelectorAll('#btn-d1,#btn-d2,#btn-d7').forEach(b=>{
+    b.style.background = 'var(--surface)';
+    b.style.color = 'var(--t2)';
+    b.style.borderColor = 'var(--border)';
+  });
+  btn.style.background = 'var(--green)';
+  btn.style.color = '#fff';
+  btn.style.borderColor = 'var(--green)';
+  renderToday();
+}
+
+function getDates(n){
+  const dates=[];
+  for(let i=0;i<n;i++){
+    const d=new Date(NOW);
+    d.setDate(d.getDate()+i);
+    dates.push(iso(d));
+  }
+  return dates;
+}
+
+function dayLabel(dateStr){
+  const d = new Date(dateStr);
+  const diff = Math.round((d-new Date(TODAY))/(1000*60*60*24));
+  const wd = ['日','一','二','三','四','五','六'][d.getDay()];
+  const mmdd = dateStr.slice(5).replace('-','/');
+  if(diff===0) return `今天 ${mmdd}（週${wd}）`;
+  if(diff===1) return `明天 ${mmdd}（週${wd}）`;
+  return `${mmdd}（週${wd}）`;
+}
+
+function renderToday(){
+  const dates = getDates(viewDays);
+  const dayMap={'every-sun':0,'every-mon':1,'every-tue':2,'every-wed':3,'every-thu':4,'every-fri':5,'every-sat':6};
+
+  // 標題更新
+  const lbl = viewDays===1?'今天':viewDays===2?'今明兩天':'本週（7天）';
+  const setLbl=(id,t)=>{const e=document.getElementById(id);if(e)e.textContent=t;};
+  setLbl('lbl-events',`🗓 ${lbl}行程`);
+  setLbl('lbl-abs',`🏠 ${lbl}請假／異動`);
+  setLbl('lbl-out',`🚶 ${lbl}離開教室`);
+  setLbl('lbl-remind',`🔔 ${lbl}提醒`);
+
+  // ── 行程 ──
+  const evEl = document.getElementById('today-events');
+  if(evEl){
+    let html='';
+    dates.forEach(d=>{
+      const evs = events.filter(e=>e.date===d);
+      if(!evs.length) return;
+      if(viewDays>1) html+=`<div style="font-size:11px;font-weight:700;color:var(--t3);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.06em">${dayLabel(d)}</div>`;
+      html+=evs.map(e=>`
+        <div class="row" style="align-items:flex-start">
+          <span class="mono" style="min-width:65px;padding-top:2px">${e.time}</span>
+          <div>
+            <div class="bold" style="font-size:14px${e.urgent?';color:var(--red)':''}">${e.urgent?'⚠️ ':''}${e.title}</div>
+            ${e.note?`<div class="sm">${e.note}</div>`:''}
+          </div>
+        </div>`).join('');
+    });
+    evEl.innerHTML = html || '<div class="sm" style="padding:6px 0">✓ 無行程</div>';
+  }
+
+  // ── 請假 ──
+  const absEl = document.getElementById('today-abs');
+  const errEl = document.getElementById('today-err');
+  if(absEl){
+    let html='';
+    dates.forEach(d=>{
+      const abs = atts.filter(r=>r.date===d && r.type!=='errand');
+      const err = atts.filter(r=>r.date===d && r.type==='errand');
+      if(!abs.length && !err.length) return;
+      if(viewDays>1 && (abs.length||err.length)) html+=`<div style="font-size:11px;font-weight:700;color:var(--t3);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.06em">${dayLabel(d)}</div>`;
+      html+=abs.map(r=>`<div class="row" style="align-items:center;flex-wrap:wrap">
+        <span class="mono" style="width:22px">${r.seat}</span>
+        <span class="bold">${r.name}</span>
+        <span class="tag ${r.type==='absent'?'tg-red':'tg-amb'}" style="margin-left:4px">${TL[r.type]}</span>
+        <span class="sm" style="flex:1;margin-left:6px">${r.note}</span>
+      </div>`).join('');
+      if(err.length) html+=`<div class="xs" style="margin:6px 0 3px;font-weight:700">🎒 帶功課/跑腿</div>`
+        +err.map(r=>`<div class="row" style="align-items:center"><span class="bold">${r.name}</span><span class="sm" style="margin-left:8px">${r.note}</span></div>`).join('');
+    });
+    absEl.innerHTML = html || '<div class="sm" style="padding:6px 0">✓ 無請假／異動</div>';
+  }
+  if(errEl) errEl.innerHTML='';
+
+  // ── 離開教室 ──
+  const outEl = document.getElementById('today-out');
+  if(outEl){
+    let html='';
+    dates.forEach(d=>{
+      const dow = new Date(d).getDay();
+      const outs = outData.filter(o=> dayMap[o.date]!==undefined ? dow===dayMap[o.date] : o.date===d);
+      if(!outs.length) return;
+      if(viewDays>1) html+=`<div style="font-size:11px;font-weight:700;color:var(--t3);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.06em">${dayLabel(d)}</div>`;
+      html+=outs.map(o=>`<div class="row" style="align-items:center;flex-wrap:wrap">
+        <span class="mono" style="width:22px">${o.seat}</span>
+        <span class="bold">${o.name}</span>
+        <span class="sm" style="margin-left:6px">${o.time}・${o.reason}</span>
+      </div>`).join('');
+    });
+    outEl.innerHTML = html || '<div class="sm" style="padding:6px 0">✓ 無</div>';
+  }
+
+  // ── 提醒 ──
+  const remEl = document.getElementById('today-remind');
+  if(remEl){
+    let html='';
+    dates.forEach(d=>{
+      const dow = new Date(d).getDay();
+      const rems = reminders.filter(r=> dayMap[r.date]!==undefined ? dow===dayMap[r.date] : r.date===d);
+      if(!rems.length) return;
+      if(viewDays>1) html+=`<div style="font-size:11px;font-weight:700;color:var(--t3);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.06em">${dayLabel(d)}</div>`;
+      html+=rems.map(r=>`<div class="row" style="align-items:flex-start">
+        <span class="mono" style="width:22px">${r.seat}</span>
+        <span class="bold" style="min-width:54px">${r.name}</span>
+        <span class="sm">${r.note}</span>
+      </div>`).join('');
+    });
+    remEl.innerHTML = html || '<div class="sm" style="padding:6px 0">✓ 無</div>';
+  }
+
+  // ── 帶功課/跑腿 ──
+  const errandEl = document.getElementById('today-errand');
+  if(errandEl){
+    let html='';
+    dates.forEach(d=>{
+      const errs = atts.filter(r=>r.date===d && r.type==='errand');
+      if(!errs.length) return;
+      if(viewDays>1) html+=`<div style="font-size:11px;font-weight:700;color:var(--t3);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.06em">${dayLabel(d)}</div>`;
+      html+=errs.map(r=>`<div class="row" style="align-items:center;flex-wrap:wrap">
+        <span class="bold" style="min-width:54px">${r.name}</span>
+        <span class="sm" style="flex:1">${r.note}</span>
+      </div>`).join('');
+    });
+    errandEl.innerHTML = html || '<div class="sm" style="padding:6px 0">✓ 無</div>';
+  }
+  const erLbl = document.getElementById('lbl-errand');
+  if(erLbl) erLbl.textContent = viewDays===1?'🎒 今天帶功課/跑腿':viewDays===2?'🎒 今明帶功課/跑腿':'🎒 本週帶功課/跑腿';
+
+  // 週三22號不用吃藥（只看今天）
+  const m22r = document.getElementById('m22row');
+  if(m22r) m22r.style.display = DOW===3 ? 'none' : 'flex';
+}
+renderToday();
+
+// ── 出勤 ──
+const attDate = document.getElementById('at-date');
+if(attDate) attDate.value = TODAY;
+
+function addAtt(){
+  const d=document.getElementById('at-date')?.value;
+  const t=document.getElementById('at-type')?.value;
+  const s=document.getElementById('at-seat')?.value.trim();
+  const n=document.getElementById('at-name')?.value.trim();
+  const nt=document.getElementById('at-note')?.value.trim();
+  if(!d||!n){alert('請填入日期和姓名');return;}
+  atts.unshift({id:nid++,date:d,seat:s||'',name:n,type:t,note:nt||''});
+  if(document.getElementById('at-seat')) document.getElementById('at-seat').value='';
+  if(document.getElementById('at-name')) document.getElementById('at-name').value='';
+  if(document.getElementById('at-note')) document.getElementById('at-note').value='';
+  renderAtt(); renderToday();
+}
+
+function delAtt(id){
+  if(!confirm('確定刪除？'))return;
+  atts=atts.filter(r=>r.id!==id);
+  renderAtt(); renderToday();
+}
+
+function renderAtt(){
+  const q=(document.getElementById('at-q')||{}).value?.trim()||'';
+
+  // 本週請假（今天起7天）
+  const todayAbsEl = document.getElementById('att-today');
+  if(todayAbsEl){
+    const weekDates = getDates(7);
+    let html='';
+    weekDates.forEach(d=>{
+      const dayList = atts.filter(r=>r.date===d && r.type!=='errand' && (!q||r.name.includes(q)));
+      if(!dayList.length) return;
+      html += `<div style="font-size:11px;font-weight:700;color:var(--t3);margin:8px 0 4px">${dayLabel(d)}</div>`;
+      html += dayList.map(r=>`<div class="row" style="align-items:center;flex-wrap:wrap">
+          <span class="mono" style="width:22px">${r.seat||'—'}</span>
+          <span class="bold">${r.name}</span>
+          <span class="tag ${r.type==='absent'?'tg-red':'tg-amb'}" style="margin-left:4px">${TL[r.type]}</span>
+          <span class="sm" style="flex:1;margin-left:6px">${r.note}</span>
+        </div>`).join('');
+    });
+    todayAbsEl.innerHTML = html || '<div class="sm" style="padding:6px 0">✓ 本週無請假／異動</div>';
+  }
+
+  // 出勤紀錄：由舊到新（小到大）
+  const list = atts.filter(r=>r.type!=='errand'&&(!q||r.name.includes(q))).sort((a,b)=>a.date.localeCompare(b.date));
+  const el=document.getElementById('att-list');
+  if(el) el.innerHTML = list.length
+    ? list.map(r=>`<div class="row" style="flex-wrap:wrap;align-items:center">
+        <span class="mono" style="min-width:48px">${r.date.slice(5).replace('-','/')}</span>
+        <span class="mono" style="width:22px">${r.seat||'—'}</span>
+        <span class="bold" style="min-width:54px">${r.name}</span>
+        <span class="tag ${r.type==='absent'?'tg-red':r.type==='errand'?'tg-blu':'tg-amb'}">${TL[r.type]}</span>
+        <span class="sm" style="flex:1;margin-left:6px">${r.note}</span>
+        <button onclick="delAtt(${r.id})" style="border:none;background:none;color:var(--t3);cursor:pointer;font-size:16px;padding:0 2px;flex-shrink:0">✕</button>
+      </div>`).join('')
+    : '<div class="sm" style="padding:8px 0">尚無紀錄</div>';
+
+  const errs=atts.filter(r=>r.type==='errand'&&(!q||r.name.includes(q))).sort((a,b)=>a.date.localeCompare(b.date));
+  const el2=document.getElementById('err-list');
+  if(el2) el2.innerHTML = errs.length
+    ? errs.map(r=>`<div class="row" style="flex-wrap:wrap;align-items:center">
+        <span class="mono" style="min-width:48px">${r.date.slice(5).replace('-','/')}</span>
+        <span class="bold" style="min-width:54px">${r.name}</span>
+        <span class="sm" style="flex:1">${r.note}</span>
+        <button onclick="delAtt(${r.id})" style="border:none;background:none;color:var(--t3);cursor:pointer;font-size:16px;padding:0 2px">✕</button>
+      </div>`).join('')
+    : '<div class="sm" style="padding:8px 0">尚無紀錄</div>';
+}
+renderAtt();
+
+// ── 行事曆 ──
+function renderCal(){
+  const el=document.getElementById('cal-list');
+  if(!el) return;
+  const sorted=[...calEvents].sort((a,b)=>a.date.localeCompare(b.date));
+
+  // 依月份分組
+  const months={};
+  sorted.forEach(e=>{
+    const m = e.date.slice(0,7); // 2026-04
+    if(!months[m]) months[m]=[];
+    months[m].push(e);
+  });
+
+  const monthLabel={'2026-04':'4月','2026-05':'5月','2026-06':'6月'};
+  const dayLabel=['日','一','二','三','四','五','六'];
+
+  el.innerHTML = Object.keys(months).map(m=>{
+    const events = months[m];
+    return `
+      <div style="margin-bottom:18px">
+        <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:8px;padding:6px 10px;background:var(--gl);border-radius:8px">${monthLabel[m]||m.slice(5)+'月'}</div>
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead>
+            <tr style="background:var(--s2)">
+              <th style="padding:6px 8px;text-align:left;font-weight:600;color:var(--t3);width:52px;font-size:11px">日期</th>
+              <th style="padding:6px 8px;text-align:left;font-weight:600;color:var(--t3);font-size:11px">事項</th>
+              <th style="padding:6px 8px;text-align:left;font-weight:600;color:var(--t3);font-size:11px">備注</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${events.map(e=>{
+              const d = new Date(e.date);
+              const past = e.date < TODAY;
+              const dow = dayLabel[d.getDay()];
+              const isWeekend = d.getDay()===0||d.getDay()===6;
+              return `<tr style="border-bottom:1px solid var(--s2);opacity:${past?.4:1}">
+                <td style="padding:7px 8px;white-space:nowrap">
+                  <span style="font-family:'DM Mono',monospace;font-size:12px">${e.date.slice(5).replace('-','/')}</span>
+                  <span style="font-size:11px;color:${isWeekend?'var(--red)':'var(--t3)'};margin-left:3px">（${dow}）</span>
+                </td>
+                <td style="padding:7px 8px;font-weight:500">${e.title}</td>
+                <td style="padding:7px 8px;font-size:12px;color:var(--t2)">${e.note||''}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }).join('');
+}
+renderCal();
+
+// ── 課表渲染 ──
+const G = '#d4edda'; // 導師綠底
+const Y = '#fff3cd'; // 特殊黃底
+const W = 'var(--surface)'; // 一般白底
+const S = 'var(--s2)'; // 科任灰底
+
+// 格式：[科目, 底色]
+// 導師科目：國語、數學、綜合、本土語言、健康
+const schedule = [
+  // [節次標籤, 時間, 週一, 週二, 週三, 週四, 週五]
+  ['第0節','08:00–08:40', ['505鄧芽專輔',Y], ['晨間共讀\n永平電視台\n導師時間',Y], ['英語',S], ['晨間共讀\n導師時間',Y], ['8號門\n學習策略',Y]],
+  ['第1節','08:50–09:30', ['數學',G], ['社會',S], ['體育',S], ['數學',G], ['校訂',S]],
+  ['第2節','09:40–10:20', ['國語',G], ['社會',S], ['數學',G], ['國語',G], ['校訂',S]],
+  ['第3節','10:30–11:10', ['美勞',S], ['數學',G], ['國語',G], ['電腦',S], ['國語',G]],
+  ['第4節','11:20–12:00', ['美勞',S], ['國語',G], ['導師時間',Y], ['自然',S], ['社會',S]],
+  ['午間','12:00–13:30', ['午餐・午休',W], ['午餐・午休\n6藝電腦語音科技',W], ['午餐・午休\n8號門學習策略',W], ['午餐・午休',W], ['午餐・午休\n8號門國中生活',W]],
+  ['第5節','13:30–14:10', ['自然',S], ['本土語言',G], ['—',W], ['健康',G], ['體育',S]],
+  ['第6節','14:20–15:00', ['自然',S], ['英語',S], ['—',W], ['校訂',S], ['音樂',S]],
+  ['第7節','15:20–16:00', ['綜合',G], ['綜合',G], ['—',W], ['校訂',S], ['英語',S]],
+  ['課後','16:00–', ['社團',Y], ['7302慧涵國語',Y], ['—',W], ['6101怡如數學',Y], ['—',W]],
+];
+
+function renderSchedule(){
+  const el = document.getElementById('schedule-body');
+  if(!el) return;
+  el.innerHTML = schedule.map(row => {
+    const [label, time, ...days] = row;
+    return `<tr>
+      <td style="padding:6px;border:1px solid var(--border);text-align:center;background:var(--s2)">
+        <div style="font-weight:600;font-size:11px">${label}</div>
+        <div style="font-size:10px;color:var(--t3)">${time}</div>
+      </td>
+      ${days.map(([subj, bg]) => `
+        <td style="padding:5px 4px;border:1px solid var(--border);text-align:center;background:${bg};font-size:12px;line-height:1.4;white-space:pre-line">${subj}</td>
+      `).join('')}
+    </tr>`;
+  }).join('');
+}
+renderSchedule();
+
+// ── 教學進度表：過去日期自動灰底 ──
+function greyPastRows(){
+  const tables = document.querySelectorAll('#tab-schedule table');
+  if(!tables.length) return;
+  const table = tables[tables.length - 1];
+  const rows = table.querySelectorAll('tbody tr');
+  const todayMs = new Date(TODAY).getTime();
+  
+  rows.forEach(row => {
+    // 掃這行所有cell，找格式為 M/D 的日期
+    let rowDate = null;
+    for(const cell of row.cells){
+      const txt = cell.textContent.trim();
+      if(/^\d{1,2}\/\d{1,2}$/.test(txt)){
+        const [m,d] = txt.split('/').map(Number);
+        rowDate = new Date(2026, m-1, d).getTime();
+        break;
+      }
+    }
+    if(!rowDate) return;
+    if(rowDate < todayMs){
+      for(const cell of row.cells){
+        const bg = cell.style.backgroundColor;
+        // 保留黃底(校慶)和綠底(考試)不灰化
+        if(bg === 'rgb(255, 243, 205)' || bg === 'rgb(212, 237, 218)') continue;
+        cell.style.backgroundColor = '#e0e0e0';
+        cell.style.color = '#999';
+      }
+    }
+  });
+}
+setTimeout(greyPastRows, 300);
+
+// ── 家長聯繫 ──
+function renderContacts(){
+  const q=(document.getElementById('ct-q')||{}).value?.trim()||'';
+  const el=document.getElementById('ct-list');
+  if(!el) return;
+  const list=students.filter(s=>s.contacts.length>0&&(!q||s.name.includes(q)));
+  el.innerHTML=list.map(s=>`
+    <div class="row" style="cursor:pointer;align-items:center" onclick="openModal(${students.indexOf(s)})">
+      <span class="mono" style="width:22px">${s.seat}</span>
+      <span class="bold" style="min-width:60px">${s.name}</span>
+      <span class="tag ${TGCLS[s.tag]}" style="margin-right:6px">${TG[s.tag]}</span>
+      <span class="sm" style="flex:1">${s.contacts[0].summary.substring(0,40)}…</span>
+    </div>`).join('');
+}
+renderContacts();
+
+function openModal(i){
+  const s=students[i];
+  const modal=document.getElementById('ct-modal');
+  if(!modal) return;
+  const set=(id,v,p='innerHTML')=>{const e=document.getElementById(id);if(e)e[p]=v;};
+  set('m-seat',`座號 ${s.seat}`,'textContent');
+  set('m-name',s.name,'textContent');
+  set('m-tag',TG[s.tag],'textContent');
+  set('m-info',`
+    <div class="ig-item"><label>家長</label><span>${s.parent||'—'}</span></div>
+    <div class="ig-item"><label>聯繫狀況</label><span>${s.phone||'—'}</span></div>
+    <div class="ig-item ig-full"><label>備注</label><span style="font-weight:400;font-size:13px">${s.rel||'—'}</span></div>`);
+  set('m-contacts',s.contacts.length
+    ? s.contacts.map(c=>`<div class="bc info"><div class="xs">${c.date}　${c.who}　${c.method}</div><div class="bc-b">${c.summary}</div></div>`).join('')
+    : '<div class="sm">尚無聯繫紀錄</div>');
+  set('m-notes', s.notes
+    ? `<div class="bc"><div class="bc-b">${s.notes}</div></div>`+s.bcards.map(b=>`<div class="bc ${b.type}"><div class="bc-t">${b.label}</div><div class="bc-b">${b.content}</div></div>`).join('')
+    : '<div class="sm">尚無記錄</div>');
+  modal.classList.add('on');
+}
+
+// ── 班費 ──
+let fins = [
+  {id:1, date:'2025-12-01', type:'in',  amount:5912,  desc:'上學期結餘（前期餘額）', receipt:''},
+  {id:2, date:'2026-03-01', type:'in',  amount:12000, desc:'本學期班費收繳', receipt:''},
+  {id:3, date:'2026-03-09', type:'out', amount:100,   desc:'垃圾袋', receipt:'全家永和耕幸店'},
+  {id:4, date:'2026-03-09', type:'out', amount:344,   desc:'影印費', receipt:''},
+  {id:5, date:'2026-03-17', type:'out', amount:1380,  desc:'數學重點復習 23本×$60', receipt:'兩果書局'},
+  {id:6, date:'2026-03-17', type:'out', amount:1380,  desc:'國語練習本 23本×$60', receipt:'擊華書局 79418'},
+  {id:7, date:'2026-03-27', type:'out', amount:180,   desc:'影印費', receipt:'單據已取回'},
+];
+let fnid = 8;
+
+const finDate = document.getElementById('fin-date');
+if(finDate) finDate.value = TODAY;
+
+function addFin(){
+  const d = document.getElementById('fin-date')?.value;
+  const t = document.getElementById('fin-type')?.value;
+  const a = parseFloat(document.getElementById('fin-amount')?.value);
+  const desc = document.getElementById('fin-desc')?.value.trim();
+  const receipt = document.getElementById('fin-receipt')?.value.trim();
+  if(!d || !a || !desc){ alert('請填入日期、金額和項目說明'); return; }
+  fins.unshift({id:fnid++, date:d, type:t, amount:a, desc, receipt:receipt||''});
+  if(document.getElementById('fin-amount')) document.getElementById('fin-amount').value='';
+  if(document.getElementById('fin-desc')) document.getElementById('fin-desc').value='';
+  if(document.getElementById('fin-receipt')) document.getElementById('fin-receipt').value='';
+  renderFin();
+}
+
+function delFin(id){
+  if(!confirm('確定刪除？')) return;
+  fins = fins.filter(f=>f.id!==id);
+  renderFin();
+}
+
+function renderFin(){
+  const income = fins.filter(f=>f.type==='in').reduce((s,f)=>s+f.amount,0);
+  const expense = fins.filter(f=>f.type==='out').reduce((s,f)=>s+f.amount,0);
+  const balance = income - expense;
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  set('fin-income', income.toLocaleString());
+  set('fin-expense', expense.toLocaleString());
+  set('fin-balance', balance.toLocaleString());
+  const balEl = document.getElementById('fin-balance');
+  if(balEl) balEl.style.color = balance>=0 ? 'var(--green)' : 'var(--red)';
+
+  const el = document.getElementById('fin-list');
+  if(!el) return;
+  const sorted = [...fins].sort((a,b)=>b.date.localeCompare(a.date));
+  el.innerHTML = sorted.map(f=>`
+    <div class="row" style="flex-wrap:wrap;align-items:center">
+      <span class="mono" style="min-width:50px">${f.date.slice(5).replace('-','/')}</span>
+      <span class="tag ${f.type==='in'?'tg-grn':'tg-red'}" style="flex-shrink:0">${f.type==='in'?'收入':'支出'}</span>
+      <span class="bold" style="font-family:'DM Mono',monospace;min-width:60px;text-align:right;margin-left:6px;color:${f.type==='in'?'var(--green)':'var(--red)'}">${f.type==='in'?'+':'-'}${f.amount.toLocaleString()}</span>
+      <span class="sm" style="flex:1;margin-left:8px">${f.desc}</span>
+      ${f.receipt?`<span class="xs" style="width:100%;margin-left:72px">📄 ${f.receipt}</span>`:''}
+      <button onclick="delFin(${f.id})" style="border:none;background:none;color:var(--t3);cursor:pointer;font-size:16px;padding:0 2px;flex-shrink:0">✕</button>
+    </div>`).join('');
+}
+renderFin();
 </script>
 </body>
 </html>
