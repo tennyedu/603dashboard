@@ -205,6 +205,16 @@ input:focus,select:focus{border-color:var(--green);}
     </div>
   </div>
 
+  <!-- Google月曆樣式 -->
+  <div class="card" style="padding:10px">
+    <div class="ct">📅 5月</div>
+    <div id="cal-may"></div>
+  </div>
+  <div class="card" style="padding:10px">
+    <div class="ct">📅 6月</div>
+    <div id="cal-jun"></div>
+  </div>
+
   <div class="card">
     <div class="ct">📅 本學期重要行事曆</div>
     <div id="cal-list"></div>
@@ -770,6 +780,9 @@ const events = [
   {date:'2026-05-11',time:'',title:'💰 六福村學生開始繳費',note:'1000元/人・低收入戶可申請補助',urgent:false},
   {date:'2026-05-20',time:'10:30–11:10',title:'🌿 行動環保教育車 2.0（603）',note:'第三節・淨零未來館體驗活動\n→ 上課前帶學生到行動車現場・下課鐘結束\n→ 活動前先將學生分為三小組\n→ 若下雨備案：至善樓大辦公室進行',urgent:false},
   {date:'2026-05-18',time:'上午',title:'🚨 六福村逃生演練',note:'',urgent:false},
+  {date:'2026-05-07',time:'10:30–11:10',title:'⭐ 08號歐其諺 職能治療（第1次）',note:'第三節・第三會議室（合作社隔壁）・個管老師：張升駿',urgent:true},
+  {date:'2026-05-15',time:'11:20–12:00',title:'⭐ 09號周威辰 鑑定安置會議',note:'資源班 8號門',urgent:true},
+  {date:'2026-05-22',time:'',title:'EQ課（輔導主任）',note:'本學期EQ課',urgent:false},
   {date:'2026-05-13',time:'13:30',title:'教師午會＋領域教學研究會',note:'',urgent:false},
   {date:'2026-05-20',time:'13:30',title:'全校研習【輔導知能】',note:'視聽教室，3小時',urgent:false},
   {date:'2026-06-02',time:'整天',title:'校外教學：六福村',note:'細節待通知',urgent:false},
@@ -809,6 +822,7 @@ const reminders = [
   {date:'2026-04-30',seat:'',name:'⚠️ 今天截止：六福村領隊需求表',note:'上學年資訊系統填寫'},
   {date:'2026-05-05',seat:'',name:'⚠️ 明天截止：六福村報名表',note:'明天5/6收回・確認班上收齊'},
   {date:'2026-05-06',seat:'',name:'⚠️ 今天截止：六福村報名表',note:'收齊後統一上傳・同時開始收保險名單'},
+  {date:'2026-05-07',seat:'08',name:'歐其諺',note:'⚠️ 10:30–11:10 職能治療（第1次）・第三會議室（合作社隔壁）'},
   {date:'2026-05-07',seat:'',name:'⚠️ 明天截止：六福村保險名單',note:'5/8前完成各班保險名單（學生和大人分開填）\n→ 建議共編，勿下載\n→ 也要完成收費清冊（參考範例）'},
   {date:'2026-05-08',seat:'',name:'⚠️ 今天截止：六福村保險名單＋收費清冊',note:'1. 保險名單：學生和大人分開填，建議共編勿下載\n2. 收費清冊：參考範例完成'},
   {date:'2026-05-10',seat:'',name:'💰 明天起：六福村學生繳費',note:'1000元/人・低收入戶可申請補助'},
@@ -819,7 +833,10 @@ const reminders = [
   {date:'2026-05-20',seat:'',name:'💰 六福村繳費收回',note:'5/13發出，預計收費一週'},
   {date:'2026-05-19',seat:'',name:'🌿 明天環保教育車',note:'5/20第三節 10:30–11:10・記得提前將學生分三小組'},
   {date:'2026-05-20',seat:'',name:'🌿 今天環保教育車（第三節）',note:'10:30 帶學生到行動車現場・分三小組・下雨備案：至善樓大辦公室'},
+  {date:'2026-05-15',seat:'09',name:'周威辰',note:'⚠️ 11:20–12:00 鑑定安置會議・資源班8號門'},
   {date:'2026-05-21',seat:'',name:'⭐ 作業調閱：美勞',note:'作業需有批改、日期、評量'},
+  {date:'2026-05-22',seat:'',name:'EQ課',note:'輔導主任上課，本學期EQ課'},
+  {date:'2026-05-22',seat:'',name:'EQ課',note:'輔導主任上課，本學期EQ課'},
   {date:'2026-05-27',seat:'',name:'⭐ 作業抽查：國語',note:'請提前確認學生作業狀況'},
   {date:'2026-05-28',seat:'',name:'⚠️ 全勤獎明天結算',note:'5/29截止，提前確認全勤學生名單'},
   {date:'2026-05-29',seat:'',name:'⭐ 全勤獎結算截止',note:'今日結算，確認全勤名單並準備送交'},
@@ -888,6 +905,8 @@ const calEvents = [
   {date:'2026-05-08',title:'📝 六福村保險名單＋收費清冊截止',note:'保險名單學生/大人分開填・完成收費清冊'},
   {date:'2026-05-13',title:'💰 發六福村繳費單',note:'預計收費一週'},
   {date:'2026-05-11',title:'💰 六福村學生繳費開始',note:'1000元/人'},
+  {date:'2026-05-15',title:'⭐ 09號周威辰 鑑定安置會議',note:'11:20–12:00・資源班 8號門'},
+  {date:'2026-05-22',title:'EQ課（輔導主任）',note:'本學期EQ課'},
   {date:'2026-05-13',title:'📚 學年聚會：五年級教科書評選',note:'12:30 六年八班教室'},
   {date:'2026-05-18',title:'🚨 六福村逃生演練',note:'上午'},
   {date:'2026-05-29',title:'班會記錄表截止',note:'4-6年級需繳交'},
@@ -1207,6 +1226,81 @@ function renderCal(){
   }).join('');
 }
 renderCal();
+
+// ── Google月曆樣式渲染 ──
+const calendarEvents = {
+  '2026-05-04': [{emoji:'🔵',text:'L8形式深究・複習英U3'}],
+  '2026-05-06': [{emoji:'🟡',text:'畢業考審題 12:30'},{emoji:'🟢',text:'六福村報名截止'}],
+  '2026-05-07': [{emoji:'⭐',text:'08號職能治療 10:30'},{emoji:'⚠️',text:'明天六福村保險截止'}],
+  '2026-05-08': [{emoji:'🟢',text:'六福村保險+收費清冊截止'},{emoji:'🎬',text:'畢業影片拍攝 13:30'}],
+  '2026-05-11': [{emoji:'💰',text:'六福村繳費開始'}],
+  '2026-05-13': [{emoji:'🟡',text:'教科書評選 12:30'},{emoji:'💰',text:'發六福村繳費單'},{emoji:'📝',text:'作業調閱：作文'}],
+  '2026-05-14': [{emoji:'📝',text:'作業調閱：作文'}],
+  '2026-05-15': [{emoji:'⭐',text:'09號鑑定安置 11:20'}],
+  '2026-05-18': [{emoji:'🚨',text:'六福村逃生演練（上午）'}],
+  '2026-05-19': [{emoji:'🏥',text:'06號張品維住院→'}],
+  '2026-05-20': [{emoji:'🌿',text:'環保教育車 10:30'},{emoji:'🏥',text:'06號住院中'}],
+  '2026-05-21': [{emoji:'📝',text:'作業調閱：美勞'},{emoji:'🏥',text:'06號住院中'}],
+  '2026-05-22': [{emoji:'🟡',text:'EQ課（輔導主任）'},{emoji:'🏥',text:'06號住院最後天'}],
+  '2026-05-27': [{emoji:'📝',text:'作業抽查：國語'}],
+  '2026-05-28': [{emoji:'📝',text:'期末評量第一天'}],
+  '2026-05-29': [{emoji:'📝',text:'期末評量第二天'},{emoji:'🟢',text:'全勤獎結算截止'}],
+  '2026-06-02': [{emoji:'🔵',text:'校外教學：六福村'},{emoji:'🟢',text:'成績結算截止'}],
+  '2026-06-09': [{emoji:'🎓',text:'畢典預演（一）'}],
+  '2026-06-10': [{emoji:'🎓',text:'畢典預演（二）'}],
+  '2026-06-11': [{emoji:'🎓',text:'畢典預演（三）'}],
+  '2026-06-12': [{emoji:'🎓',text:'畢業典禮'}],
+};
+
+function renderMonthCal(year, month, elId) {
+  const el = document.getElementById(elId);
+  if(!el) return;
+  const days = ['日','一','二','三','四','五','六'];
+  const firstDay = new Date(year, month-1, 1).getDay();
+  const lastDate = new Date(year, month, 0).getDate();
+  const today = new Date(TODAY);
+
+  let html = `<table style="width:100%;border-collapse:collapse;font-size:11px">
+    <thead><tr>`;
+  days.forEach((d,i) => {
+    const color = i===0?'var(--red)':i===6?'var(--blue)':'var(--t3)';
+    html += `<th style="padding:4px 2px;text-align:center;font-size:11px;color:${color};font-weight:600;border-bottom:2px solid var(--border)">${d}</th>`;
+  });
+  html += '</tr></thead><tbody><tr>';
+
+  // 空格
+  for(let i=0;i<firstDay;i++) html += '<td style="padding:2px;border:1px solid var(--s2)"></td>';
+
+  for(let d=1;d<=lastDate;d++){
+    const col = (firstDay+d-1)%7;
+    const dateStr = `${year}-${String(month).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = dateStr===TODAY;
+    const isPast = new Date(year,month-1,d) < today;
+    const isWeekend = col===0||col===6;
+    const evs = calendarEvents[dateStr]||[];
+
+    const dayColor = col===0?'#c00':col===6?'#00c':'inherit';
+    const bgCell = isPast?'#f5f5f5':isToday?'#e8f4f0':'white';
+    const opacity = isPast?'0.6':'1';
+
+    html += `<td style="padding:3px 2px;border:1px solid var(--s2);vertical-align:top;min-height:60px;background:${bgCell};opacity:${opacity}">
+      <div style="font-weight:${isToday?'700':'400'};color:${isToday?'var(--green)':dayColor};${isToday?'background:var(--green);color:white;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 2px;':'text-align:center;margin-bottom:2px;'}">${d}</div>
+      ${evs.map(e=>`<div style="font-size:9px;line-height:1.3;margin-bottom:1px;overflow:hidden;background:${e.emoji==='🟢'?'#d4edda':e.emoji==='⭐'?'#fff3cd':e.emoji==='🎓'?'#e8eef8':e.emoji==='📝'?'#f0eaf8':'#f0f0f0'};border-radius:3px;padding:1px 3px">${e.emoji} ${e.text}</div>`).join('')}
+    </td>`;
+
+    if(col===6 && d<lastDate) html += '</tr><tr>';
+  }
+
+  // 尾部空格
+  const remaining = 6 - (firstDay+lastDate-1)%7;
+  if(remaining<6) for(let i=0;i<remaining;i++) html += '<td style="padding:2px;border:1px solid var(--s2);background:#f9f9f9"></td>';
+
+  html += '</tr></tbody></table>';
+  el.innerHTML = html;
+}
+
+renderMonthCal(2026,5,'cal-may');
+renderMonthCal(2026,6,'cal-jun');
 
 // ── 課表渲染 ──
 const G = '#d4edda'; // 導師綠底
