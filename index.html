@@ -1323,11 +1323,11 @@ const calendarEvents = {
   '2026-05-08': [{emoji:'📝',text:'作文訂正課（下午三節）'},{emoji:'🟢',text:'六福村保險+收費清冊截止'},{emoji:'🎬',text:'畢業影片拍攝 13:30'}],
   '2026-05-11': [{emoji:'💰',text:'六福村繳費開始 $1000/人'}],
   '2026-05-13': [{emoji:'🟡',text:'開會：五年級教科書評選 12:30 六年八班'},{emoji:'💰',text:'發六福村繳費單'},{emoji:'📝',text:'作業調閱：作文'}],
-  '2026-05-14': [{emoji:'⭐',text:'適性閱讀施測 08:50圖書館（08:40出發）'},{emoji:'🗳',text:'班會（記錄表截止5/29）'},{emoji:'📝',text:'作業調閱：作文'}],
+  '2026-05-14': [{emoji:'🏫',text:'校定活動：適性閱讀施測 08:50圖書館'},{emoji:'🗳',text:'班會（記錄表截止5/29）'},{emoji:'📝',text:'作業調閱：作文'}],
   '2026-05-15': [{emoji:'⭐',text:'09號周威辰 鑑定安置會議 11:20 資源班8號門'}],
-  '2026-05-18': [{emoji:'🚨',text:'逃生演練 09:46–10:49 健康中心旁空地'}],
+  '2026-05-18': [{emoji:'🏫',text:'校定活動：逃生演練 09:46–10:49 健康中心旁'}],
   '2026-05-19': [{emoji:'🏥',text:'06號張品維住院→'}],
-  '2026-05-20': [{emoji:'🌿',text:'★行動環保教育車・淨零未來館★ 10:30第三節'},{emoji:'🏥',text:'06號住院中'}],
+  '2026-05-20': [{emoji:'🏫',text:'校定活動：行動環保教育車・淨零未來館 10:30第三節'},{emoji:'🏥',text:'06號住院中'}],
   '2026-05-21': [{emoji:'📝',text:'作業調閱：美勞'},{emoji:'🏥',text:'06號住院中'}],
   '2026-05-22': [{emoji:'🟡',text:'EQ課（輔導主任）'},{emoji:'🏥',text:'06號住院最後天'}],
   '2026-05-25': [{emoji:'⚠️',text:'六福村取消截止 17:00（逾時不退費）'}],
@@ -1373,7 +1373,7 @@ function renderMonthCal(year, month, elId) {
 
     html += `<td style="padding:3px 2px;border:1px solid var(--s2);vertical-align:top;min-height:60px;background:${bgCell};opacity:${opacity}">
       <div style="font-weight:${isToday?'700':'400'};color:${isToday?'var(--green)':dayColor};${isToday?'background:var(--green);color:white;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 2px;':'text-align:center;margin-bottom:2px;'}">${d}</div>
-      ${evs.map(e=>`<div style="font-size:9px;line-height:1.3;margin-bottom:1px;overflow:hidden;background:${e.emoji==='🟢'?'#d4edda':e.emoji==='⭐'?'#fff3cd':e.emoji==='🎓'?'#e8eef8':e.emoji==='📝'?'#f0eaf8':e.emoji==='🟡'?'#fde8b0':e.emoji==='🏥'?'#fde8e8':e.emoji==='⚠️'?'#fde8b0':'#f0f0f0'};border-radius:3px;padding:1px 3px">${e.emoji} ${e.text}</div>`).join('')}
+      ${evs.map(e=>`<div style="font-size:9px;line-height:1.3;margin-bottom:1px;overflow:hidden;background:${e.emoji==='🏫'?'#fde8b0':e.emoji==='🟢'?'#d4edda':e.emoji==='⭐'?'#fff3cd':e.emoji==='🎓'?'#e8eef8':e.emoji==='📝'?'#f0eaf8':e.emoji==='🟡'?'#fde8b0':e.emoji==='🏥'?'#fde8e8':e.emoji==='⚠️'?'#fde8b0':'#f0f0f0'};border-radius:3px;padding:1px 3px;font-weight:${e.emoji==='🏫'?'700':'400'}">${e.emoji} ${e.text}</div>`).join('')}
     </td>`;
 
     if(col===6 && d<lastDate) html += '</tr><tr>';
