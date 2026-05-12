@@ -281,6 +281,13 @@ input:focus,select:focus{border-color:var(--green);}
         </tr>
       </thead>
       <tbody>
+        <!-- 折疊控制列 -->
+        <tr id="toggle-row">
+          <td colspan="11" style="padding:4px 8px;border:1px solid var(--border);background:#f0ede6;text-align:center">
+            <button onclick="toggleOldWeeks()" id="toggle-btn" style="font-family:'Noto Sans TC',sans-serif;font-size:11px;padding:3px 12px;border:1px solid var(--border);border-radius:6px;background:var(--surface);cursor:pointer;color:var(--t2)">▲ 隱藏 W1–W3（已過）</button>
+          </td>
+        </tr>
+        <tbody id="old-weeks">
         <!-- W1 -->
         <tr data-date="2026-04-20" style="background:#f9f9f9">
           <td rowspan="6" style="padding:4px;border:1px solid var(--border);text-align:center;font-weight:700;background:#e8f4f0;color:var(--green)">W1</td>
@@ -451,7 +458,7 @@ input:focus,select:focus{border-color:var(--green);}
           <td style="padding:4px 6px;border:1px solid var(--border);background:#d4edda;font-weight:600">小考數6-3-6-4</td>
           <td style="padding:4px 6px;border:1px solid var(--border)"></td>
         </tr>
-        <!-- W4 ★ 已更新 -->
+        </tbody><!-- end old-weeks -->
         <!-- W4 ★ 已更新 -->
         <tr style="background:#f9f9f9">
           <td rowspan="5" style="padding:4px;border:1px solid var(--border);text-align:center;font-weight:700;background:#e8f4f0;color:var(--green)">W4</td>
@@ -501,6 +508,9 @@ input:focus,select:focus{border-color:var(--green);}
           <td style="padding:4px 6px;border:1px solid var(--border)">數重P62-64(總複習)</td>
           <td style="padding:4px 6px;border:1px solid var(--border)"></td>
           <td style="padding:4px 6px;border:1px solid var(--border);font-size:11px;color:#856404">考健康<br>音：多聽啟程</td>
+        </tr>
+        <tr style="background:#f9f9f9">
+          <td style="padding:4px 6px;border:1px solid var(--border);text-align:center">5/15</td>
           <td style="padding:4px;border:1px solid var(--border);text-align:center">五</td>
           <td style="padding:4px;border:1px solid var(--border)"></td>
           <td style="padding:4px 6px;border:1px solid var(--border)">校訂2+國語課 上午閱讀</td>
@@ -1385,6 +1395,23 @@ function renderMonthCal(year, month, elId) {
 
 renderMonthCal(2026,5,'cal-may');
 renderMonthCal(2026,6,'cal-jun');
+
+// ── 進度表 W1-W3 折疊 ──
+function toggleOldWeeks(){
+  const el = document.getElementById('old-weeks');
+  const btn = document.getElementById('toggle-btn');
+  if(!el||!btn) return;
+  const hidden = el.style.display === 'none';
+  el.style.display = hidden ? '' : 'none';
+  btn.textContent = hidden ? '▲ 隱藏 W1–W3（已過）' : '▼ 顯示 W1–W3（已過）';
+}
+// 預設隱藏
+window.addEventListener('DOMContentLoaded', ()=>{
+  const el = document.getElementById('old-weeks');
+  const btn = document.getElementById('toggle-btn');
+  if(el){ el.style.display='none'; }
+  if(btn){ btn.textContent='▼ 顯示 W1–W3（已過）'; }
+});
 
 // ── 課表渲染 ──
 const G = '#d4edda';
