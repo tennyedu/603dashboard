@@ -85,7 +85,7 @@
 <script>
 const students = [
   {seat:1, sid:'109379',name:'余相羽', chi:91.69,eng:95.6, mat:96.85,soc:98.6, sci:93.25,total:477,   rank:4 },
-  {seat:2, sid:'109151',name:'廖宥誠', chi:95.1, eng:92.6, mat:95.05,soc:97.6, sci:92.75,total:476,   rank:5 },
+  {seat:2, sid:'109151',name:'廖宥誠',award:'進步獎',improve:29.5, chi:95.1, eng:92.6, mat:95.05,soc:97.6, sci:92.75,total:476,   rank:5 },
   {seat:3, sid:'109382',name:'彭致皓', chi:97.19,eng:95.8, mat:96.6, soc:98,   sci:94.75,total:488,   rank:1 },
   {seat:4, sid:'109225',name:'邢堉瑋', chi:96.41,eng:95.8, mat:97.4, soc:98.6, sci:90.75,total:487.5, rank:2 },
   {seat:5, sid:'109176',name:'潘韋辰', chi:93.22,eng:94.4, mat:92.6, soc:97,   sci:94.5, total:467,   rank:7 },
@@ -98,16 +98,16 @@ const students = [
   {seat:12,sid:'109260',name:'張亦程', chi:88.41,eng:94.4, mat:90.75,soc:95,   sci:89.5, total:454,   rank:13},
   {seat:13,sid:'109288',name:'朱一',   chi:82.38,eng:88.8, mat:79.55,soc:96,   sci:85,   total:428.5, rank:16},
   {seat:14,sid:'109297',name:'陳佳安', chi:97.32,eng:98,   mat:95.6, soc:98.8, sci:94.25,total:482,   rank:3 },
-  {seat:15,sid:'109097',name:'楊媛安', chi:92.03,eng:77.2, mat:87.85,soc:96.8, sci:87.5, total:456,   rank:11},
-  {seat:16,sid:'109346',name:'孫苡萱', chi:80.07,eng:66,   mat:27.4, soc:92.2, sci:77.25,total:326.5, rank:20},
+  {seat:15,sid:'109097',name:'楊媛安',award:'進步獎',improve:30.0, chi:92.03,eng:77.2, mat:87.85,soc:96.8, sci:87.5, total:456,   rank:11},
+  {seat:16,sid:'109346',name:'孫苡萱',award:'進步獎',improve:58.0, chi:80.07,eng:66,   mat:27.4, soc:92.2, sci:77.25,total:326.5, rank:20},
   {seat:17,sid:'109272',name:'馬靖耘', chi:94.57,eng:91.2, mat:93.85,soc:97.6, sci:93.5, total:472,   rank:6 },
   {seat:18,sid:'109423',name:'洪書琳', chi:97.5, eng:97.4, mat:94.6, soc:97.6, sci:91.25,total:464,   rank:9 },
   {seat:19,sid:'109301',name:'楊宛霓', chi:97.94,eng:98.2, mat:95.55,soc:98.6, sci:97,   total:488,   rank:1 },
-  {seat:20,sid:'109248',name:'許芷瑄', chi:72.53,eng:62.4, mat:62.55,soc:96,   sci:78.75,total:354.5, rank:18},
+  {seat:20,sid:'109248',name:'許芷瑄',award:'進步獎',improve:87.5, chi:72.53,eng:62.4, mat:62.55,soc:96,   sci:78.75,total:354.5, rank:18},
   {seat:21,sid:'109251',name:'劉芊妤', chi:93.07,eng:96,   mat:96.3, soc:98,   sci:96.5, total:477,   rank:4 },
   {seat:22,sid:'109149',name:'柯瓔芮', chi:96.72,eng:87.2, mat:95,   soc:98.2, sci:94,   total:472,   rank:6 },
   {seat:23,sid:'109174',name:'高喬亘', chi:94.63,eng:87.8, mat:90.9, soc:97.6, sci:87.75,total:458,   rank:10},
-  {seat:24,sid:'109277',name:'陳巧庭', chi:91.57,eng:88,   mat:82.35,soc:96.4, sci:79.5, total:431.5, rank:15},
+  {seat:24,sid:'109277',name:'陳巧庭',award:'進步獎',improve:48.0, chi:91.57,eng:88,   mat:82.35,soc:96.4, sci:79.5, total:431.5, rank:15},
 ];
 const classAvg={
   chi:(students.reduce((s,st)=>s+st.chi,0)/students.length),
@@ -160,7 +160,7 @@ function lookup(){
   resArea.innerHTML=`<div class="result-card">
     <div class="result-header">
       <div class="student-info">
-        <h2>${s.name} ${rankSuffix(s.rank)}</h2>
+        <h2>${s.name} ${rankSuffix(s.rank)}${s.award?` <span style="font-size:14px;background:#e8b84b;color:#1a1208;padding:2px 8px;border-radius:3px;font-weight:600;letter-spacing:1px">🌟 ${s.award}</span>`:''}</h2>
         <div class="student-meta">學號 ${s.sid}</div>
       </div>
       <div class="rank-badge">
@@ -188,8 +188,16 @@ function lookup(){
         <div class="compare-dot" style="background:${tu?'#2d6a4f':'#b83232'}"></div>
         <span style="font-family:'DM Mono',monospace;font-size:13px;color:${tu?'#2d6a4f':'#b83232'}">${tu?'+':''}${td} 較班平均（${classAvg.total.toFixed(1)}）</span>
       </div>
-    </div>
-  </div>`;
+    ${s.award?`<div style="margin:0 28px 20px;background:linear-gradient(135deg,#fdf3e0,#fff8ec);border:1px solid #e8b84b;border-radius:6px;padding:14px 18px;display:flex;align-items:center;gap:12px">
+      <div style="font-size:24px">🌟</div>
+      <div>
+        <div style="font-size:12px;letter-spacing:2px;color:#7a6a50;margin-bottom:3px">特別表現</div>
+        <div style="font-size:15px;font-weight:700;color:#c9921a">進步獎</div>
+        <div style="font-size:12px;color:#7a6a50;margin-top:2px">比期中評量進步了 <span style="font-family:'DM Mono',monospace;font-weight:700;color:#c9921a">+${s.improve}</span> 分，繼續保持！</div>
+      </div>
+    </div>`:''}
+  </div>\`;"
+
   resArea.classList.remove('hidden');
 }
 document.getElementById('sid-input').addEventListener('keydown',e=>{if(e.key==='Enter')lookup();});
