@@ -84,146 +84,126 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 <div class="footer">603 HOMEROOM · 期末評量成績系統</div>
 <script>
 var students = [
-  {seat:1, sid:"109379",name:"余相羽", chi:91.69,eng:95.6, mat:96.85,soc:98.6, sci:93.25,total:477,   rank:4,  award:null,   improve:0},
-  {seat:2, sid:"109151",name:"廖宥誠", chi:95.1, eng:92.6, mat:95.05,soc:97.6, sci:92.75,total:476,   rank:5,  award:"進步獎",improve:29.5},
-  {seat:3, sid:"109382",name:"彭致皓", chi:97.19,eng:95.8, mat:96.6, soc:98,   sci:94.75,total:488,   rank:1,  award:null,   improve:0},
-  {seat:4, sid:"109225",name:"邢堉瑋", chi:96.41,eng:95.8, mat:97.4, soc:98.6, sci:90.75,total:487.5, rank:2,  award:null,   improve:0},
-  {seat:5, sid:"109176",name:"潘韋辰", chi:93.22,eng:94.4, mat:92.6, soc:97,   sci:94.5, total:467,   rank:7,  award:null,   improve:0},
-  {seat:6, sid:"109079",name:"張品維", chi:88.03,eng:93.8, mat:88.25,soc:96.8, sci:85.25,total:455,   rank:12, award:null,   improve:0},
-  {seat:7, sid:"109003",name:"鄧臣恩", chi:90.94,eng:92.8, mat:92.45,soc:93.2, sci:81.5, total:445,   rank:14, award:null,   improve:0},
-  {seat:8, sid:"109006",name:"歐其諺", chi:73,   eng:74,   mat:79.88,soc:89.4, sci:73.5, total:390.75,rank:17, award:null,   improve:0},
-  {seat:9, sid:"109232",name:"周威辰", chi:35.47,eng:44,   mat:19.4, soc:70.8, sci:50.5, total:186,   rank:21, award:null,   improve:0},
-  {seat:10,sid:"109111",name:"張晏綸", chi:92.28,eng:88,   mat:94.6, soc:94.8, sci:92.5, total:466,   rank:8,  award:null,   improve:0},
-  {seat:11,sid:"109013",name:"許展銘", chi:79.41,eng:68.6, mat:73,   soc:79.4, sci:69,   total:331,   rank:19, award:null,   improve:0},
-  {seat:12,sid:"109260",name:"張亦程", chi:88.41,eng:94.4, mat:90.75,soc:95,   sci:89.5, total:454,   rank:13, award:null,   improve:0},
-  {seat:13,sid:"109288",name:"朱一",   chi:82.38,eng:88.8, mat:79.55,soc:96,   sci:85,   total:428.5, rank:16, award:null,   improve:0},
-  {seat:14,sid:"109297",name:"陳佳安", chi:97.32,eng:98,   mat:95.6, soc:98.8, sci:94.25,total:482,   rank:3,  award:null,   improve:0},
-  {seat:15,sid:"109097",name:"楊媛安", chi:92.03,eng:77.2, mat:87.85,soc:96.8, sci:87.5, total:456,   rank:11, award:"進步獎",improve:30.0},
-  {seat:16,sid:"109346",name:"孫苡萱", chi:80.07,eng:66,   mat:27.4, soc:92.2, sci:77.25,total:326.5, rank:20, award:"進步獎",improve:58.0},
-  {seat:17,sid:"109272",name:"馬靖耘", chi:94.57,eng:91.2, mat:93.85,soc:97.6, sci:93.5, total:472,   rank:6,  award:null,   improve:0},
-  {seat:18,sid:"109423",name:"洪書琳", chi:97.5, eng:97.4, mat:94.6, soc:97.6, sci:91.25,total:464,   rank:9,  award:null,   improve:0},
-  {seat:19,sid:"109301",name:"楊宛霓", chi:97.94,eng:98.2, mat:95.55,soc:98.6, sci:97,   total:488,   rank:1,  award:null,   improve:0},
-  {seat:20,sid:"109248",name:"許芷瑄", chi:72.53,eng:62.4, mat:62.55,soc:96,   sci:78.75,total:354.5, rank:18, award:"進步獎",improve:87.5},
-  {seat:21,sid:"109251",name:"劉芊妤", chi:93.07,eng:96,   mat:96.3, soc:98,   sci:96.5, total:477,   rank:4,  award:null,   improve:0},
-  {seat:22,sid:"109149",name:"柯瓔芮", chi:96.72,eng:87.2, mat:95,   soc:98.2, sci:94,   total:472,   rank:6,  award:null,   improve:0},
-  {seat:23,sid:"109174",name:"高喬亘", chi:94.63,eng:87.8, mat:90.9, soc:97.6, sci:87.75,total:458,   rank:10, award:null,   improve:0},
-  {seat:24,sid:"109277",name:"陳巧庭", chi:91.57,eng:88,   mat:82.35,soc:96.4, sci:79.5, total:431.5, rank:15, award:"進步獎",improve:48.0}
+  {seat:1, sid:"109379",name:"余相羽", chi:89,   eng:98,  mat:96,    soc:100, sci:94,   total:477,    rank:4,  award:null,    improve:0},
+  {seat:2, sid:"109151",name:"廖宥誠", chi:93,   eng:98,  mat:96,    soc:98,  sci:91,   total:476,    rank:5,  award:"進步獎",improve:29.5},
+  {seat:3, sid:"109382",name:"彭致皓", chi:99,   eng:100, mat:96,    soc:98,  sci:95,   total:488,    rank:1,  award:null,    improve:0},
+  {seat:4, sid:"109225",name:"邢堉瑋", chi:98,   eng:100, mat:97.5,  soc:100, sci:92,   total:487.5,  rank:2,  award:null,    improve:0},
+  {seat:5, sid:"109176",name:"潘韋辰", chi:92,   eng:98,  mat:87,    soc:96,  sci:94,   total:467,    rank:7,  award:null,    improve:0},
+  {seat:6, sid:"109079",name:"張品維", chi:84,   eng:98,  mat:88,    soc:98,  sci:87,   total:455,    rank:12, award:null,    improve:0},
+  {seat:7, sid:"109003",name:"鄧臣恩", chi:89,   eng:97,  mat:90,    soc:90,  sci:79,   total:445,    rank:14, award:null,    improve:0},
+  {seat:8, sid:"109006",name:"歐其諺", chi:71,   eng:77,  mat:82.75, soc:88,  sci:72,   total:390.75, rank:17, award:null,    improve:0},
+  {seat:9, sid:"109232",name:"周威辰", chi:43,   eng:20,  mat:28,    soc:44,  sci:51,   total:186,    rank:21, award:null,    improve:0},
+  {seat:10,sid:"109111",name:"張晏綸", chi:89,   eng:94,  mat:96,    soc:92,  sci:95,   total:466,    rank:8,  award:null,    improve:0},
+  {seat:11,sid:"109013",name:"許展銘", chi:74.5, eng:59,  mat:69.5,  soc:60,  sci:68,   total:331,    rank:19, award:null,    improve:0},
+  {seat:12,sid:"109260",name:"張亦程", chi:85,   eng:98,  mat:94,    soc:92,  sci:85,   total:454,    rank:13, award:null,    improve:0},
+  {seat:13,sid:"109288",name:"朱一",   chi:82.5, eng:87,  mat:80,    soc:96,  sci:83,   total:428.5,  rank:16, award:null,    improve:0},
+  {seat:14,sid:"109297",name:"陳佳安", chi:96,   eng:98,  mat:94,    soc:100, sci:94,   total:482,    rank:3,  award:null,    improve:0},
+  {seat:15,sid:"109097",name:"楊媛安", chi:88,   eng:88,  mat:92,    soc:100, sci:88,   total:456,    rank:11, award:"進步獎",improve:30},
+  {seat:16,sid:"109346",name:"孫苡萱", chi:81.5, eng:60,  mat:24,    soc:86,  sci:75,   total:326.5,  rank:20, award:"進步獎",improve:58},
+  {seat:17,sid:"109272",name:"馬靖耘", chi:95,   eng:90,  mat:92,    soc:100, sci:95,   total:472,    rank:6,  award:null,    improve:0},
+  {seat:18,sid:"109423",name:"洪書琳", chi:96,   eng:95,  mat:92,    soc:96,  sci:85,   total:464,    rank:9,  award:null,    improve:0},
+  {seat:19,sid:"109301",name:"楊宛霓", chi:98.5, eng:100, mat:91.5,  soc:100, sci:98,   total:488,    rank:1,  award:null,    improve:0},
+  {seat:20,sid:"109248",name:"許芷瑄", chi:63.5, eng:54,  mat:66,    soc:96,  sci:75,   total:354.5,  rank:18, award:"進步獎",improve:87.5},
+  {seat:21,sid:"109251",name:"劉芊妤", chi:90,   eng:96,  mat:98,    soc:98,  sci:95,   total:477,    rank:4,  award:null,    improve:0},
+  {seat:22,sid:"109149",name:"柯瓔芮", chi:96,   eng:92,  mat:92,    soc:100, sci:92,   total:472,    rank:6,  award:null,    improve:0},
+  {seat:23,sid:"109174",name:"高喬亘", chi:96,   eng:89,  mat:90,    soc:98,  sci:85,   total:458,    rank:10, award:null,    improve:0},
+  {seat:24,sid:"109277",name:"陳巧庭", chi:91,   eng:88,  mat:79.5,  soc:96,  sci:77,   total:431.5,  rank:15, award:"進步獎",improve:48}
 ];
 
-var classAvg = {
-  chi:0, eng:0, mat:0, soc:0, sci:0, total:0
-};
+var classAvg = {chi:0,eng:0,mat:0,soc:0,sci:0,total:0};
 students.forEach(function(s){
   classAvg.chi+=s.chi; classAvg.eng+=s.eng; classAvg.mat+=s.mat;
   classAvg.soc+=s.soc; classAvg.sci+=s.sci; classAvg.total+=s.total;
 });
-var n = students.length;
+var n=students.length;
 classAvg.chi/=n; classAvg.eng/=n; classAvg.mat/=n;
 classAvg.soc/=n; classAvg.sci/=n; classAvg.total/=n;
 
-function barColor(v){
-  return v>=85 ? "#2d6a4f" : v>=60 ? "#c9921a" : "#b83232";
-}
-function rankSuffix(r){
-  return r===1?"🥇":r===2?"🥈":r===3?"🥉":"";
-}
+function barColor(v){return v>=85?"#2d6a4f":v>=60?"#c9921a":"#b83232";}
+function rankSuffix(r){return r===1?"🥇":r===2?"🥈":r===3?"🥉":"";}
 
 function lookup(){
-  var q = document.getElementById("sid-input").value.trim();
-  var errArea = document.getElementById("error-area");
-  var resArea = document.getElementById("result-area");
-  errArea.className = "hidden"; errArea.innerHTML = "";
-  resArea.className = "hidden"; resArea.innerHTML = "";
+  var q=document.getElementById("sid-input").value.trim();
+  var errArea=document.getElementById("error-area");
+  var resArea=document.getElementById("result-area");
+  errArea.className="hidden"; errArea.innerHTML="";
+  resArea.className="hidden"; resArea.innerHTML="";
   if(!q) return;
-
-  var s = null;
-  for(var i=0;i<students.length;i++){
-    if(students[i].sid === q){ s = students[i]; break; }
-  }
-
+  var s=null;
+  for(var i=0;i<students.length;i++){if(students[i].sid===q){s=students[i];break;}}
   if(!s){
-    errArea.innerHTML = "<div class='error-msg'>找不到學號「"+q+"」的資料，請確認學號是否正確。</div>";
-    errArea.className = "";
-    return;
+    errArea.innerHTML="<div class='error-msg'>找不到學號「"+q+"」的資料，請確認學號是否正確。</div>";
+    errArea.className=""; return;
   }
-
-  var subs = [
-    {label:"國語", val:s.chi, avg:classAvg.chi},
-    {label:"英語", val:s.eng, avg:classAvg.eng},
-    {label:"數學", val:s.mat, avg:classAvg.mat},
-    {label:"社會", val:s.soc, avg:classAvg.soc},
-    {label:"自然", val:s.sci, avg:classAvg.sci}
+  var subs=[
+    {label:"國語",val:s.chi,avg:classAvg.chi},
+    {label:"英語",val:s.eng,avg:classAvg.eng},
+    {label:"數學",val:s.mat,avg:classAvg.mat},
+    {label:"社會",val:s.soc,avg:classAvg.soc},
+    {label:"自然",val:s.sci,avg:classAvg.sci}
   ];
-
-  var scoreRows = "";
+  var scoreRows="";
   subs.forEach(function(sub){
-    var c = barColor(sub.val);
-    scoreRows += "<div class='score-row'>" +
-      "<div class='score-subject'>"+sub.label+"</div>" +
-      "<div class='score-bar-wrap'><div class='score-bar' style='width:"+sub.val+"%;background:"+c+"'></div></div>" +
-      "<div class='score-val' style='color:"+c+"'>"+sub.val.toFixed(2)+"</div>" +
+    var c=barColor(sub.val);
+    var display=Number.isInteger(sub.val)?sub.val:sub.val.toFixed(1);
+    scoreRows+="<div class='score-row'>"+
+      "<div class='score-subject'>"+sub.label+"</div>"+
+      "<div class='score-bar-wrap'><div class='score-bar' style='width:"+sub.val+"%;background:"+c+"'></div></div>"+
+      "<div class='score-val' style='color:"+c+"'>"+display+"</div>"+
       "</div>";
   });
-
-  var compareRows = "";
+  var compareRows="";
   subs.forEach(function(sub){
-    var diff = (sub.val - sub.avg).toFixed(2);
-    var up = parseFloat(diff) >= 0;
-    var color = up ? "#2d6a4f" : "#b83232";
-    compareRows += "<div class='compare-row'>" +
-      "<span class='compare-label'>"+sub.label+"</span>" +
-      "<div class='compare-dot' style='background:"+color+"'></div>" +
-      "<span style='font-family:DM Mono,monospace;font-size:13px;color:"+color+"'>"+(up?"+":"")+diff+" 較班平均</span>" +
+    var diff=(sub.val-sub.avg).toFixed(1);
+    var up=parseFloat(diff)>=0;
+    var color=up?"#2d6a4f":"#b83232";
+    compareRows+="<div class='compare-row'>"+
+      "<span class='compare-label'>"+sub.label+"</span>"+
+      "<div class='compare-dot' style='background:"+color+"'></div>"+
+      "<span style='font-family:DM Mono,monospace;font-size:13px;color:"+color+"'>"+(up?"+":"")+diff+" 較班平均</span>"+
       "</div>";
   });
-
-  var td = (s.total - classAvg.total).toFixed(1);
-  var tu = parseFloat(td) >= 0;
-  var tcolor = tu ? "#2d6a4f" : "#b83232";
-  var compareTotal = "<div class='compare-row' style='margin-top:10px;padding-top:10px;border-top:1px solid #e8dcc8'>" +
-    "<span class='compare-label'>總分</span>" +
-    "<div class='compare-dot' style='background:"+tcolor+"'></div>" +
-    "<span style='font-family:DM Mono,monospace;font-size:13px;color:"+tcolor+"'>"+(tu?"+":"")+td+" 較班平均（"+classAvg.total.toFixed(1)+"）</span>" +
+  var td=(s.total-classAvg.total).toFixed(1);
+  var tu=parseFloat(td)>=0;
+  var tc=tu?"#2d6a4f":"#b83232";
+  var compareTotal="<div class='compare-row' style='margin-top:10px;padding-top:10px;border-top:1px solid #e8dcc8'>"+
+    "<span class='compare-label'>總分</span>"+
+    "<div class='compare-dot' style='background:"+tc+"'></div>"+
+    "<span style='font-family:DM Mono,monospace;font-size:13px;color:"+tc+"'>"+(tu?"+":"")+td+" 較班平均（"+classAvg.total.toFixed(1)+"）</span>"+
     "</div>";
-
-  var awardTag = s.award ? "<span class='award-tag'>🌟 "+s.award+"</span>" : "";
-
-  var improveBox = "";
+  var awardTag=s.award?"<span class='award-tag'>🌟 "+s.award+"</span>":"";
+  var improveBox="";
   if(s.award){
-    improveBox = "<div class='improve-box'>" +
-      "<div class='improve-icon'>🌟</div>" +
-      "<div><div style='font-size:12px;letter-spacing:2px;color:#7a6a50;margin-bottom:3px'>特別表現</div>" +
-      "<div class='improve-title'>"+s.award+"</div>" +
-      "<div class='improve-sub'>比期中評量進步了 <span class='improve-num'>+"+s.improve+"</span> 分，很棒喔！</div>" +
+    improveBox="<div class='improve-box'>"+
+      "<div class='improve-icon'>🌟</div>"+
+      "<div><div style='font-size:12px;letter-spacing:2px;color:#7a6a50;margin-bottom:3px'>特別表現</div>"+
+      "<div class='improve-title'>"+s.award+"</div>"+
+      "<div class='improve-sub'>比期中評量進步了 <span class='improve-num'>+"+s.improve+"</span> 分，很棒喔！</div>"+
       "</div></div>";
   }
-
-  resArea.innerHTML =
-    "<div class='result-card'>" +
-      "<div class='result-header'>" +
-        "<div><div class='student-name'>"+s.name+" "+rankSuffix(s.rank)+awardTag+"</div>" +
-        "<div class='student-meta'>學號 "+s.sid+"</div></div>" +
-        "<div class='rank-badge'><div class='rank-num'>"+s.rank+"</div><div class='rank-label'>班級排名</div></div>" +
-      "</div>" +
-      "<div class='scores-section'>" +
-        "<div class='section-title'>各科成績</div>" +
-        scoreRows +
-        "<div class='total-row'><span class='total-label'>總分</span><span class='total-val'>"+s.total+"</span></div>" +
-        "<div class='avg-row'><span class='avg-label'>總平均</span><span class='avg-val'>"+(s.total/5).toFixed(2)+"</span></div>" +
-      "</div>" +
-      "<div class='compare-section'>" +
-        "<div class='section-title'>與班平均比較</div>" +
-        compareRows + compareTotal +
-      "</div>" +
-      improveBox +
+  var totalDisplay=Number.isInteger(s.total)?s.total:s.total.toFixed(1);
+  resArea.innerHTML=
+    "<div class='result-card'>"+
+      "<div class='result-header'>"+
+        "<div><div class='student-name'>"+s.name+" "+rankSuffix(s.rank)+awardTag+"</div>"+
+        "<div class='student-meta'>學號 "+s.sid+"</div></div>"+
+        "<div class='rank-badge'><div class='rank-num'>"+s.rank+"</div><div class='rank-label'>班級排名</div></div>"+
+      "</div>"+
+      "<div class='scores-section'>"+
+        "<div class='section-title'>各科成績</div>"+
+        scoreRows+
+        "<div class='total-row'><span class='total-label'>總分</span><span class='total-val'>"+totalDisplay+"</span></div>"+
+        "<div class='avg-row'><span class='avg-label'>總平均</span><span class='avg-val'>"+(s.total/5).toFixed(1)+"</span></div>"+
+      "</div>"+
+      "<div class='compare-section'>"+
+        "<div class='section-title'>與班平均比較</div>"+
+        compareRows+compareTotal+
+      "</div>"+
+      improveBox+
     "</div>";
-
-  resArea.className = "";
+  resArea.className="";
 }
-
-document.getElementById("sid-input").addEventListener("keydown", function(e){
-  if(e.key === "Enter") lookup();
-});
+document.getElementById("sid-input").addEventListener("keydown",function(e){if(e.key==="Enter")lookup();});
 </script>
 </body>
 </html>
