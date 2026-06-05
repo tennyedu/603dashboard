@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>603 班 課堂遊戲</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f13;
+  --surface: #1a1a24;
+  --border: #2e2e42;
+  --text: #f0eeff;
+  --muted: #7070a0;
+  --yellow: #ffe566;
+  --pink: #ff6b9d;
+  --cyan: #4df0d0;
+  --purple: #a855f7;
+  --orange: #ff9a3c;
+  --green: #4ade80;
+  --red: #f87171;
+  --blue: #60a5fa;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* noise overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.4;
+}
+
+/* TAB NAV */
+.tab-nav {
+  display: flex;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 18px 12px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 3px solid transparent;
+  letter-spacing: 1px;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--yellow); border-bottom-color: var(--yellow); }
+
+/* SCREENS */
+.screen { display: none; padding: 32px 20px; max-width: 900px; margin: 0 auto; }
+.screen.active { display: block; animation: fadeUp 0.35s ease; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+/* HEADER */
+.page-header { text-align: center; margin-bottom: 36px; }
+.page-header .eyebrow {
+  font-size: 0.72rem; letter-spacing: 4px; font-weight: 900;
+  color: var(--muted); text-transform: uppercase; margin-bottom: 10px;
+}
+.page-header h1 {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+/* ===================== TASK GENERATOR ===================== */
+
+.task-display {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px 32px;
+  margin-bottom: 24px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+.task-display::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,229,102,0.06) 0%, transparent 70%);
+}
+
+.task-category {
+  font-size: 0.72rem; letter-spacing: 3px; font-weight: 900;
+  color: var(--yellow); margin-bottom: 16px; text-transform: uppercase;
+}
+.task-text {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(1.3rem, 4vw, 2rem);
+  line-height: 1.4;
+  color: var(--text);
+  max-width: 600px;
+}
+.task-time {
+  margin-top: 20px;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,229,102,0.1);
+  border: 1px solid rgba(255,229,102,0.2);
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 0.85rem; color: var(--yellow); font-weight: 700;
+}
+
+.task-placeholder {
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.spin-btn {
+  width: 100%;
+  padding: 18px;
+  background: var(--yellow);
+  border: none;
+  border-radius: 14px;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.3rem;
+  color: #1a1200;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+.spin-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255,229,102,0.3); }
+.spin-btn:active { transform: translateY(0); }
+
+.secondary-btn {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 12px;
+}
+.secondary-btn:hover { border-color: var(--text); color: var(--text); }
+
+/* category filters */
+.cat-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; justify-content: center; }
+.cat-pill {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.78rem; font-weight: 700;
+  cursor: pointer; transition: all 0.15s;
+  letter-spacing: 1px;
+}
+.cat-pill.on { background: var(--purple); border-color: var(--purple); color: white; }
+
+/* history */
+.history-list { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+.history-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.88rem;
+  display: flex; align-items: center; gap: 12px;
+}
+.history-item .h-cat {
+  font-size: 0.7rem; font-weight: 900; letter-spacing: 2px;
+  color: var(--purple); min-width: 60px;
+}
+.history-item .h-text { color: var(--muted); flex: 1; }
+
+/* ===================== SCOREBOARD ===================== */
+
+.setup-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.setup-card h2 {
+  font-size: 0.75rem; letter-spacing: 3px; font-weight: 900;
+  color: var(--cyan); margin-bottom: 16px; text-transform: uppercase;
+}
+
+.group-setup-row {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 10px; flex-wrap: wrap;
+}
+.group-color-dot {
+  width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
+}
+input[type=text] {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.9rem;
+  padding: 8px 12px;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 130px;
+}
+input[type=text]:focus { border-color: var(--cyan); }
+
+.start-game-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--cyan);
+  border: none;
+  border-radius: 14px;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.2rem;
+  color: #001a18;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 8px;
+}
+.start-game-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(77,240,208,0.25); }
+
+/* SCOREBOARD LIVE */
+.scoreboard { display: none; }
+.scoreboard.active { display: block; }
+
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.score-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 20px 16px;
+  text-align: center;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.score-card.leader {
+  border-color: var(--yellow);
+  box-shadow: 0 0 24px rgba(255,229,102,0.15);
+}
+.score-card .crown {
+  position: absolute; top: 8px; right: 10px;
+  font-size: 1rem; opacity: 0;
+  transition: opacity 0.3s;
+}
+.score-card.leader .crown { opacity: 1; }
+
+.score-card .g-emoji { font-size: 2rem; margin-bottom: 8px; }
+.score-card .g-name {
+  font-size: 0.85rem; font-weight: 900; letter-spacing: 1px;
+  margin-bottom: 12px; color: var(--text);
+}
+.score-card .g-score {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 2.8rem;
+  line-height: 1;
+  transition: all 0.3s;
+}
+.score-card .g-rank {
+  font-size: 0.7rem; color: var(--muted); margin-top: 6px;
+}
+
+.score-controls {
+  display: flex; gap: 8px; margin-top: 12px; justify-content: center;
+}
+.score-btn {
+  padding: 8px 14px;
+  border: none; border-radius: 8px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.9rem; font-weight: 900;
+  cursor: pointer; transition: all 0.15s;
+}
+.score-btn.plus { background: var(--green); color: #001a0f; }
+.score-btn.plus:hover { transform: scale(1.05); }
+.score-btn.minus { background: var(--surface); color: var(--muted); border: 1px solid var(--border); }
+.score-btn.minus:hover { border-color: var(--red); color: var(--red); }
+
+/* POINTS CONFIG */
+.points-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.points-label { font-size: 0.85rem; color: var(--muted); flex: 1; }
+.pts-select {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.9rem;
+  padding: 6px 10px;
+  outline: none;
+}
+
+/* WINNER OVERLAY */
+.winner-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(15,15,19,0.95);
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  animation: fadeUp 0.4s ease;
+}
+.winner-overlay.show { display: flex; }
+.winner-overlay .trophy { font-size: 5rem; margin-bottom: 16px; animation: bounce 0.8s ease infinite alternate; }
+@keyframes bounce { to { transform: translateY(-10px); } }
+.winner-overlay h2 {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(2rem, 8vw, 4rem);
+  color: var(--yellow);
+  margin-bottom: 8px;
+}
+.winner-overlay p { color: var(--muted); margin-bottom: 32px; }
+.confetti-btn {
+  padding: 14px 32px;
+  background: var(--yellow);
+  border: none; border-radius: 12px;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.1rem; color: #1a1200;
+  cursor: pointer; margin: 6px;
+}
+.reset-btn {
+  padding: 14px 32px;
+  background: transparent;
+  border: 1px solid var(--border); border-radius: 12px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 1rem; color: var(--muted);
+  cursor: pointer; margin: 6px;
+}
+
+/* NUM STEPPER */
+.num-stepper { display: flex; align-items: center; gap: 12px; }
+.step-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--bg);
+  color: var(--text); font-size: 1.2rem; font-weight: 700;
+  cursor: pointer; transition: all 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.step-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+.step-val { font-family: 'Fredoka', sans-serif; font-size: 1.8rem; color: var(--cyan); min-width: 40px; text-align: center; }
+
+/* ANNOUNCE BANNER */
+.announce {
+  position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+  background: var(--green); color: #001a0f;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.1rem; padding: 12px 28px; border-radius: 40px;
+  z-index: 300; opacity: 0; pointer-events: none;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.announce.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* UTILS */
+.divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.flex-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* SPINNING ANIMATION */
+@keyframes spin-text {
+  0% { transform: translateY(-4px); opacity: 0.5; }
+  50% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-4px); opacity: 0.5; }
+}
+.spinning .task-text { animation: spin-text 0.15s ease infinite; }
+
+/* SCORE FLASH */
+@keyframes score-flash {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+.score-flash { animation: score-flash 0.3s ease; }
+</style>
+</head>
+<body>
+
+<!-- ANNOUNCE BANNER -->
+<div class="announce" id="announce"></div>
+
+<!-- WINNER OVERLAY -->
+<div class="winner-overlay" id="winnerOverlay">
+  <div class="trophy">🏆</div>
+  <h2 id="winnerName"></h2>
+  <p id="winnerScore"></p>
+  <div>
+    <button class="confetti-btn" onclick="closeWinner()">繼續遊戲 🎮</button>
+    <button class="reset-btn" onclick="resetGame()">重新開始</button>
+  </div>
+</div>
+
+<!-- TAB NAV -->
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('task')">✍️ 奇怪任務</button>
+  <button class="tab-btn" onclick="switchTab('score')">🏆 搶答計分板</button>
+</nav>
+
+<!-- ===================== TASK SCREEN ===================== -->
+<div class="screen active" id="screen-task">
+  <div class="page-header">
+    <div class="eyebrow">603 班課堂活動</div>
+    <h1 style="background: linear-gradient(135deg, var(--yellow), var(--orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">奇怪任務</h1>
+    <p style="color:var(--muted); margin-top:10px; font-size:0.9rem;">各組抽到任務，3 分鐘內完成！</p>
+  </div>
+
+  <!-- CATEGORY FILTER -->
+  <div class="cat-filters" id="catFilters"></div>
+
+  <!-- TASK DISPLAY -->
+  <div class="task-display" id="taskDisplay">
+    <div class="task-placeholder">按下「抽任務」開始！</div>
+  </div>
+
+  <!-- BUTTONS -->
+  <button class="spin-btn" id="spinBtn" onclick="spinTask()">🎲 抽任務！</button>
+  <button class="secondary-btn" onclick="spinSpecific()">🎯 指定組別抽任務</button>
+  <button class="secondary-btn" onclick="clearHistory()" style="margin-top:4px;">🗑️ 清除紀錄</button>
+
+  <!-- HISTORY -->
+  <div id="historySection" style="display:none;">
+    <hr class="divider">
+    <div style="font-size:0.75rem; letter-spacing:3px; color:var(--muted); font-weight:900; margin-bottom:12px;">已抽過的任務</div>
+    <div class="history-list" id="historyList"></div>
+  </div>
+</div>
+
+<!-- ===================== SCORE SCREEN ===================== -->
+<div class="screen" id="screen-score">
+  <div class="page-header">
+    <div class="eyebrow">603 班課堂活動</div>
+    <h1 style="background: linear-gradient(135deg, var(--cyan), var(--blue)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">搶答計分板</h1>
+  </div>
+
+  <!-- SETUP -->
+  <div id="scoreSetup">
+    <div class="setup-card">
+      <h2>👥 設定組數與組名</h2>
+      <div style="margin-bottom:16px;">
+        <div class="num-stepper">
+          <button class="step-btn" onclick="changeGroupNum(-1)">−</button>
+          <div class="step-val" id="groupNumDisplay">4</div>
+          <button class="step-btn" onclick="changeGroupNum(1)">+</button>
+          <span style="color:var(--muted); font-size:0.9rem;">組</span>
+        </div>
+      </div>
+      <div id="groupNameInputs"></div>
+    </div>
+
+    <div class="setup-card">
+      <h2>⭐ 答對加幾分？</h2>
+      <div class="points-row">
+        <span class="points-label">每題得分</span>
+        <select class="pts-select" id="pointsPerQ">
+          <option value="1">1 分</option>
+          <option value="2">2 分</option>
+          <option value="3" selected>3 分</option>
+          <option value="5">5 分</option>
+          <option value="10">10 分</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="start-game-btn" onclick="startGame()">開始計分 🚀</button>
+  </div>
+
+  <!-- LIVE SCOREBOARD -->
+  <div class="scoreboard" id="scoreboard">
+    <div class="score-grid" id="scoreGrid"></div>
+
+    <div class="setup-card">
+      <h2>🎮 操作</h2>
+      <div class="flex-row" style="margin-bottom:12px;">
+        <button class="score-btn plus" style="flex:1; font-size:1rem;" onclick="quickAdd()">＋ 快速加分（點組別卡片）</button>
+      </div>
+      <div class="flex-row">
+        <button onclick="showWinner()" style="flex:1; padding:12px; background:var(--yellow); border:none; border-radius:10px; font-family:'Fredoka',sans-serif; font-size:1rem; color:#1a1200; cursor:pointer;">🏆 公布冠軍！</button>
+        <button onclick="resetGame()" style="flex:1; padding:12px; background:transparent; border:1px solid var(--border); border-radius:10px; font-family:'Noto Sans TC',sans-serif; font-size:0.9rem; font-weight:700; color:var(--muted); cursor:pointer;">🔄 重新開始</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== TASKS =====================
+
+const TASKS = [
+  // 創意表演
+  { cat: '🎭 表演', text: '用慢動作演出「上學遲到」的全過程，至少30秒', time: 3 },
+  { cat: '🎭 表演', text: '全組一起演出一個無聲的「便利商店買東西」場景', time: 3 },
+  { cat: '🎭 表演', text: '一個人演老師，其他人演超不乖的學生，30秒', time: 3 },
+  { cat: '🎭 表演', text: '用外星人的方式介紹台灣的食物（假裝你第一次看到）', time: 3 },
+  { cat: '🎭 表演', text: '全組排成一台機器人，每個人負責一個零件動作', time: 3 },
+  { cat: '🎭 表演', text: '演出「早餐店點餐」但全程用英文', time: 2 },
+
+  // 腦洞大開
+  { cat: '🧠 腦洞', text: '如果學校變成遊樂園，你們組要負責設計哪個區域？說明一下', time: 3 },
+  { cat: '🧠 腦洞', text: '發明一種新的台灣小吃，說出名字、材料和吃法', time: 3 },
+  { cat: '🧠 腦洞', text: '如果你們可以為603班制定3條新校規，是什麼？', time: 3 },
+  { cat: '🧠 腦洞', text: '設計一個「超懶學生的完美一天」時間表', time: 3 },
+  { cat: '🧠 腦洞', text: '如果可以把一種動物的能力裝進書包，你選什麼？為什麼？', time: 2 },
+  { cat: '🧠 腦洞', text: '想出5個「絕對不能帶去國中的東西」，越搞笑越好', time: 3 },
+
+  // 挑戰任務
+  { cat: '💪 挑戰', text: '全組用單腳站立，最後一個倒下的人說一件國小最好笑的回憶', time: 2 },
+  { cat: '💪 挑戰', text: '在30秒內，全組輪流說出一個「以ㄓ開頭的詞」，不能重複', time: 1 },
+  { cat: '💪 挑戰', text: '背對背坐著，30秒內用說話讓對方猜出5個詞', time: 2 },
+  { cat: '💪 挑戰', text: '全組從1到100，每個人輪流說一個數字，3的倍數改說「叮」', time: 3 },
+  { cat: '💪 挑戰', text: '全組在10秒內用身體排出「603」三個數字的形狀', time: 1 },
+  { cat: '💪 挑戰', text: '一個人用嘴巴描述，其他人用手比劃——題目是「腳踏車」', time: 2 },
+
+  // 創作任務
+  { cat: '✏️ 創作', text: '30秒內為603班寫一首至少4句的順口溜', time: 2 },
+  { cat: '✏️ 創作', text: '為「永平國小」想一個超酷的宣傳口號（中英文都要）', time: 3 },
+  { cat: '✏️ 創作', text: '幫你們組的組員每個人想一個超級英雄綽號，要說明原因', time: 3 },
+  { cat: '✏️ 創作', text: '用「畢業、哭、便當、手機、老師」這5個詞造一個故事', time: 3 },
+  { cat: '✏️ 創作', text: '幫603班設計一個新的班級吉祥物，說出名字和特殊能力', time: 3 },
+
+  // 回憶感謝
+  { cat: '🌸 回憶', text: '說出3件「只有603班才懂的事」', time: 3 },
+  { cat: '🌸 回憶', text: '每個人說一句對「永平國小」的告別話', time: 3 },
+  { cat: '🌸 回憶', text: '回想一件六年級最開心的事，每個人說一件不同的', time: 3 },
+  { cat: '🌸 回憶', text: '每個人說出一個「想感謝的同學名字和原因」', time: 3 },
+  { cat: '🌸 回憶', text: '預測：10年後，你們組的每個人在做什麼職業？', time: 3 },
+];
+
+const CATEGORIES = ['全部', '🎭 表演', '🧠 腦洞', '💪 挑戰', '✏️ 創作', '🌸 回憶'];
+const CAT_COLORS = { '🎭 表演': '--pink', '🧠 腦洞': '--purple', '💪 挑戰': '--orange', '✏️ 創作': '--cyan', '🌸 回憶': '--green' };
+
+let selectedCat = '全部';
+let taskHistory = [];
+let isSpinning = false;
+
+// Build category filters
+const catFilters = document.getElementById('catFilters');
+CATEGORIES.forEach(c => {
+  const pill = document.createElement('button');
+  pill.className = 'cat-pill' + (c === '全部' ? ' on' : '');
+  pill.textContent = c;
+  pill.onclick = () => {
+    selectedCat = c;
+    document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('on'));
+    pill.classList.add('on');
+  };
+  catFilters.appendChild(pill);
+});
+
+function getFilteredTasks() {
+  if (selectedCat === '全部') return TASKS;
+  return TASKS.filter(t => t.cat === selectedCat);
+}
+
+function spinTask(groupLabel = '') {
+  if (isSpinning) return;
+  const pool = getFilteredTasks();
+  if (!pool.length) return;
+
+  isSpinning = true;
+  const spinBtn = document.getElementById('spinBtn');
+  spinBtn.disabled = true;
+  spinBtn.textContent = '抽抽抽…';
+
+  const display = document.getElementById('taskDisplay');
+  display.classList.add('spinning');
+
+  let count = 0;
+  const maxCount = 12;
+  const interval = setInterval(() => {
+    const rand = pool[Math.floor(Math.random() * pool.length)];
+    const colorVar = CAT_COLORS[rand.cat] || '--yellow';
+    display.innerHTML = `
+      <div class="task-category" style="color:var(${colorVar})">${rand.cat}</div>
+      <div class="task-text">${rand.text}</div>`;
+    count++;
+    if (count >= maxCount) {
+      clearInterval(interval);
+      // Final pick
+      const final = pool[Math.floor(Math.random() * pool.length)];
+      const finalColor = CAT_COLORS[final.cat] || '--yellow';
+      display.classList.remove('spinning');
+      display.innerHTML = `
+        <div class="task-category" style="color:var(${finalColor})">${final.cat}</div>
+        <div class="task-text">${groupLabel ? `<span style="color:var(--cyan);font-size:0.9em;">${groupLabel}　</span>` : ''}${final.text}</div>
+        <div class="task-time">⏱️ ${final.time} 分鐘</div>`;
+      taskHistory.unshift({ ...final, group: groupLabel });
+      renderHistory();
+      isSpinning = false;
+      spinBtn.disabled = false;
+      spinBtn.textContent = '🎲 再抽一次！';
+    }
+  }, 80);
+}
+
+function spinSpecific() {
+  const label = prompt('輸入組名或組號（例：第一組）：');
+  if (label) spinTask(label);
+}
+
+function renderHistory() {
+  const section = document.getElementById('historySection');
+  const list = document.getElementById('historyList');
+  if (!taskHistory.length) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  list.innerHTML = taskHistory.slice(0, 8).map(t => `
+    <div class="history-item">
+      <div class="h-cat" style="color:var(${CAT_COLORS[t.cat] || '--yellow'})">${t.cat}</div>
+      <div class="h-text">${t.group ? `[${t.group}] ` : ''}${t.text}</div>
+    </div>`).join('');
+}
+
+function clearHistory() {
+  taskHistory = [];
+  document.getElementById('historySection').style.display = 'none';
+  document.getElementById('spinBtn').textContent = '🎲 抽任務！';
+  document.getElementById('taskDisplay').innerHTML = '<div class="task-placeholder">按下「抽任務」開始！</div>';
+}
+
+// ===================== SCOREBOARD =====================
+
+const GROUP_COLORS = ['#ffe566','#ff6b9d','#4df0d0','#a855f7','#ff9a3c','#4ade80','#60a5fa','#f87171'];
+const GROUP_EMOJIS = ['🦁','🐯','🦊','🐼','🦋','🐉','🚀','⚡'];
+
+let groupNum = 4;
+let groups = [];
+let scores = [];
+let pointsPerQ = 3;
+let gameStarted = false;
+
+function changeGroupNum(d) {
+  groupNum = Math.max(2, Math.min(8, groupNum + d));
+  document.getElementById('groupNumDisplay').textContent = groupNum;
+  renderGroupInputs();
+}
+
+function renderGroupInputs() {
+  const cont = document.getElementById('groupNameInputs');
+  cont.innerHTML = '';
+  for (let i = 0; i < groupNum; i++) {
+    const row = document.createElement('div');
+    row.className = 'group-setup-row';
+    row.innerHTML = `
+      <div class="group-color-dot" style="background:${GROUP_COLORS[i]}"></div>
+      <input type="text" id="gn${i}" value="第 ${i+1} 組" placeholder="組名">`;
+    cont.appendChild(row);
+  }
+}
+renderGroupInputs();
+
+function startGame() {
+  pointsPerQ = parseInt(document.getElementById('pointsPerQ').value);
+  groups = [];
+  scores = [];
+  for (let i = 0; i < groupNum; i++) {
+    groups.push({
+      name: document.getElementById(`gn${i}`).value || `第${i+1}組`,
+      color: GROUP_COLORS[i],
+      emoji: GROUP_EMOJIS[i],
+    });
+    scores.push(0);
+  }
+  gameStarted = true;
+  document.getElementById('scoreSetup').style.display = 'none';
+  document.getElementById('scoreboard').classList.add('active');
+  renderScoreGrid();
+}
+
+function renderScoreGrid() {
+  const grid = document.getElementById('scoreGrid');
+  const maxScore = Math.max(...scores);
+  grid.innerHTML = '';
+  const ranked = groups.map((g,i) => ({...g, score: scores[i], idx: i}))
+    .sort((a,b) => b.score - a.score);
+
+  ranked.forEach((g, rank) => {
+    const card = document.createElement('div');
+    card.className = 'score-card' + (g.score === maxScore && g.score > 0 ? ' leader' : '');
+    card.id = `card-${g.idx}`;
+    card.innerHTML = `
+      <div class="crown">👑</div>
+      <div class="g-emoji">${g.emoji}</div>
+      <div class="g-name">${g.name}</div>
+      <div class="g-score" style="color:${g.color}" id="score-${g.idx}">${g.score}</div>
+      <div class="g-rank">${rank === 0 && g.score > 0 ? '🥇 第一名' : rank === 1 ? '🥈 第二名' : rank === 2 ? '🥉 第三名' : `第${rank+1}名`}</div>
+      <div class="score-controls">
+        <button class="score-btn plus" onclick="addScore(${g.idx})">＋${pointsPerQ}</button>
+        <button class="score-btn minus" onclick="minusScore(${g.idx})">−1</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function addScore(idx) {
+  scores[idx] += pointsPerQ;
+  flashScore(idx);
+  renderScoreGrid();
+  showAnnounce(`${groups[idx].name} ＋${pointsPerQ} 分！🎉`);
+}
+
+function minusScore(idx) {
+  scores[idx] = Math.max(0, scores[idx] - 1);
+  renderScoreGrid();
+}
+
+function flashScore(idx) {
+  setTimeout(() => {
+    const el = document.getElementById(`score-${idx}`);
+    if (el) { el.classList.add('score-flash'); setTimeout(() => el.classList.remove('score-flash'), 300); }
+  }, 50);
+}
+
+function quickAdd() {
+  showAnnounce('點組別卡片上的「＋」按鈕加分！');
+}
+
+function showWinner() {
+  const maxScore = Math.max(...scores);
+  const winners = groups.filter((g,i) => scores[i] === maxScore);
+  document.getElementById('winnerName').textContent = winners.map(g=>g.name).join(' & ') + ' 獲勝！';
+  document.getElementById('winnerScore').textContent = `得分：${maxScore} 分`;
+  document.getElementById('winnerOverlay').classList.add('show');
+}
+
+function closeWinner() {
+  document.getElementById('winnerOverlay').classList.remove('show');
+}
+
+function resetGame() {
+  closeWinner();
+  gameStarted = false;
+  scores = [];
+  groups = [];
+  document.getElementById('scoreSetup').style.display = 'block';
+  document.getElementById('scoreboard').classList.remove('active');
+  renderGroupInputs();
+}
+
+// ANNOUNCE
+let announceTimer;
+function showAnnounce(msg) {
+  const el = document.getElementById('announce');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(announceTimer);
+  announceTimer = setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+// TAB SWITCH
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', (i===0&&tab==='task')||(i===1&&tab==='score')));
+  document.getElementById('screen-task').classList.toggle('active', tab==='task');
+  document.getElementById('screen-score').classList.toggle('active', tab==='score');
+}
+</script>
+</body>
+</html>
