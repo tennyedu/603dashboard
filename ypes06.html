@@ -7,20 +7,21 @@
 <title>成績查詢</title>
 <style>
 :root{
-  --ink:#1c2b2a; --ink-soft:#5b706e;
-  --teal:#0f766e; --teal-deep:#0b4f4a; --teal-pale:#e3f1ef;
-  --paper:#f7f5ef; --line:#d5dedc; --warn:#b45309;
+  --ink:#1b2b2a; --ink-soft:#617573; --ink-faint:#93a5a3;
+  --teal:#0f766e; --teal-deep:#0a4f49; --teal-pale:#e4f1ef; --teal-mid:#5eaaa2;
+  --gold:#b8860b; --gold-pale:#fdf5e3;
+  --paper:#f7f5ef; --line:#dde5e3; --warn:#b45309;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);
   font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
-  line-height:1.75;-webkit-text-size-adjust:100%}
-.wrap{max-width:680px;margin:0 auto;padding:24px 18px 64px}
+  line-height:1.75;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
+.wrap{max-width:640px;margin:0 auto;padding:24px 18px 64px}
 h1{font-size:22px;margin:0 0 4px;letter-spacing:1px}
 h2{font-size:17px;margin:30px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--teal-pale);color:var(--teal-deep)}
 p{margin:8px 0}
 .sub{color:var(--ink-soft);font-size:14px;margin:0 0 20px}
-.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin:14px 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0}
 label{display:block;font-size:14px;font-weight:600;margin:14px 0 6px}
 input[type=text],textarea{width:100%;padding:12px 14px;font-size:16px;font-family:inherit;
   border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
@@ -39,10 +40,6 @@ table{width:100%;border-collapse:collapse;font-size:15px;margin-top:8px}
 th,td{border:1px solid var(--line);padding:7px 9px;text-align:center}
 th{background:var(--teal-pale);color:var(--teal-deep);font-weight:600}
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
-.stat{background:var(--teal-pale);border-radius:12px;padding:14px 8px;text-align:center}
-.stat .n{font-size:26px;font-weight:700;color:var(--teal-deep)}
-.stat .l{font-size:13px;color:var(--ink-soft)}
 .msg{padding:12px 14px;border-radius:10px;font-size:15px;margin-top:14px}
 .msg.err{background:#fdecec;color:#9b1c1c}
 .msg.ok{background:var(--teal-pale);color:var(--teal-deep)}
@@ -51,15 +48,76 @@ th{background:var(--teal-pale);color:var(--teal-deep);font-weight:600}
   border-radius:0 10px 10px 0;font-size:14px;margin:14px 0}
 .linkbox{background:#eceae3;padding:12px;border-radius:10px;font-size:12px;
   word-break:break-all;margin-top:10px;max-height:130px;overflow:auto}
-.foot{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:36px}
+.foot{text-align:center;font-size:12px;color:var(--ink-faint);margin-top:36px}
 .hidden{display:none}
 .tabs{display:flex;gap:8px;margin-bottom:4px}
 .tabs button{flex:1;font-size:15px;padding:10px}
 .tabs button[aria-selected=false]{background:#fff;color:var(--ink-soft);border:1.5px solid var(--line)}
-.grid td input{width:100%;min-width:64px;border:none;padding:6px 4px;font-size:15px;text-align:center;background:transparent;font-family:inherit;color:var(--ink)}
+.grid td input{width:100%;min-width:64px;border:none;padding:6px 4px;font-size:15px;
+  text-align:center;background:transparent;font-family:inherit;color:var(--ink)}
 .grid td input:focus{outline:2px solid var(--teal);border-radius:4px}
 .grid th input{width:100%;min-width:64px;border:none;padding:4px;font-size:14px;text-align:center;
   background:transparent;font-weight:600;color:var(--teal-deep);font-family:inherit}
+
+/* ===== 家長查詢畫面 ===== */
+.lookHead{text-align:center;padding:14px 0 4px}
+.lookHead .crest{width:46px;height:46px;margin:0 auto 10px;border-radius:14px;
+  background:linear-gradient(140deg,var(--teal),var(--teal-deep));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px}
+.lookHead h1{font-size:21px;letter-spacing:2px}
+.lookHead .sub{margin-bottom:0}
+.askCard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;
+  margin:18px 0;box-shadow:0 2px 14px rgba(15,118,110,.06)}
+#sid{text-align:center;font-size:22px;letter-spacing:4px;padding:14px;font-weight:600}
+#btnQuery{width:100%;padding:14px;font-size:17px;letter-spacing:2px}
+
+.report{border-radius:20px;overflow:hidden;background:#fff;border:1px solid var(--line);
+  box-shadow:0 4px 20px rgba(15,118,110,.09);margin-top:18px}
+.hero{background:linear-gradient(145deg,var(--teal) 0%,var(--teal-deep) 100%);
+  color:#fff;padding:22px 22px 20px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-42px;top:-42px;width:150px;height:150px;
+  border-radius:50%;background:rgba(255,255,255,.07)}
+.hero .who{font-size:26px;font-weight:700;letter-spacing:2px;line-height:1.3}
+.hero .no{font-size:13px;opacity:.82;letter-spacing:1px;margin-top:2px}
+.hero .rankwrap{display:flex;align-items:baseline;gap:6px;margin-top:14px;
+  background:rgba(255,255,255,.14);border-radius:12px;padding:10px 14px;
+  position:relative;z-index:1;width:fit-content}
+.hero .rankwrap .rn{font-size:34px;font-weight:700;line-height:1}
+.hero .rankwrap .rl{font-size:13px;opacity:.9}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line)}
+.duo div{padding:16px 8px;text-align:center}
+.duo div+div{border-left:1px solid var(--line)}
+.duo .n{font-size:28px;font-weight:700;color:var(--teal-deep);line-height:1.2;
+  font-variant-numeric:tabular-nums}
+.duo .l{font-size:12px;color:var(--ink-soft);letter-spacing:1px}
+
+.subjects{padding:8px 20px 20px}
+.subj{padding:14px 0;border-bottom:1px dashed var(--line)}
+.subj:last-child{border-bottom:none}
+.subj .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.subj .nm{font-size:16px;font-weight:600;letter-spacing:1px}
+.subj .sc{font-size:24px;font-weight:700;color:var(--teal-deep);font-variant-numeric:tabular-nums}
+.subj .sc.none{font-size:16px;color:var(--ink-faint);font-weight:400}
+.bar{position:relative;height:9px;border-radius:99px;background:#eef2f1;overflow:visible}
+.bar .fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teal-mid),var(--teal));
+  width:0;transition:width .7s cubic-bezier(.2,.8,.3,1)}
+.bar .avg{position:absolute;top:-4px;width:2px;height:17px;background:var(--gold);border-radius:2px}
+.subj .cmp{font-size:12px;color:var(--ink-soft);margin-top:7px;display:flex;
+  justify-content:space-between;gap:10px}
+.subj .cmp .up{color:var(--teal);font-weight:600}
+.subj .cmp .dn{color:var(--gold);font-weight:600}
+.legend{font-size:12px;color:var(--ink-faint);padding:0 20px 16px;display:flex;
+  align-items:center;gap:6px}
+.legend i{display:inline-block;width:2px;height:12px;background:var(--gold);border-radius:2px}
+.tail{background:var(--teal-pale);padding:13px 20px;font-size:13px;color:var(--teal-deep)}
+@media (prefers-reduced-motion:reduce){.bar .fill{transition:none}}
+@media print{
+  body{background:#fff}
+  .askCard,.lookHead .crest,.foot{display:none}
+  .report{box-shadow:none;border:1px solid #999}
+  .hero{background:#0a4f49 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
 </style>
 </head>
 <body>
@@ -67,18 +125,17 @@ th{background:var(--teal-pale);color:var(--teal-deep);font-weight:600}
 
 <!-- ============ 家長查詢畫面 ============ -->
 <section id="viewLookup" class="hidden">
-  <h1 id="clsTitle">成績查詢</h1>
-  <p class="sub">請輸入學號查詢，一次只會顯示一位學生的成績。</p>
-  <div class="card">
-    <label for="sid">學號</label>
-    <input type="text" id="sid" inputmode="numeric" autocomplete="off" placeholder="例如 610001">
-    <div class="row">
-      <button id="btnQuery">查詢成績</button>
-      <button class="ghost" id="btnClear">清除</button>
-    </div>
+  <div class="lookHead">
+    <div class="crest">成</div>
+    <h1 id="clsTitle">成績查詢</h1>
+    <p class="sub">輸入學號查詢，一次只顯示一位學生</p>
+  </div>
+  <div class="askCard">
+    <input type="text" id="sid" inputmode="numeric" autocomplete="off" placeholder="請輸入學號">
+    <div class="row"><button id="btnQuery">查　詢</button></div>
     <div id="qmsg"></div>
   </div>
-  <div id="result" class="hidden"></div>
+  <div id="result"></div>
   <p class="foot" id="foot"></p>
 </section>
 
@@ -92,7 +149,6 @@ th{background:var(--teal-pale);color:var(--teal-deep);font-weight:600}
   </div>
 
   <h2>第一步　填成績</h2>
-
   <div class="tabs" role="tablist">
     <button id="tabPaste" role="tab" aria-selected="true">從 Excel 貼上</button>
     <button id="tabType" role="tab" aria-selected="false">直接輸入</button>
@@ -130,7 +186,7 @@ th{background:var(--teal-pale);color:var(--teal-deep);font-weight:600}
     </label>
     <label style="display:flex;align-items:center;gap:8px;font-weight:400;margin-top:10px">
       <input type="checkbox" id="cfgAvg" checked style="width:18px;height:18px">
-      顯示各科班平均
+      顯示各科班平均對照
     </label>
   </div>
 
@@ -155,7 +211,7 @@ th{background:var(--teal-pale);color:var(--teal-deep);font-weight:600}
   <h2>幾件要注意的事</h2>
   <p>家長要輸入正確學號才查得到，看不到別人家孩子的成績。但學號如果是連號、被猜到就查得到，介意的話可以在學號後面加兩位生日當查詢碼，各自發給家長。</p>
   <p>連結裡帶著全班成績，所以<strong>只放學號、姓名、分數</strong>，不要放電話或身分證字號。</p>
-  <p>人數和科目太多時連結會變很長，建議一個班一條連結，不要整個學年放在一起。</p>
+  <p>「短網址」是選用功能，會把連結送到外部服務轉換。在意個資的話就用原本的長連結，長連結貼到 LINE 一樣可以點。</p>
   <p class="foot">Made for Tenny</p>
 </section>
 
@@ -172,6 +228,10 @@ function $(id){ return document.getElementById(id); }
 function baseUrl(){
   return location.protocol === "file:" ? PUBLIC_URL : location.origin + location.pathname;
 }
+function esc(s){
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")
+                  .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
 
 var SAMPLE =
 "學號\t姓名\t國語\t數學\t社會\t自然\t英語\n" +
@@ -182,12 +242,14 @@ var SAMPLE =
 "610005\t黃志豪\t95\t79\t91\t82\t88\n" +
 "610006\t吳雅琪\t70\t84\t76\t81\t79";
 
-/* ---------- 編碼：gzip + base64url，不支援就退回純 base64 ---------- */
+/* ================= 編碼 =================
+   為了縮短連結，資料先壓成分隔字串（不用 JSON），再 gzip，再 base64url。
+   格式： 標題 ^ 旗標 ^ 科目(逗號) ^ 學號共同前綴 ^ 每位學生(分號)
+   學生： 學號尾碼 , 姓名 , 分數(逗號，空白代表未考)
+*/
 function bytesToB64(bytes){
-  var s = "", CH = 0x8000;
-  for(var i=0;i<bytes.length;i+=CH){
-    s += String.fromCharCode.apply(null, bytes.subarray(i, i+CH));
-  }
+  var s = "", CH = 0x8000, i;
+  for(i=0;i<bytes.length;i+=CH) s += String.fromCharCode.apply(null, bytes.subarray(i, i+CH));
   return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
 }
 function b64ToBytes(str){
@@ -197,30 +259,64 @@ function b64ToBytes(str){
   for(i=0;i<bin.length;i++) out[i] = bin.charCodeAt(i);
   return out;
 }
-function encode(obj){
-  var json = JSON.stringify(obj);
+function commonPrefix(ids){
+  if(ids.length < 2) return "";
+  var p = ids[0];
+  ids.forEach(function(id){
+    var k = 0;
+    while(k < p.length && k < id.length && p[k] === id[k]) k++;
+    p = p.slice(0, k);
+  });
+  return p.length >= 2 ? p : "";
+}
+function pack(data){
+  var ids = data.d.map(function(r){ return String(r[0]); });
+  var pre = commonPrefix(ids);
+  var flags = (data.r ? "1" : "0") + (data.a ? "1" : "0");
+  var body = data.d.map(function(r){
+    var tail = String(r[0]).slice(pre.length);
+    var sc = r[2].map(function(v){ return v === null ? "" : v; }).join(",");
+    return tail + "," + r[1] + "," + sc;
+  }).join(";");
+  return [data.n, flags, data.s.join(","), pre, body].join("^");
+}
+function unpack(str){
+  var p = str.split("^");
+  var subjects = p[2] ? p[2].split(",") : [];
+  var pre = p[3] || "";
+  var rows = (p[4] || "").split(";").filter(function(x){ return x !== ""; }).map(function(line){
+    var c = line.split(",");
+    var scores = subjects.map(function(_, i){
+      var raw = c[2+i];
+      if(raw === undefined || raw === "") return null;
+      var v = parseFloat(raw);
+      return isNaN(v) ? null : v;
+    });
+    return [pre + c[0], c[1] || "", scores];
+  });
+  return { n: p[0] || "成績查詢", r: p[1].charAt(0) === "1" ? 1 : 0,
+           a: p[1].charAt(1) === "1" ? 1 : 0, s: subjects, d: rows };
+}
+function encode(data){
+  var txt = pack(data);
   if(typeof CompressionStream === "undefined"){
-    return Promise.resolve("0" + bytesToB64(new TextEncoder().encode(json)));
+    return Promise.resolve("0" + bytesToB64(new TextEncoder().encode(txt)));
   }
-  var cs = new CompressionStream("gzip");
-  var w = cs.writable.getWriter();
-  w.write(new TextEncoder().encode(json));
-  w.close();
+  var cs = new CompressionStream("gzip"), w = cs.writable.getWriter();
+  w.write(new TextEncoder().encode(txt)); w.close();
   return new Response(cs.readable).arrayBuffer().then(function(buf){
     return "1" + bytesToB64(new Uint8Array(buf));
   });
 }
-function decode(str){
-  var mode = str.charAt(0), bytes = b64ToBytes(str.slice(1));
-  if(mode === "0") return Promise.resolve(JSON.parse(new TextDecoder().decode(bytes)));
-  var ds = new DecompressionStream("gzip");
-  var w = ds.writable.getWriter();
-  w.write(bytes);
-  w.close();
-  return new Response(ds.readable).text().then(function(t){ return JSON.parse(t); });
+function decode(code){
+  var mode = code.charAt(0), bytes = b64ToBytes(code.slice(1));
+  if(mode === "0") return Promise.resolve(unpack(new TextDecoder().decode(bytes)));
+  var ds = new DecompressionStream("gzip"), w = ds.writable.getWriter();
+  w.write(bytes); w.close();
+  return new Response(ds.readable).text().then(unpack);
 }
 
-/* ---------- 解析貼上的資料 ---------- */
+/* ================= 解析貼上的資料 ================= */
 function splitCells(line){
   return line.indexOf("\t") >= 0 ? line.split("\t") : line.split(",");
 }
@@ -244,7 +340,7 @@ function parseText(text){
 
   var rows = [];
   body.forEach(function(line){
-    var c = splitCells(line).map(function(x){ return x.trim(); });
+    var c = splitCells(line).map(function(x){ return x.trim().replace(/[,;^]/g,""); });
     var id = c[0] || "";
     if(!id) return;
     var scores = subjects.map(function(_, k){
@@ -261,17 +357,17 @@ function parseText(text){
     if(seen[r[0]]) dup.push(r[0]);
     seen[r[0]] = 1;
   });
-  return { subjects: subjects, rows: rows, dup: dup };
+  return { subjects: subjects.map(function(s){ return s.replace(/[,;^]/g,""); }),
+           rows: rows, dup: dup };
 }
 
-/* ---------- 成績計算 ---------- */
+/* ================= 成績計算 ================= */
 function buildTable(data){
   var subjects = data.s;
   var students = data.d.map(function(r){
-    var scores = r[2];
-    var valid = scores.filter(function(v){ return v !== null; });
+    var valid = r[2].filter(function(v){ return v !== null; });
     var total = valid.reduce(function(a,b){ return a+b; }, 0);
-    return { id:String(r[0]), name:r[1], scores:scores, total:total,
+    return { id:String(r[0]), name:r[1], scores:r[2], total:total,
              avg: valid.length ? total/valid.length : 0 };
   });
   var sorted = students.slice().sort(function(a,b){ return b.total - a.total; });
@@ -286,37 +382,70 @@ function buildTable(data){
                        .filter(function(v){ return v !== null; });
     return vals.length ? vals.reduce(function(a,b){ return a+b; },0)/vals.length : null;
   });
-  return { subjects:subjects, students:students, classAvg:classAvg, count:students.length };
+  var maxScore = 100;
+  students.forEach(function(st){
+    st.scores.forEach(function(v){ if(v !== null && v > maxScore) maxScore = v; });
+  });
+  return { subjects:subjects, students:students, classAvg:classAvg,
+           count:students.length, max:maxScore };
 }
 function fmt(n){ return (Math.round(n*10)/10).toFixed(1); }
-function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 
 function renderResult(stu, T, showRank, showAvg){
-  var h = '<div class="card">';
-  h += '<h1 style="margin-bottom:2px">' + esc(stu.name || stu.id) + "</h1>";
-  h += '<p class="sub" style="margin-bottom:14px">學號 ' + esc(stu.id) + "</p>";
-  h += '<div class="statgrid">';
-  h += '<div class="stat"><div class="n">' + fmt(stu.total) + '</div><div class="l">總分</div></div>';
-  h += '<div class="stat"><div class="n">' + fmt(stu.avg) + '</div><div class="l">平均</div></div>';
+  var h = '<div class="report">';
+
+  h += '<div class="hero">';
+  h += '<div class="who">' + esc(stu.name || stu.id) + "</div>";
+  h += '<div class="no">學號 ' + esc(stu.id) + "</div>";
   if(showRank){
-    h += '<div class="stat"><div class="n">' + stu.rank + '</div><div class="l">名次（共 ' + T.count + ' 人）</div></div>';
-  } else {
-    h += '<div class="stat"><div class="n">' + T.count + '</div><div class="l">班級人數</div></div>';
+    h += '<div class="rankwrap"><span class="rl">班上第</span>' +
+         '<span class="rn">' + stu.rank + '</span>' +
+         '<span class="rl">名　共 ' + T.count + " 人</span></div>";
   }
   h += "</div>";
-  h += '<div class="scroll"><table><tr><th>科目</th><th>分數</th>' +
-       (showAvg ? "<th>班平均</th>" : "") + "</tr>";
+
+  h += '<div class="duo">';
+  h += '<div><div class="n">' + fmt(stu.total) + '</div><div class="l">總分</div></div>';
+  h += '<div><div class="n">' + fmt(stu.avg) + '</div><div class="l">平均</div></div>';
+  h += "</div>";
+
+  h += '<div class="subjects">';
   T.subjects.forEach(function(s, i){
     var v = stu.scores[i], ca = T.classAvg[i];
-    h += "<tr><td>" + esc(s) + "</td><td><strong>" + (v === null ? "—" : v) + "</strong></td>" +
-         (showAvg ? "<td>" + (ca === null ? "—" : fmt(ca)) + "</td>" : "") + "</tr>";
+    h += '<div class="subj"><div class="top"><span class="nm">' + esc(s) + "</span>";
+    h += v === null ? '<span class="sc none">未評分</span>'
+                    : '<span class="sc">' + v + "</span>";
+    h += "</div>";
+    if(v !== null){
+      var pct = Math.max(0, Math.min(100, v / T.max * 100));
+      h += '<div class="bar"><div class="fill" data-w="' + pct.toFixed(1) + '"></div>';
+      if(showAvg && ca !== null){
+        var ap = Math.max(0, Math.min(100, ca / T.max * 100));
+        h += '<div class="avg" style="left:calc(' + ap.toFixed(1) + '% - 1px)"></div>';
+      }
+      h += "</div>";
+      if(showAvg && ca !== null){
+        var d = v - ca;
+        var word = Math.abs(d) < 0.05
+          ? "與班平均相同"
+          : (d > 0 ? '<span class="up">高於班平均 ' + fmt(Math.abs(d)) + " 分</span>"
+                   : '<span class="dn">低於班平均 ' + fmt(Math.abs(d)) + " 分</span>");
+        h += '<div class="cmp"><span>班平均 ' + fmt(ca) + "</span><span>" + word + "</span></div>";
+      }
+    }
+    h += "</div>";
   });
-  h += "</table></div>";
-  h += '<p class="hint" style="margin-top:12px">此頁僅顯示本人成績，分數如有疑問請與導師聯繫。</p></div>';
+  h += "</div>";
+
+  if(showAvg){
+    h += '<div class="legend"><i></i>直線為全班該科平均</div>';
+  }
+  h += '<div class="tail">此頁僅顯示本人成績，分數如有疑問請與導師聯繫。</div>';
+  h += "</div>";
   return h;
 }
 
-/* ---------- 家長查詢 ---------- */
+/* ================= 家長查詢 ================= */
 var TABLE = null, DATA = null;
 function startLookup(data){
   DATA = data;
@@ -330,20 +459,24 @@ function doQuery(){
   var v = $("sid").value.trim(), box = $("result");
   if(!v){
     $("qmsg").innerHTML = '<div class="msg err">請先輸入學號。</div>';
-    box.classList.add("hidden"); return;
+    box.innerHTML = ""; return;
   }
   var stu = TABLE.students.filter(function(s){ return s.id === v; })[0];
   if(!stu){
     $("qmsg").innerHTML = '<div class="msg err">查無此學號，請再確認一次。</div>';
-    box.classList.add("hidden"); return;
+    box.innerHTML = ""; return;
   }
   $("qmsg").innerHTML = "";
   box.innerHTML = renderResult(stu, TABLE, DATA.r !== 0, DATA.a !== 0);
-  box.classList.remove("hidden");
   box.scrollIntoView({ behavior:"smooth", block:"start" });
+  setTimeout(function(){
+    Array.prototype.forEach.call(box.querySelectorAll(".fill"), function(el){
+      el.style.width = el.getAttribute("data-w") + "%";
+    });
+  }, 60);
 }
 
-/* ---------- 手動輸入表格 ---------- */
+/* ================= 手動輸入表格 ================= */
 var gridSubjects = ["國語","數學","社會","自然"];
 var gridRows = 6;
 function drawGrid(preset){
@@ -373,35 +506,51 @@ function cellVal(r, c){
   var el = $("gridTable").querySelector('input[data-r="'+r+'"][data-c="'+c+'"]');
   return el ? el.value : "";
 }
+function gridScores(r){
+  return gridSubjects.map(function(_, c){
+    var raw = cellVal(r, c).replace(/[^\d.\-]/g,"");
+    var v = parseFloat(raw);
+    return (raw === "" || isNaN(v)) ? null : v;
+  });
+}
 function readGrid(){
   var rows = [], r;
   for(r=0;r<gridRows;r++){
-    var id = cellVal(r, "id").trim();
+    var id = cellVal(r, "id").trim().replace(/[,;^]/g,"");
     if(!id) continue;
-    var scores = gridSubjects.map(function(_, c){
-      var raw = cellVal(r, c).replace(/[^\d.\-]/g,"");
-      var v = parseFloat(raw);
-      return (raw === "" || isNaN(v)) ? null : v;
-    });
-    rows.push([id, cellVal(r,"nm").trim(), scores]);
+    rows.push([id, cellVal(r,"nm").trim().replace(/[,;^]/g,""), gridScores(r)]);
   }
   if(!rows.length) throw new Error("表格裡還沒有資料，至少要填一位學生的學號。");
-  return { subjects: gridSubjects.slice(), rows: rows, dup: [] };
+  return { subjects: gridSubjects.map(function(s){ return s.replace(/[,;^]/g,""); }),
+           rows: rows, dup: [] };
 }
 function snapshotGrid(){
   var out = [], r;
-  for(r=0;r<gridRows;r++){
-    var scores = gridSubjects.map(function(_, c){
-      var raw = cellVal(r, c).replace(/[^\d.\-]/g,"");
-      var v = parseFloat(raw);
-      return (raw === "" || isNaN(v)) ? null : v;
-    });
-    out.push([cellVal(r,"id").trim(), cellVal(r,"nm").trim(), scores]);
-  }
+  for(r=0;r<gridRows;r++) out.push([cellVal(r,"id").trim(), cellVal(r,"nm").trim(), gridScores(r)]);
   return out;
 }
 
-/* ---------- 設定頁 ---------- */
+/* ================= 短網址（選用） ================= */
+function shorten(longUrl){
+  var svc = [
+    "https://is.gd/create.php?format=simple&url=" + encodeURIComponent(longUrl),
+    "https://tinyurl.com/api-create.php?url=" + encodeURIComponent(longUrl)
+  ];
+  function tryOne(i){
+    if(i >= svc.length) return Promise.reject(new Error("no service"));
+    return fetch(svc[i]).then(function(r){
+      if(!r.ok) throw new Error("bad");
+      return r.text();
+    }).then(function(t){
+      t = t.trim();
+      if(!/^https?:\/\//.test(t)) throw new Error("bad");
+      return t;
+    }).catch(function(){ return tryOne(i+1); });
+  }
+  return tryOne(0);
+}
+
+/* ================= 設定頁 ================= */
 var mode = "paste";
 function collect(){
   return mode === "paste" ? parseText($("pasteBox").value) : readGrid();
@@ -436,22 +585,22 @@ function initSetup(){
   $("btnFillSample").onclick = function(){ $("pasteBox").value = SAMPLE; $("btnCheck").click(); };
 
   $("btnAddRow").onclick = function(){
-    var snap = snapshotGrid();
-    snap.push(["", "", gridSubjects.map(function(){ return null; })]);
-    drawGrid(snap);
+    var s = snapshotGrid();
+    s.push(["", "", gridSubjects.map(function(){ return null; })]);
+    drawGrid(s);
   };
   $("btnAddCol").onclick = function(){
-    var snap = snapshotGrid();
+    var s = snapshotGrid();
     gridSubjects.push("科目" + (gridSubjects.length+1));
-    snap.forEach(function(r){ r[2].push(null); });
-    drawGrid(snap);
+    s.forEach(function(r){ r[2].push(null); });
+    drawGrid(s);
   };
   $("btnDelCol").onclick = function(){
     if(gridSubjects.length <= 1) return;
-    var snap = snapshotGrid();
+    var s = snapshotGrid();
     gridSubjects.pop();
-    snap.forEach(function(r){ r[2].pop(); });
-    drawGrid(snap);
+    s.forEach(function(r){ r[2].pop(); });
+    drawGrid(s);
   };
 
   $("btnCheck").onclick = function(){
@@ -469,7 +618,7 @@ function initSetup(){
   function makeData(){
     var d = collect();
     return {
-      n: $("cfgName").value.trim() || "成績查詢",
+      n: ($("cfgName").value.trim() || "成績查詢").replace(/\^/g,""),
       r: $("cfgRank").checked ? 1 : 0,
       a: $("cfgAvg").checked ? 1 : 0,
       s: d.subjects,
@@ -493,22 +642,44 @@ function initSetup(){
     box.innerHTML = '<div class="msg ok">產生中…</div>';
     encode(data).then(function(code){
       var link = baseUrl() + "#d=" + code;
+      var current = link;
+
+      function notice(){
+        return "各位家長好，" + data.n + "已經可以查詢了：\n" + current +
+               "\n\n打開後輸入孩子的學號，就能看到各科成績" +
+               (data.r ? "和班上名次" : "") + "。有問題歡迎再跟我說，謝謝大家。";
+      }
+      function paint(msg){
+        box.innerHTML = msg +
+          '<div class="linkbox" id="lkbox">' + esc(current) + "</div>" +
+          '<div class="row"><button id="btnCopyLink">複製連結</button>' +
+          '<button class="ghost" id="btnCopyMsg">複製整段通知</button>' +
+          '<button class="ghost" id="btnOpen">開起來看看</button></div>' +
+          '<div class="row" style="margin-top:8px"><button class="ghost sm" id="btnShort">縮成短網址（選用）</button></div>' +
+          '<p class="hint">短網址會把連結送到外部服務（is.gd／TinyURL）轉換，成績資料會經過他們的伺服器。在意的話用上面的長連結就好。</p>' +
+          '<div id="shortMsg"></div>';
+        $("btnCopyLink").onclick = function(){ copyText(current, this); };
+        $("btnCopyMsg").onclick = function(){ copyText(notice(), this); };
+        $("btnOpen").onclick = function(){ window.open(current, "_blank"); };
+        $("btnShort").onclick = function(){
+          var b = this;
+          b.textContent = "轉換中…";
+          $("shortMsg").innerHTML = "";
+          shorten(link).then(function(s){
+            current = s;
+            paint('<div class="msg ok">短網址完成，長度只剩 ' + s.length + " 個字元。</div>");
+          }).catch(function(){
+            b.textContent = "縮成短網址（選用）";
+            $("shortMsg").innerHTML = '<div class="msg err">短網址服務連不上，可能被學校網路擋住了。用上面的長連結一樣可以正常查詢。</div>';
+          });
+        };
+      }
+
       var warn = link.length > 8000
-        ? '<div class="msg warn">連結有點長（' + link.length + ' 字元），部分軟體可能會截斷。建議分班產生或減少科目。</div>'
+        ? '<div class="msg warn">連結有點長（' + link.length + ' 字元），部分軟體可能會截斷，建議一個班一條連結。</div>'
         : "";
-      box.innerHTML =
-        '<div class="msg ok">完成，共 ' + data.d.length + " 位學生。把下面的連結貼給家長就可以了。</div>" + warn +
-        '<div class="linkbox">' + esc(link) + "</div>" +
-        '<div class="row"><button id="btnCopyLink">複製連結</button>' +
-        '<button class="ghost" id="btnCopyMsg">複製整段通知</button>' +
-        '<button class="ghost" id="btnOpen">開起來看看</button></div>';
-      $("btnCopyLink").onclick = function(){ copyText(link, this); };
-      $("btnCopyMsg").onclick = function(){
-        copyText("各位家長好，" + data.n + "已經可以查詢了：\n" + link +
-                 "\n\n打開後輸入孩子的學號，就能看到各科成績" +
-                 (data.r ? "和班上名次" : "") + "。有問題歡迎再跟我說，謝謝大家。", this);
-      };
-      $("btnOpen").onclick = function(){ window.open(link, "_blank"); };
+      paint('<div class="msg ok">完成，共 ' + data.d.length + " 位學生，連結 " + link.length +
+            " 個字元。把下面的連結貼給家長就可以了。</div>" + warn);
     }).catch(function(){
       box.innerHTML = '<div class="msg err">產生失敗，請重新整理頁面再試一次。</div>';
     });
@@ -516,9 +687,8 @@ function initSetup(){
 
   $("btnLoad").onclick = function(){
     var box = $("loadMsg");
-    var v = $("loadLink").value.trim();
-    var m = v.match(/[#?]d=([A-Za-z0-9\-_]+)/);
-    if(!m){ box.innerHTML = '<div class="msg err">這條連結看起來不對，請貼完整的網址。</div>'; return; }
+    var m = $("loadLink").value.trim().match(/[#?]d=([A-Za-z0-9\-_]+)/);
+    if(!m){ box.innerHTML = '<div class="msg err">這條連結看起來不對，請貼完整的網址。短網址請先在瀏覽器打開，再複製網址列的完整連結。</div>'; return; }
     decode(m[1]).then(function(data){
       $("cfgName").value = data.n || "";
       $("cfgRank").checked = data.r !== 0;
@@ -539,13 +709,9 @@ function initSetup(){
   };
 }
 
-/* ---------- 進入點 ---------- */
+/* ================= 進入點 ================= */
 (function(){
   $("btnQuery").onclick = doQuery;
-  $("btnClear").onclick = function(){
-    $("sid").value = ""; $("qmsg").innerHTML = "";
-    $("result").classList.add("hidden"); $("sid").focus();
-  };
   $("sid").addEventListener("keydown", function(e){ if(e.key === "Enter") doQuery(); });
 
   var m = location.hash.match(/d=([A-Za-z0-9\-_]+)/) ||
