@@ -16,7 +16,7 @@
 body{margin:0;background:var(--paper);color:var(--ink);
   font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
   line-height:1.75;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
-.wrap{max-width:640px;margin:0 auto;padding:24px 18px 64px}
+.wrap{max-width:640px;margin:0 auto;padding:16px 16px 40px}
 h1{font-size:22px;margin:0 0 4px;letter-spacing:1px}
 h2{font-size:17px;margin:30px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--teal-pale);color:var(--teal-deep)}
 p{margin:8px 0}
@@ -36,6 +36,11 @@ button.ghost:hover{background:var(--teal-pale)}
 button.sm{font-size:14px;padding:8px 14px}
 .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .hint{font-size:13px;color:var(--ink-soft);margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:#fff;color:var(--teal-deep);border:1.5px solid var(--line);
+  border-radius:99px;padding:5px 13px;font-size:13.5px;font-weight:500}
+.chip:hover{background:var(--teal-pale);border-color:var(--teal-mid)}
+.chip[aria-pressed=true]{background:var(--teal);color:#fff;border-color:var(--teal)}
 table{width:100%;border-collapse:collapse;font-size:15px;margin-top:8px}
 th,td{border:1px solid var(--line);padding:7px 9px;text-align:center}
 th{background:var(--teal-pale);color:var(--teal-deep);font-weight:600}
@@ -60,57 +65,59 @@ th{background:var(--teal-pale);color:var(--teal-deep);font-weight:600}
   background:transparent;font-weight:600;color:var(--teal-deep);font-family:inherit}
 
 /* ===== 家長查詢畫面 ===== */
-.lookHead{text-align:center;padding:14px 0 4px}
-.lookHead .crest{width:46px;height:46px;margin:0 auto 10px;border-radius:14px;
+.lookHead{text-align:center;padding:2px 0 0}
+.lookHead .crest{width:34px;height:34px;margin:0 auto 6px;border-radius:11px;
   background:linear-gradient(140deg,var(--teal),var(--teal-deep));
-  display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px}
-.lookHead h1{font-size:21px;letter-spacing:2px}
-.lookHead .sub{margin-bottom:0}
-.askCard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;
-  margin:18px 0;box-shadow:0 2px 14px rgba(15,118,110,.06)}
-#sid{text-align:center;font-size:22px;letter-spacing:4px;padding:14px;font-weight:600}
-#btnQuery{width:100%;padding:14px;font-size:17px;letter-spacing:2px}
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px}
+.lookHead h1{font-size:19px;letter-spacing:2px}
+.lookHead .sub{margin-bottom:0;font-size:12.5px}
+.askCard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;
+  margin:12px 0 0;box-shadow:0 2px 10px rgba(15,118,110,.05)}
+.askRow{display:flex;gap:8px}
+#sid{flex:1;min-width:0;text-align:center;font-size:19px;letter-spacing:3px;
+  padding:10px 8px;font-weight:600}
+#btnQuery{flex:0 0 auto;padding:10px 20px;font-size:16px;letter-spacing:2px}
 
-.report{border-radius:20px;overflow:hidden;background:#fff;border:1px solid var(--line);
-  box-shadow:0 4px 20px rgba(15,118,110,.09);margin-top:18px}
+.report{border-radius:16px;overflow:hidden;background:#fff;border:1px solid var(--line);
+  box-shadow:0 3px 16px rgba(15,118,110,.08);margin-top:12px}
 .hero{background:linear-gradient(145deg,var(--teal) 0%,var(--teal-deep) 100%);
-  color:#fff;padding:22px 22px 20px;position:relative;overflow:hidden}
-.hero::after{content:"";position:absolute;right:-42px;top:-42px;width:150px;height:150px;
+  color:#fff;padding:15px 18px 14px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-40px;top:-40px;width:130px;height:130px;
   border-radius:50%;background:rgba(255,255,255,.07)}
-.hero .who{font-size:26px;font-weight:700;letter-spacing:2px;line-height:1.3}
-.hero .no{font-size:13px;opacity:.82;letter-spacing:1px;margin-top:2px}
-.hero .rankwrap{display:flex;align-items:baseline;gap:6px;margin-top:14px;
-  background:rgba(255,255,255,.14);border-radius:12px;padding:10px 14px;
+.hero .who{font-size:22px;font-weight:700;letter-spacing:2px;line-height:1.25}
+.hero .no{font-size:12px;opacity:.8;letter-spacing:1px;margin-top:1px}
+.hero .rankwrap{display:flex;align-items:baseline;gap:5px;margin-top:10px;
+  background:rgba(255,255,255,.14);border-radius:10px;padding:6px 12px;
   position:relative;z-index:1;width:fit-content}
-.hero .rankwrap .rn{font-size:34px;font-weight:700;line-height:1}
-.hero .rankwrap .rl{font-size:13px;opacity:.9}
+.hero .rankwrap .rn{font-size:27px;font-weight:700;line-height:1}
+.hero .rankwrap .rl{font-size:12.5px;opacity:.9}
 
 .duo{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line)}
-.duo div{padding:16px 8px;text-align:center}
+.duo div{padding:11px 8px;text-align:center}
 .duo div+div{border-left:1px solid var(--line)}
-.duo .n{font-size:28px;font-weight:700;color:var(--teal-deep);line-height:1.2;
+.duo .n{font-size:24px;font-weight:700;color:var(--teal-deep);line-height:1.2;
   font-variant-numeric:tabular-nums}
-.duo .l{font-size:12px;color:var(--ink-soft);letter-spacing:1px}
+.duo .l{font-size:11.5px;color:var(--ink-soft);letter-spacing:1px;line-height:1.5}
 
-.subjects{padding:8px 20px 20px}
-.subj{padding:14px 0;border-bottom:1px dashed var(--line)}
+.subjects{padding:4px 18px 12px}
+.subj{padding:10px 0;border-bottom:1px dashed var(--line)}
 .subj:last-child{border-bottom:none}
-.subj .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
-.subj .nm{font-size:16px;font-weight:600;letter-spacing:1px}
-.subj .sc{font-size:24px;font-weight:700;color:var(--teal-deep);font-variant-numeric:tabular-nums}
-.subj .sc.none{font-size:16px;color:var(--ink-faint);font-weight:400}
-.bar{position:relative;height:9px;border-radius:99px;background:#eef2f1;overflow:visible}
+.subj .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.subj .nm{font-size:15px;font-weight:600;letter-spacing:1px}
+.subj .sc{font-size:21px;font-weight:700;color:var(--teal-deep);font-variant-numeric:tabular-nums}
+.subj .sc.none{font-size:15px;color:var(--ink-faint);font-weight:400}
+.bar{position:relative;height:8px;border-radius:99px;background:#eef2f1;overflow:visible}
 .bar .fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teal-mid),var(--teal));
   width:0;transition:width .7s cubic-bezier(.2,.8,.3,1)}
-.bar .avg{position:absolute;top:-4px;width:2px;height:17px;background:var(--gold);border-radius:2px}
-.subj .cmp{font-size:12px;color:var(--ink-soft);margin-top:7px;display:flex;
+.bar .avg{position:absolute;top:-4px;width:2px;height:16px;background:var(--gold);border-radius:2px}
+.subj .cmp{font-size:11.5px;color:var(--ink-soft);margin-top:6px;display:flex;
   justify-content:space-between;gap:10px}
 .subj .cmp .up{color:var(--teal);font-weight:600}
 .subj .cmp .dn{color:var(--gold);font-weight:600}
-.legend{font-size:12px;color:var(--ink-faint);padding:0 20px 16px;display:flex;
+.legend{font-size:11.5px;color:var(--ink-faint);padding:0 18px 12px;display:flex;
   align-items:center;gap:6px}
-.legend i{display:inline-block;width:2px;height:12px;background:var(--gold);border-radius:2px}
-.tail{background:var(--teal-pale);padding:13px 20px;font-size:13px;color:var(--teal-deep)}
+.legend i{display:inline-block;width:2px;height:11px;background:var(--gold);border-radius:2px}
+.tail{background:var(--teal-pale);padding:10px 18px;font-size:12.5px;color:var(--teal-deep);line-height:1.6}
 @media (prefers-reduced-motion:reduce){.bar .fill{transition:none}}
 @media print{
   body{background:#fff}
@@ -131,8 +138,10 @@ th{background:var(--teal-pale);color:var(--teal-deep);font-weight:600}
     <p class="sub">輸入學號查詢，一次只顯示一位學生</p>
   </div>
   <div class="askCard">
-    <input type="text" id="sid" inputmode="numeric" autocomplete="off" placeholder="請輸入學號">
-    <div class="row"><button id="btnQuery">查　詢</button></div>
+    <div class="askRow">
+      <input type="text" id="sid" inputmode="numeric" autocomplete="off" placeholder="請輸入學號">
+      <button id="btnQuery">查　詢</button>
+    </div>
     <div id="qmsg"></div>
   </div>
   <div id="result"></div>
@@ -178,8 +187,19 @@ th{background:var(--teal-pale);color:var(--teal-deep);font-weight:600}
 
   <h2>第二步　班級設定</h2>
   <div class="card">
-    <label for="cfgName">頁面標題</label>
-    <input type="text" id="cfgName" placeholder="604 班　期末成績查詢">
+    <label for="cfgName">班級</label>
+    <input type="text" id="cfgName" placeholder="604">
+    <label for="cfgExam">考試名稱（選填）</label>
+    <input type="text" id="cfgExam" placeholder="期中">
+    <div class="chips">
+      <button type="button" class="chip" data-x="期中">期中</button>
+      <button type="button" class="chip" data-x="期末">期末</button>
+      <button type="button" class="chip" data-x="第一次月考">第一次月考</button>
+      <button type="button" class="chip" data-x="第二次月考">第二次月考</button>
+      <button type="button" class="chip" data-x="平時測驗">平時測驗</button>
+      <button type="button" class="chip" data-x="">不寫</button>
+    </div>
+    <p class="hint">家長看到的標題會是「<span id="titlePreview">604 班成績查詢</span>」。想自己完整命名，直接在班級欄打整句就好。</p>
     <label style="display:flex;align-items:center;gap:8px;font-weight:400;margin-top:16px">
       <input type="checkbox" id="cfgRank" checked style="width:18px;height:18px">
       顯示班級名次
@@ -447,12 +467,45 @@ function renderResult(stu, T, showRank, showAvg){
 
 /* ================= 家長查詢 ================= */
 var TABLE = null, DATA = null;
-function startLookup(data){
+/* 組合標題：班級 603 ＋ 考試「期中」→「603 班期中成績查詢」
+   班級欄若已經是完整句子（含「查詢」或「成績」），就照原樣使用。 */
+function composeTitle(cls, exam){
+  cls = String(cls || "").trim();
+  exam = String(exam || "").trim();
+  if(/查詢|成績/.test(cls)) return cls;
+  var base = "";
+  if(cls) base = /^\d{2,4}\s*班?$/.test(cls) ? cls.replace(/\s*班$/, "") + " 班" : cls;
+  return (base + exam + "成績查詢") || "成績查詢";
+}
+/* 舊連結相容：只存了班級號碼時也能正常顯示 */
+function niceTitle(raw){
+  var s = String(raw || "").trim();
+  if(!s) return "成績查詢";
+  if(/^\d{2,4}\s*班?$/.test(s)) return s.replace(/\s*班$/, "") + " 班成績查詢";
+  return s;
+}
+
+function startLookup(data, isPreview){
   DATA = data;
   TABLE = buildTable(data);
   $("viewSetup").classList.add("hidden");
   $("viewLookup").classList.remove("hidden");
-  if(data.n){ $("clsTitle").textContent = data.n; document.title = data.n; }
+  var t = niceTitle(data.n);
+  $("clsTitle").textContent = t;
+  document.title = t;
+  if(isPreview){
+    $("foot").innerHTML = '<button class="ghost sm" id="btnBack">← 返回設定畫面</button>' +
+                          '<div style="margin-top:8px">這是預覽，家長看到的就是這個畫面</div>';
+    $("btnBack").onclick = function(){
+      $("viewLookup").classList.add("hidden");
+      $("viewSetup").classList.remove("hidden");
+      $("result").innerHTML = "";
+      $("sid").value = "";
+      $("qmsg").innerHTML = "";
+      $("foot").innerHTML = "";
+      window.scrollTo(0, 0);
+    };
+  }
   $("sid").focus();
 }
 function doQuery(){
@@ -584,6 +637,21 @@ function initSetup(){
 
   $("btnFillSample").onclick = function(){ $("pasteBox").value = SAMPLE; $("btnCheck").click(); };
 
+  /* 標題即時預覽 ＋ 考試名稱快速選項 */
+  function refreshTitle(){
+    $("titlePreview").textContent =
+      composeTitle($("cfgName").value || "604", $("cfgExam").value);
+    Array.prototype.forEach.call(document.querySelectorAll(".chip"), function(c){
+      c.setAttribute("aria-pressed", c.getAttribute("data-x") === $("cfgExam").value.trim() ? "true" : "false");
+    });
+  }
+  $("cfgName").oninput = refreshTitle;
+  $("cfgExam").oninput = refreshTitle;
+  Array.prototype.forEach.call(document.querySelectorAll(".chip"), function(c){
+    c.onclick = function(){ $("cfgExam").value = this.getAttribute("data-x"); refreshTitle(); };
+  });
+  refreshTitle();
+
   $("btnAddRow").onclick = function(){
     var s = snapshotGrid();
     s.push(["", "", gridSubjects.map(function(){ return null; })]);
@@ -618,7 +686,7 @@ function initSetup(){
   function makeData(){
     var d = collect();
     return {
-      n: ($("cfgName").value.trim() || "成績查詢").replace(/\^/g,""),
+      n: composeTitle($("cfgName").value, $("cfgExam").value).replace(/\^/g,""),
       r: $("cfgRank").checked ? 1 : 0,
       a: $("cfgAvg").checked ? 1 : 0,
       s: d.subjects,
@@ -627,12 +695,23 @@ function initSetup(){
   }
 
   $("btnPreview").onclick = function(){
-    try{
-      startLookup(makeData());
-      $("foot").textContent = "預覽畫面（重新整理可回到設定）";
-    }catch(e){
-      $("setupMsg").innerHTML = '<div class="msg err">' + esc(e.message) + "</div>";
-    }
+    var data;
+    try{ data = makeData(); }
+    catch(e){ $("setupMsg").innerHTML = '<div class="msg err">' + esc(e.message) + "</div>"; return; }
+    $("setupMsg").innerHTML = '<div class="msg ok">預覽準備中…</div>';
+    encode(data).then(function(code){
+      var here = location.href.split("#")[0].split("?")[0];
+      var win = window.open(here + "#d=" + code, "_blank");
+      if(win){
+        $("setupMsg").innerHTML = '<div class="msg ok">預覽已開在新分頁，看完關掉那個分頁就可以了。</div>';
+      } else {
+        /* 瀏覽器擋掉新分頁時，就地預覽並提供返回按鈕 */
+        $("setupMsg").innerHTML = "";
+        startLookup(data, true);
+      }
+    }).catch(function(){
+      $("setupMsg").innerHTML = '<div class="msg err">預覽失敗，請重新整理頁面再試一次。</div>';
+    });
   };
 
   $("btnMake").onclick = function(){
@@ -645,7 +724,7 @@ function initSetup(){
       var current = link;
 
       function notice(){
-        return "各位家長好，" + data.n + "已經可以查詢了：\n" + current +
+        return "各位家長好，" + niceTitle(data.n) + "已經可以查詢了：\n" + current +
                "\n\n打開後輸入孩子的學號，就能看到各科成績" +
                (data.r ? "和班上名次" : "") + "。有問題歡迎再跟我說，謝謝大家。";
       }
@@ -691,6 +770,8 @@ function initSetup(){
     if(!m){ box.innerHTML = '<div class="msg err">這條連結看起來不對，請貼完整的網址。短網址請先在瀏覽器打開，再複製網址列的完整連結。</div>'; return; }
     decode(m[1]).then(function(data){
       $("cfgName").value = data.n || "";
+      $("cfgExam").value = "";
+      refreshTitle();
       $("cfgRank").checked = data.r !== 0;
       $("cfgAvg").checked = data.a !== 0;
       var lines = [["學號","姓名"].concat(data.s).join("\t")];
